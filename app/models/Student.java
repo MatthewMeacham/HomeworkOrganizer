@@ -22,4 +22,9 @@ public class Student extends Model{
 		this.male = male;
 	}
 	
+	public static Student create(Student student) {
+		student.save();
+		return student;
+	}
+	
 }

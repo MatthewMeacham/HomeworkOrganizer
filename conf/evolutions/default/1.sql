@@ -21,7 +21,8 @@ create table note (
 
 create table school_class (
   id                        bigint not null,
-  type                      varchar(255),
+  subject                   varchar(255),
+  student_email             varchar(255),
   constraint pk_school_class primary key (id))
 ;
 
@@ -66,10 +67,12 @@ alter table note add constraint fk_note_student_2 foreign key (student_email) re
 create index ix_note_student_2 on note (student_email);
 alter table note add constraint fk_note_schoolClass_3 foreign key (school_class_id) references school_class (id) on delete restrict on update restrict;
 create index ix_note_schoolClass_3 on note (school_class_id);
-alter table teacher add constraint fk_teacher_schoolClass_4 foreign key (school_class_id) references school_class (id) on delete restrict on update restrict;
-create index ix_teacher_schoolClass_4 on teacher (school_class_id);
-alter table test add constraint fk_test_schoolClass_5 foreign key (school_class_id) references school_class (id) on delete restrict on update restrict;
-create index ix_test_schoolClass_5 on test (school_class_id);
+alter table school_class add constraint fk_school_class_student_4 foreign key (student_email) references student (email) on delete restrict on update restrict;
+create index ix_school_class_student_4 on school_class (student_email);
+alter table teacher add constraint fk_teacher_schoolClass_5 foreign key (school_class_id) references school_class (id) on delete restrict on update restrict;
+create index ix_teacher_schoolClass_5 on teacher (school_class_id);
+alter table test add constraint fk_test_schoolClass_6 foreign key (school_class_id) references school_class (id) on delete restrict on update restrict;
+create index ix_test_schoolClass_6 on test (school_class_id);
 
 
 

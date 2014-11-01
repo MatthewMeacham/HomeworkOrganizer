@@ -3,26 +3,30 @@ package models;
 import javax.persistence.*;
 import play.db.ebean.*;
 import com.avaje.ebean.*;
+import play.data.validation.Constraints.*;
 
 @Entity
 public class SchoolClass extends Model {
 	
 	@Id
+	@Required
 	public Long id;
-	public String type;
+	@Required
+	public String subject;
+	@ManyToOne
 	public Student student;
 	
 	public static Finder<Long, SchoolClass> find = new Finder<Long, SchoolClass>(Long.class, SchoolClass.class);
 	
-	public SchoolClass(String type, Student student) {
-		this.type = type;
+	public SchoolClass(String subject, Student student) {
+		this.subject = subject;
 		this.student = student;
 	}
 	
-	public static SchoolClass create(String type, String studentEmail) {
-		SchoolClass newClass = new SchoolClass(type, Student.find.ref(studentEmail));
-		newClass.save();
-		return newClass;
+	public static SchoolClass create(SchoolClass schoolClass) {
+		//SchoolClass newClass = new SchoolClass(subject, Student.find.ref(studentEmail));
+		schoolClass.save();
+		return schoolClass;
 	}
 	
 }

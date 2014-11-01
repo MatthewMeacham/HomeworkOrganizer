@@ -1,4 +1,7 @@
-@(students : List[Student]) 
+@(students : List[Student], studentForm: Form[Student], schoolClassForm: Form[SchoolClass]) 
+
+@import helper._
+@import models._
 
 @main("Student List") {
 	
@@ -25,9 +28,19 @@
 		}		
 	</table>
 	
-	<ul>
+	@form(routes.Application.newStudent()) {
+		@inputText(studentForm("Email"))
+		@inputText(studentForm("Username"))
+		@inputPassword(studentForm("Password"))
 		
-	</ul>
+		<input type="submit" value="Create new Student">
+	}
+	
+	@form(routes.Application.newSchoolClass()) {
+		@inputText(schoolClassForm("Subject"))
+		
+		<input type="submit" value="Add new class">
+	}	
 	
 }
 
