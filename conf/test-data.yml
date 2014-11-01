@@ -1,0 +1,17 @@
+- !!models.Student
+    email: bob@gmail.com
+    name: Bob
+    grade: 10
+    male: true
+
+- !!models.Student
+    email: billy@gmail.com
+    name: Billy
+    grade: 9
+    male: true
+
+- !!models.Student
+    email: rachel@gmail.com
+    name: Rachel
+    grade: 11
+    male: false

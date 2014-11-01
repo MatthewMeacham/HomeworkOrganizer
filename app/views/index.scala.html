@@ -1,7 +1,33 @@
-@(message: String)
+@(students : List[Student]) 
 
-@main("Welcome to Play") {
-
-    @play20.welcome(message, style = "Java")
-
+@main("Student List") {
+	
+	<h1> Students List - @students.size() students found </h1>
+	
+	<table style="100% width" border="1" padding="1">
+		
+		<tr> 
+			<th> Name </th>
+			<th> Email </th>
+			<th> Grade </th>
+			<th> Gender </th>
+		</tr>
+	
+		@for(student <- students) {
+			<tr>
+				 <td> @student.name </td>  <td> @student.email </td> <td> @student.grade </td> 
+				 @if(student.male){
+					<td> Male </td>  
+				} else {
+					<td> Female </td>  
+				}
+			</tr>
+		}		
+	</table>
+	
+	<ul>
+		
+	</ul>
+	
 }
+
