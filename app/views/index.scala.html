@@ -30,8 +30,9 @@
 	
 	@form(routes.Application.newStudent()) {
 		@inputText(studentForm("Email"))
-		@inputText(studentForm("Username"))
-		@inputPassword(studentForm("Password"))
+		@inputText(studentForm("Name"))
+		@inputText(studentForm("Grade"))
+		@inputRadioGroup(studentForm("Gender"), options = options("M"->"Male","F"->"Female"))
 		
 		<input type="submit" value="Create new Student">
 	}

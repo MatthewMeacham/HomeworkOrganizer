@@ -21,8 +21,8 @@ public class Homework extends Model {
 		this.schoolClass = schoolClass;
 	}
 	
-	public static Homework create(Date dueDate, Long schoolClassId) {
-		Homework homework = new Homework(dueDate, SchoolClass.find.ref(schoolClassId));
+	public static Homework create(Homework homework) {
+		//Homework homework = new Homework(dueDate, SchoolClass.find.ref(schoolClassId));
 		homework.save();
 		return homework;
 	}

@@ -15,7 +15,6 @@ public class Application extends Controller {
         return ok(index.render(Student.find.all(), studentForm, schoolClassForm));
     }
 	
-
 	public static Result newStudent() {
 		Form<Student> filledForm = studentForm.bindFromRequest();
 		if(filledForm.hasErrors()) {
@@ -25,7 +24,6 @@ public class Application extends Controller {
 			return ok(index.render(Student.find.all(), filledForm, schoolClassForm));
 		}
 	}
-
 
 	public static Result newSchoolClass() {
 		Form<SchoolClass> filledForm = schoolClassForm.bindFromRequest();
