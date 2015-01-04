@@ -1,0 +1,62 @@
+@(signUpForm: Form[Student])
+
+@import helper._
+@import play.api.data.Forms._
+
+
+<!DOCTYPE html>
+<html>
+	
+	<head>
+		<title> Sign Up! </title>
+		<link rel="icon" href="@routes.Assets.at("images/faviconWithShadow.png")" sizes="32x32">
+	</head>
+	
+	<body>
+	
+	@form(action = routes.Application.newStudent) {
+		<h1 align="center"> Sign Up! </h1>
+	
+		<table align="center" cellspacing="8px">
+			<tr>
+				<td>
+					<label for="email"> Email: </label>
+				</td>
+				<td>
+					<input type="email" placeholder="Email" name="email">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="password"> Password: </label>
+				</td>
+				<td>
+					<input type="password" placeholder="Password" name="password" autocomplete="off">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="name"> Name: </label>
+				</td>
+				<td>
+					<input type="text" placeholder="Name" name="name">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="grade"> Grade: </label>
+				</td>
+				<td>
+					<input type="number" placeholder="Grade" name="grade" min="1" max="12">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<input type="submit" value="Sign Up">
+				</td>
+			</tr>
+		</table>
+	}
+	</body>
+
+</html>

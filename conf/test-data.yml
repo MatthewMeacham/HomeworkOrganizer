@@ -1,17 +1,17 @@
 - !!models.Student
     email: bob@gmail.com
+    password: hunter2
     name: Bob
     grade: 10
-    male: true
 
 - !!models.Student
     email: billy@gmail.com
+    password: hunter2
     name: Billy
     grade: 9
-    male: true
 
 - !!models.Student
     email: rachel@gmail.com
+    password: hunter2
     name: Rachel
     grade: 11
-    male: false

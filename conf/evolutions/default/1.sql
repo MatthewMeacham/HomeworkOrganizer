@@ -28,9 +28,9 @@ create table school_class (
 
 create table student (
   email                     varchar(255) not null,
+  password                  varchar(255),
   name                      varchar(255),
-  grade                     integer,
-  male                      boolean,
+  grade                     varchar(255),
   constraint pk_student primary key (email))
 ;
 

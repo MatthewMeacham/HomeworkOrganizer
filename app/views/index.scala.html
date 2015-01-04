@@ -1,47 +1,109 @@
-@(students : List[Student], studentForm: Form[Student], schoolClassForm: Form[SchoolClass]) 
+@(students: List[Student], loginForm: Form[Application.Login]) 
 
 @import helper._
 @import models._
+@import views.html.helper.input
 
 @main("Student List") {
+
+	<div class="header">
+		<h2 style="margin-top: 10px"> Personal Homework Organizer </h2>
+		
+		<div class="signUp">
+			<a href="@routes.Application.signup">
+				<text> Sign Up! </text>
+			</a>
+		</div>
+		
+		<div align="right" class="loginArea">
+			<table style="margin-top: 0px">
+			@helper.form(routes.Application.authenticate) {
+					<tr>
+						<td align="right">
+							<text> Email: </text>
+						</td>
+						<td>
+							<input type="email" placeholder="Email" name="email">
+						</td>
+					</tr>
+					<tr>
+						<td align="right">
+							<text> Password: </text>
+						</td>
+						<td>
+							<input type="password" placeholder="Password" name="password" autocomplete="off">
+						</td>
+					</tr>
+					<tr>
+						<td> <text>  </text> </td>
+						<td align="center">
+							<input type="submit" name="login" value="Log in" >
+						</td>
+					</tr>
+				}
+			</table>
+		</div>
+	</div>
 	
 	<h1> Students List - @students.size() students found </h1>
 	
-	<table style="100% width" border="1" padding="1">
+	<style>
+	
+		.loginArea {
+			position: absolute;
+			top: -2px;
+			right: 3px;
+			font-family: helvetica, garamond, serif, arial;
+			font-size: 19px;
+		}
+	
+		.header {
+			position: fixed;
+			background-color: lightblue;
+			text-align: center;?
+			text-position: -10px;
+			font-size: 32px;
+			font-family: helvetica, garamond, serif, arial;
+			width: 100%;
+			height: 80px; 
+			border:1px solid #CCC;
+			margin:0px auto;
+			top: 0px;
+			left: 0px;
+		}
 		
-		<tr> 
-			<th> Name </th>
-			<th> Email </th>
-			<th> Grade </th>
-			<th> Gender </th>
-		</tr>
-	
-		@for(student <- students) {
-			<tr>
-				 <td> @student.name </td>  <td> @student.email </td> <td> @student.grade </td> 
-				 @if(student.male){
-					<td> Male </td>  
-				} else {
-					<td> Female </td>  
-				}
-			</tr>
-		}		
-	</table>
-	
-	@form(routes.Application.newStudent()) {
-		@inputText(studentForm("Email"))
-		@inputText(studentForm("Name"))
-		@inputText(studentForm("Grade"))
-		@inputRadioGroup(studentForm("Gender"), options = options("M"->"Male","F"->"Female"))
+		.signUp {
+			position: absolute;
+			top: 20px;
+			left: 7px;
+			font-family: helvetica, garamond, serif, arial;
+			font-size: 35px;
+		}
 		
-		<input type="submit" value="Create new Student">
-	}
+		p{
+			transition: all 0.5s;
+		}
+		p:hover{
+			color:red;
+			font-size:32px;
+		}
+	</style>
 	
-	@form(routes.Application.newSchoolClass()) {
-		@inputText(schoolClassForm("Subject"))
-		
-		<input type="submit" value="Add new class">
-	}	
-	
+	<h1> What is Homework Organizer? </h1>
+	<p> 
+		Homework Organizer is a way for you to be able to organize all of your homework.
+		Homework Organizer is the easiest way for a student first through collegiate grade to organizer all their homework by class.
+		Homework Organizer allows for you to take notes, set dates for tests, quizzes, or projects. Then Homework Organizer 
+			will remind you of these events a predetermined time before them for you to be able to study.
+		This method will keep you informed and will keep track of your stuff for you. 
+		Homework Organizer uses a simple, yet intuitive interface in order to create the best possible experience for our users.
+	</p>
+	<h1> Why use Homework Organizer? </h1>
+	<p>
+		Homework Organizer is the best in internet organizers that is specifically made for kids.
+		Experts say that you should use a planner in order to keep track of your homework, quizzes, and tests, and Homework Organizer is the easiest place
+			for exactly that. 
+		It boasts an interactive user interface and allows for the most convenience in keeping track of your assignments.
+	</p>
 }
 

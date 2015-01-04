@@ -1,0 +1,32 @@
+@(students : List[Student])
+
+@import helper._
+@import models._
+
+<!DOCTYPE html>
+<html>
+	
+	<head>
+		<title> Student List </title>
+	</head>
+	
+	<body>
+		<h1> All Students </h1>
+		
+		<table style="100% width" border="1" padding="1">
+			
+			<tr> 
+				<th> Name </th>
+				<th> Email </th>
+				<th> Grade </th>
+			</tr>
+		
+			@for(student <- students) {
+				<tr>
+					 <td> @student.name </td>  <td> @student.email </td> <td> @student.grade </td> 
+				</tr>
+			}		
+		</table>
+	</body>
+	
+</html>
