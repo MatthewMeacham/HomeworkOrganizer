@@ -1,0 +1,285 @@
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  color: #384047;
+  margin: 0;
+  padding: 0;
+}
+
+form {
+  max-width: 300px;
+  margin: 10px auto;
+  padding: 10px 20px;
+  background: #f4f7f8;
+  border-radius: 8px;
+}
+
+label.css-label {
+  background-image:url("images/radio.png");
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+h1 {
+  margin: 0 0 30px 0;
+  text-align: center;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="date"],
+input[type="datetime"],
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="time"],
+input[type="url"],
+textarea,
+select {
+  border: none;
+  font-size: 16px;
+  resize: none;
+  height: auto;
+  margin: 0;
+  outline: 0;
+  padding: 15px;
+  width: 100%;
+  background-color: #e8eeef;
+  color: #8a97a0;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+  margin-bottom: 30px;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  margin: 0 4px 8px 0;
+}
+
+select {
+  padding: 6px;
+  height: 32px;
+  border-radius: 2px;
+}
+
+button {
+  padding: 19px 39px 18px 39px;
+  color: #FFF;
+  background-color: #34495e;
+  font-size: 18px;
+  text-align: center;
+  font-style: normal;
+  border-radius: 5px;
+  width: 100%;
+  border: 1px solid #2c3e50;
+  border-width: 1px 1px 3px;
+  box-shadow: 0 -1px 0 rgba(255,255,255,0.1) inset;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+fieldset {
+  margin-bottom: 30px;
+  border: 0;
+}
+
+.field {
+    border: 0;
+}
+
+legend {
+  font-size: 1.4em;
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+label.light {
+  font-weight: 300;
+  display: inline;
+}
+
+.number {
+  background-color: #5fcf80;
+  color: #fff;
+  height: 30px;
+  width: 30px;
+  display: inline-block;
+  font-size: 0.8em;
+  margin-right: 4px;
+  line-height: 30px;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.2);
+  border-radius: 100%;
+}
+
+.contentList {
+  width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 20px;
+  color: #ecf0f1;
+}
+
+.topNav {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 70px;
+}
+
+.topContent {
+  width: auto;
+  height: 600px;
+  z-index: 0;
+}
+
+.topText {
+  width: auto;
+  text-align: center;
+  font-size: 30px;
+  text-transform: uppercase;
+}
+
+.topText a {
+  text-decoration: none;
+  color: #34495e;
+}
+
+.topContentInner {
+  position: relative;
+  z-index: -1;
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+}
+
+.topContentInner img {
+  margin-top: 100px;
+  position: relative;
+  pointer-events: none;
+}
+
+.footer {
+  width: auto;
+  height: 90px;
+  line-height: 90px;
+}
+
+.footerInner {
+  color: #ecf0f1;
+  text-align: center;
+}
+
+.footerInner a {
+  color: #ecf0f1;
+  text-decoration: none;
+}
+
+.Content {
+  position: relative;
+  width: auto;
+  height: inherit;
+  background-color: #c34444;
+  z-index: 0;
+  overflow: hidden;
+  z-index: 8;
+}
+
+.textHeader {
+  color: #ecf0f1;
+  text-transform: uppercase;
+}
+
+.lastContent {
+  width: auto;
+  height: inherit;
+  background-color: #56ced6;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.lastContentInner {
+  padding-top: 50px;
+  padding-left: 20px;
+  padding-right: 20px;
+  overflow: hidden;
+}
+
+.contentInner {
+  padding-top: 50px;
+  padding-left: 20px;
+  padding-right: 20px;
+  overflow: hidden;
+}
+
+.spacer {
+  width: auto;
+  height: 50px;
+}
+
+.contentInner ul {
+  max-width: 99%;
+  padding: 20px;
+}
+
+.topNavInner {
+  padding: 20px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 50px;
+  text-align: center;
+}
+
+.iconNav img {
+  padding: 0;
+  position: absolute;
+  float: left;
+  border: 10px solid #ecf0f1;
+  border-radius: 50px;
+}
+
+.topLinks {
+  color: #3498db;
+  float: right;
+}
+
+.topLinks a{
+  line-height: 2;
+  text-decoration: none;
+  padding: 10px;
+  color: #3498db;
+}
+
+.links {
+  width: auto;
+  margin-top: 20px;
+}
+
+.topLinks a{
+  line-height: 2;
+  text-decoration: none;
+  padding: 10px;
+  color: #c34444;
+}
+
+@media screen and (min-width: 480px) {
+
+  form {
+    max-width: 480px;
+  }
+
+}

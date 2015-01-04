@@ -5,7 +5,7 @@
 
 create table homework (
   id                        bigint not null,
-  due_date                  timestamp,
+  due_date                  varchar(255),
   school_class_id           bigint,
   constraint pk_homework primary key (id))
 ;
@@ -28,8 +28,8 @@ create table school_class (
 
 create table student (
   email                     varchar(255) not null,
-  password                  varchar(255),
   name                      varchar(255),
+  password                  varchar(255),
   grade                     varchar(255),
   constraint pk_student primary key (email))
 ;

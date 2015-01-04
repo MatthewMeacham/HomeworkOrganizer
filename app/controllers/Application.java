@@ -35,14 +35,19 @@ public class Application extends Controller {
 	public static Result signup() {
 		return ok(signup.render(studentForm));
 	}
-	
+
+	public static Result login() {
+		return ok(login.render(Form.form(Login.class)));
+	}
+
+	public static Result logout() {
+		session.clear();
+		return redirect(routes.Application.index());
+	}
+
 	public static Result students() {
 		return ok(students.render(Student.find.all()));
 	}
-	
-	//public static Result login() {
-//		return ok(login.render(Form.form(Login.class)));
-//	}
 	
 	public static Result newStudent() {	
 		Form<Student> filledForm = studentForm.bindFromRequest();
@@ -61,6 +66,7 @@ public class Application extends Controller {
 			return badRequest(profile.render(student, homeworks, schoolClasses, teachers, tests, notes));
 		} else {		
 			SchoolClass newSchoolClass = SchoolClass.create(filledForm.data().get("subject"), filledForm.data().get("studentEmail"));
+			System.out.println("SCHOOLCLASS: " + newSchoolClass);
 			schoolClasses.add(newSchoolClass);
 			System.out.println("NO ERRORS");
 			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes));
@@ -102,11 +108,6 @@ public class Application extends Controller {
 		student = Student.find.ref(session.get("email"));
 		
 		return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes));
-	}
-	
-	public static Result logout() {
-		session.clear();
-		return redirect(routes.Application.index());
 	}
 						
 	public static Result authenticate() {

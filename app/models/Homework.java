@@ -3,11 +3,8 @@ package models;
 import javax.persistence.*;
 import play.db.ebean.*;
 import com.avaje.ebean.*;
-import java.util.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 import java.lang.String;
+import java.util.Calendar;
 
 import play.data.validation.Constraints.*;
 
@@ -17,16 +14,13 @@ public class Homework extends Model {
 	@Id
 	public Long id;
 	@Required
-	public Date dueDate;
+	public String dueDate;
 	@ManyToOne
 	public SchoolClass schoolClass; 
 	
-	private static final String DATE_FORMAT = "MM-dd";
-	private static DateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-	
 	public static Finder<Long, Homework> find = new Finder<Long, Homework>(Long.class, Homework.class);
 	
-	public Homework(Date dueDate, SchoolClass schoolClass) {
+	public Homework(String dueDate, SchoolClass schoolClass) {
 		this.dueDate = dueDate;
 		this.schoolClass = schoolClass;
 	}
@@ -35,9 +29,6 @@ public class Homework extends Model {
 	//BUT THE STRING IT COMES IN IS NOT PARSEABLE AND SO IT NEEDS TO BE CHANGED TO A WAY THAT IT CAN BE PARSED
 	
 	public static Homework create(String dueDate, String schoolClassId) {
-		System.out.println("DUEDATE: " + dueDate);
-		System.out.println("SCHOOLCLASSID: " + schoolClassId);
-		
 		String month = "";
 		String day = "";
 		String year = "";
@@ -49,22 +40,47 @@ public class Homework extends Model {
 			if(i > 7 && i < dueDate.length()) day = day  + (String.valueOf(dueDate.charAt(i)));
 		}
 		
-		System.out.println("MONTH: " + month);
-		System.out.println("DAY: " + day);
-		String completeDate = month + " " + day;
-		System.out.println("COMPLETE DATE: "+  completeDate);
-		Date date = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("MMMM d");
-		Calender calender = new Calender();
-		calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(day));
-		calendar.set(Calendar.MONTH, Integer.parseInt(month));
-		calender.set(Calender.YEAR, Integer.parseIn(year));
-		
-		try {
-			date = sdf.parse(completeDate);
-		} catch(Exception e) {
-			e.printStackTrace();
+		switch(Integer.parseInt(month)) {
+			case 1:
+				month = "January";
+				break;
+			case 2:
+				month = "Feburary";
+				break;
+			case 3:
+				month = "March";
+				break;
+			case 4:
+				month = "April";
+				break;
+			case 5:
+				month = "May";
+				break;
+			case 6:
+				month = "June";
+				break;
+			case 7:
+				month = "July";
+				break;
+			case 8:
+				month = "August";
+				break;
+			case 9:
+				month = "September";
+				break;
+			case 10:
+				month = "October";
+				break;
+			case 11:
+				month = "November";
+				break;
+			case 12:
+				month = "December";
+				break;
 		}
+		
+		String date = month + " " + day + ", " + year;
+
 
 		Long schoolId = null;
 		try {
@@ -72,7 +88,6 @@ public class Homework extends Model {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("DUEDATE: " + date);
 		Homework homework = new Homework(date, SchoolClass.find.ref(schoolId));
 		homework.save();
 		return homework;

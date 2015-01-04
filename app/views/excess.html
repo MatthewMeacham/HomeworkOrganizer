@@ -1,34 +1,4 @@
-@(student: Student, homeworks: List[Homework], schoolClasses: List[SchoolClass], teachers: List[Teacher], tests: List[Test], notes: List[Note])
-
-@import helper._
-@import models._
-@import play.api.data.Forms._
-@import util.control.Breaks._
-
-<!DOCTYPE html>
-<html>
-
-	<head>
-		<title>Homework Organizer |  @student.name's Profile </title>
-		<link rel="icon" href="@routes.Assets.at("./images/faviconWithShadow.png")" sizes="32x32">
-		<link rel="stylesheet" media="screen" href="@routes.Assets.at("./stylesheets/animate.css")">
-		<link rel="stylesheet" media="screen" href="@routes.Assets.at("./stylesheets/profile.css")">
-        <link href='http://fonts.googleapis.com/css?family=Nunito' rel='stylesheet' type='text/css'>
-	</head>
-	<body>
-	<script type="text/javascript">
-	<!--
-	    function toggle_visibility(id) {
-	       var e = document.getElementById(id);
-	       if(e.style.display == 'block')
-	          e.style.display = 'none';
-	       else
-	          e.style.display = 'block';
-	    }
-	//-->
-	</script>
-		<div id="main">
-			<div class="sidebar">
+<div class="sidebar">
 				<div id="top">
 					<div class="roundSmallOne" id="date">
 						<div class="roundSmallInner">
@@ -66,7 +36,6 @@
 								    }
 								    var t_str = hours + ":" + minutes + " ";
 								    if(hours > 11){
-										t_str = (hours - 12) + ":" + minutes + " ";
 								        t_str += "PM";
 								    } else {
 								        t_str += "AM";
@@ -84,39 +53,7 @@
 				<div class="studentName">
 					<h2>Welcome to your profile @student.name</h2>
 				</div>
-				<fieldset>
-					<div class="enrolledContainer">
-						<div class="enrolledInner">
-							<div class="Header"><h2>Classes you're enrolled in</h2></div>
-							
-							@if(schoolClasses.length <= 0) {
-								<div class="notEnContainer">
-									<span class="alert">!</span>
-									<div class="notEnInner">
-										<h3 id="notEn">You're not enrolled in any classes</h3>
-									</div>
-								</div>
-								} else {
-								<div class="classNamesListItem">
-									<ul>
-									@for(schoolClass <- schoolClasses) {
-										<li>@schoolClass.subject</li>
-									}
-									</ul>
-								</div>
-							}
-							@form(action = routes.Application.newSchoolClass) {
-									<div class="center">
-										<input type="text" name="subject" placeholder="New Class">
-									</div>
-									<input type="hidden" name="studentEmail" value=@student.email><tr>	
-									<div class="center">
-										<button type="submit" value="Add Class">Add Class</button>
-									</div>
-							}
-						</div>
-					</div>
-				</fieldset>
+				
 				<div class="nav">
 					<div class="navInner">
 						<ul class="navContainer">
@@ -208,5 +145,3 @@
 				</div>
 			</div>
 		</div>
-	</body>
-</html>

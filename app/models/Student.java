@@ -9,13 +9,13 @@ import play.data.validation.Constraints.*;
 @Entity
 public class Student extends Model{
 
+	@Required
+	public String name;
 	@Id
 	@Required
 	public String email;
 	@Required
 	public String password;
-	@Required
-	public String name;
 	@Required
 	public String grade;
 	

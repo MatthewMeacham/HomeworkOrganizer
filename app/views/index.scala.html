@@ -5,105 +5,91 @@
 @import views.html.helper.input
 
 @main("Student List") {
-
-	<div class="header">
-		<h2 style="margin-top: 10px"> Personal Homework Organizer </h2>
-		
-		<div class="signUp">
-			<a href="@routes.Application.signup">
-				<text> Sign Up! </text>
-			</a>
-		</div>
-		
-		<div align="right" class="loginArea">
-			<table style="margin-top: 0px">
-			@helper.form(routes.Application.authenticate) {
-					<tr>
-						<td align="right">
-							<text> Email: </text>
-						</td>
-						<td>
-							<input type="email" placeholder="Email" name="email">
-						</td>
-					</tr>
-					<tr>
-						<td align="right">
-							<text> Password: </text>
-						</td>
-						<td>
-							<input type="password" placeholder="Password" name="password" autocomplete="off">
-						</td>
-					</tr>
-					<tr>
-						<td> <text>  </text> </td>
-						<td align="center">
-							<input type="submit" name="login" value="Log in" >
-						</td>
-					</tr>
-				}
-			</table>
+	
+	<!-- NAVIGATION -->
+	<div class="topNav">
+		<div class="topNavInner">
+			<div class="animated bounceIn topLinks">
+				<a href="@routes.Application.signup">Sign Up!</a> | 
+				<a href="@routes.Application.login">Sign In!</a>
+			</div>
 		</div>
 	</div>
+	<!-- END NAVIGATION -->
+
+	<!-- START MAIN TITLE -->
+
+	<div class="animated bounceInDown topText">
+		<!-- <a href="@routes.Application.index"><h2>Homework Organizer</h2></a> -->
+		<a href="@routes.Application.index"><img src=@routes.Assets.at("/images/Logo.png") alt="Orgnizr"></a>
+		<div class="links">
+			<a href="#">DevLog</a> | 
+			<a href="#about">About</a>
+		</div>
+	</div>
+
+	<!-- END MAIN TITLE -->
+
+	<!-- START TOP AREA -->
+
+		<div class="topContent">
+			<div class="topContentInner">
+				<img class="animated fadeInLeft" src=@routes.Assets.at("/images/Browser.png") alt="Orgnizr">
+				<img class="animated bounceInRight" style="position: absolute; margin-top: -615px; margin-left: -10px;" src=@routes.Assets.at("/images/BrowserContent.png") alt="Homework Organizer">
+			</div>
+		</div>
+
+	<!-- END TOP AREA -->
+
+	<!-- START MIDDLE AREA -->
 	
-	<h1> Students List - @students.size() students found </h1>
-	
-	<style>
-	
-		.loginArea {
-			position: absolute;
-			top: -2px;
-			right: 3px;
-			font-family: helvetica, garamond, serif, arial;
-			font-size: 19px;
-		}
-	
-		.header {
-			position: fixed;
-			background-color: lightblue;
-			text-align: center;?
-			text-position: -10px;
-			font-size: 32px;
-			font-family: helvetica, garamond, serif, arial;
-			width: 100%;
-			height: 80px; 
-			border:1px solid #CCC;
-			margin:0px auto;
-			top: 0px;
-			left: 0px;
-		}
-		
-		.signUp {
-			position: absolute;
-			top: 20px;
-			left: 7px;
-			font-family: helvetica, garamond, serif, arial;
-			font-size: 35px;
-		}
-		
-		p{
-			transition: all 0.5s;
-		}
-		p:hover{
-			color:red;
-			font-size:32px;
-		}
-	</style>
-	
-	<h1> What is Homework Organizer? </h1>
-	<p> 
-		Homework Organizer is a way for you to be able to organize all of your homework.
-		Homework Organizer is the easiest way for a student first through collegiate grade to organizer all their homework by class.
-		Homework Organizer allows for you to take notes, set dates for tests, quizzes, or projects. Then Homework Organizer 
-			will remind you of these events a predetermined time before them for you to be able to study.
-		This method will keep you informed and will keep track of your stuff for you. 
-		Homework Organizer uses a simple, yet intuitive interface in order to create the best possible experience for our users.
-	</p>
-	<h1> Why use Homework Organizer? </h1>
-	<p>
-		Homework Organizer is the best in internet organizers that is specifically made for kids.
-		Experts say that you should use a planner in order to keep track of your homework, quizzes, and tests, and Homework Organizer is the easiest place
-			for exactly that. 
-		It boasts an interactive user interface and allows for the most convenience in keeping track of your assignments.
-	</p>
+	<div class="Content" id="about">
+		<div class="contentInner animated fadeInUp">
+			<h1>@students.size() WORLD WIDE USERS SO FAR</h1>
+			<br />
+			<!-- <h1 class="textHeader">What is Homework Organizer?</h1> -->
+			<h1 class="textHeader">What is Orgnizr?</h1>
+			<ul class="contentList">
+				<p>Have you ever felt like you can't keep track of your homework or you just can't be bothered to write it in your diary? Well Orgnizer is the best solution for you, here's why!</p>
+				<li>Orgnizr is a way for you to be able to organize all of your homework.</li>
+				<li>Orgnizr is the easiest way for a student first through collegiate grade to organizer all their homework by class.</li>
+				<li>Orgnizr allows for you to take notes, set dates for tests, quizzes, or projects. Then Orgnizr will remind you of these events a predetermined time before them for you to be able to study.</li>
+				<li>This method will keep you informed and will keep track of your stuff for you.</li>
+				<li>Orgnizr uses a simple, yet intuitive interface in order to create the best possible experience for our users.</li>
+			</ul>
+			<div class="spacer"></div>
+		</div>
+	</div>
+
+	<!-- END MIDDLE AREA -->
+
+	<!-- START LAST AREA -->
+
+	<div class="lastContent">
+		<div class="lastContentInner animated fadeInUp">
+			<!-- <h1 class="textHeader">Why use Homework Organizer?</h1> -->
+			<h1 class="textHeader">Why use Homework Orgnizr?</h1>
+			<ul class="contentList">
+				<li>Orgnizr is the best in internet organizers that is specifically made for students, either in higher education or are still in High School.</li>
+				<li>Experts say that you should use a planner in order to keep track of your homework, quizzes, tests. Orgnizr is the easiest place for exactly that.</li>
+				<li>It boasts an interactive user interface and allows for the most convenience in keeping track of your assignments.</li>
+			</ul>
+			<div class="spacer"></div>
+		</div>
+	</div>
+
+	<!-- END LAST AREA -->
+
+	<div>
+
+	</div>
+
+	<!-- START FOOTER -->
+	<div class="footer">
+		<div class="footerInner">
+			<h2>MATTHEW MEACHAM AND <a href="http://aliquamgames.com">ALIQUAMGAMES</a>© COPYRIGHT SINCE 2010</h2>
+		</div>
+	</div>
+	<!-- END FOOTER -->
 }
 

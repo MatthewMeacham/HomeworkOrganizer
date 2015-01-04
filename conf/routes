@@ -6,9 +6,11 @@
 GET     /                           controllers.Application.index()
 GET		/profile					controllers.Application.profileLogin()
 GET		/signup						controllers.Application.signup()
+GET     /login          			controllers.Application.login()
+GET     /logout                     controllers.Application.logout()
 GET 	/students					controllers.Application.students()
 POST	/							controllers.Application.newStudent()
-POST	/profile					controllers.Application.authenticate()
+POST	/authenticate				controllers.Application.authenticate()
 POST	/profileHomeworkChanged		controllers.Application.newHomework()
 POST	/profileClassChanged		controllers.Application.newSchoolClass()
 
