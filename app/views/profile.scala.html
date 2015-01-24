@@ -1,4 +1,4 @@
-@(student: Student, homeworks: List[Homework], schoolClasses: List[SchoolClass], teachers: List[Teacher], tests: List[Test], notes: List[Note])
+@(student: Student, homeworks: List[Homework], schoolClasses: List[SchoolClass], teachers: List[Teacher], tests: List[Test], notes: List[Note], projects: List[Project], overview: List[OverviewObject], passed: List[OverviewObject])
 
 @import helper._
 @import models._
@@ -7,26 +7,27 @@
 
 <!DOCTYPE html>
 <html>
-
 	<head>
 		<title>Homework Organizer |  @student.name's Profile </title>
 		<link rel="icon" href="@routes.Assets.at("./images/faviconWithShadow.png")" sizes="32x32">
 		<link rel="stylesheet" media="screen" href="@routes.Assets.at("./stylesheets/animate.css")">
 		<link rel="stylesheet" media="screen" href="@routes.Assets.at("./stylesheets/profile.css")">
-        <link href='http://fonts.googleapis.com/css?family=Nunito' rel='stylesheet' type='text/css'>
+        <link href="http://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
+		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 	</head>
 	<body>
-	<script type="text/javascript">
-	<!--
-	    function toggle_visibility(id) {
-	       var e = document.getElementById(id);
-	       if(e.style.display == 'block')
-	          e.style.display = 'none';
-	       else
-	          e.style.display = 'block';
-	    }
-	//-->
-	</script>
+		<script type="text/javascript">
+			function toggle_visibility(id) {
+				var e = document.getElementById(id);
+				
+				document.getElementById('openOverview').style.display = 'none';				
+				document.getElementById('openHomework').style.display = 'none';
+				document.getElementById('openTest').style.display = 'none';
+				document.getElementById('openProject').style.display = 'none';
+
+				e.style.display = 'block';
+			}
+		</script>
 		<div id="main">
 			<div class="sidebar">
 				<div id="top">
@@ -40,11 +41,11 @@
 									var yyyy = today.getFullYear();
 
 									if(dd<10) {
-									    dd='0'+dd
+										dd='0'+dd
 									} 
 
 									if(mm<10) {
-									    mm='0'+mm
+										mm='0'+mm
 									} 
 
 									today = mm+'/'+dd+'/'+yyyy;
@@ -58,23 +59,26 @@
 							<p class="animated fadeIn" id="timeText">
 								<script>
 									function updateTime(){
-								    var currentTime = new Date()
-								    var hours = currentTime.getHours()
-								    var minutes = currentTime.getMinutes()
-								    if (minutes < 10){
-								        minutes = "0" + minutes
-								    }
-								    var t_str = hours + ":" + minutes + " ";
-								    if(hours > 11){
-										t_str = (hours - 12) + ":" + minutes + " ";
-								        t_str += "PM";
-								    } else {
-								        t_str += "AM";
-								    }
+										var currentTime = new Date()
+										var hours = currentTime.getHours()
+										var minutes = currentTime.getMinutes()
+										if (minutes < 10){
+											minutes = "0" + minutes
+										}
+										var t_str = hours + ":" + minutes + " ";
+										if(hours > 12){
+											t_str = (hours - 12) + ":" + minutes + " ";
+											t_str += "PM";
+										} else if(hours = 12) {
+											t_str += "PM";
+										} 
+										else {
+											t_str += "AM";
+										}
 
-								    document.getElementById('timeText').innerHTML = t_str;
-								}
-								setInterval(updateTime, 1000);
+										document.getElementById('timeText').innerHTML = t_str;
+									}
+									setInterval(updateTime, 1000);
 								</script>
 							</p>
 						</div>
@@ -106,13 +110,13 @@
 								</div>
 							}
 							@form(action = routes.Application.newSchoolClass) {
-									<div class="center">
-										<input type="text" name="subject" placeholder="New Class">
-									</div>
-									<input type="hidden" name="studentEmail" value=@student.email><tr>	
-									<div class="center">
-										<button type="submit" value="Add Class">Add Class</button>
-									</div>
+								<div class="center">
+									<input type="text" name="subject" placeholder="New Class">
+								</div>
+								<input type="hidden" name="studentEmail" value=@student.email><!--<tr>-->	
+								<div class="center">
+									<button type="submit" value="Add Class">Add Class</button>
+								</div>
 							}
 						</div>
 					</div>
@@ -137,16 +141,270 @@
 				</div>
 			</div>
 			<div class="content">
-				<div class="overview" id="openOverview">
-					<div class="overviewInner"><h2>OVERVIEW</h2></div>
+				<div style="display:block" class="overview" id="openOverview">
+					<div class="overviewInner">
+						<h2> OVERVIEW </h2>
+						<table border="0px" align="center">
+							<tr>
+							
+								<!-- all items, organized by dueDate -->
+								<td>
+									<h1 class="Header center"> OVERVIEW </h1>
+									<div class ="overviewArea">
+										@if(overview.size() > 0) {
+											<div class="overviewItemContainer">
+												@for(overviewItem <- overview) {
+													<div class="itemInOverview">
+														<span class="alertContent"> 
+															@if(overviewItem.spanner=="H"){
+																H
+															}
+															@if(overviewItem.spanner=="P") {
+																P
+															}
+															@if(overviewItem.spanner=="T") {
+																T
+															}
+														</span>
+														<div class="overviewContentInside">
+															<h2 class="overviewItemHeader"> @overviewItem.schoolClass.subject </h2>
+															<h3 class="overviewItemDate"> @overviewItem.date </h3>
+															<p class="overviewItemDesc"> @overviewItem.description </p>
+															
+															@form(action = routes.Application.deleteOverviewObject(String.valueOf(overviewItem.id), overviewItem.spanner), 'id -> ("overviewObjectDeleteForm" + String.valueOf(overviewItem.id))) {
+																<a href="#" onclick="submitOverviewObjectDeleteForm(@overviewItem.id); return false;">
+																	<i class="fa fa-trash"></i>
+																</a>
+															}
+
+															
+															@form(action = routes.Application.editOverviewObject(String.valueOf(overviewItem.id), overviewItem.spanner), 'id -> ("overviewObjectEditForm" + String.valueOf(overviewItem.id))) {
+																<a href="#" onclick="submitOverviewObjectEditForm(@overviewItem.id); return false;">
+																	<i class="fa fa-pencil"></i>
+																</a>
+															}
+															
+														
+														</div>
+													</div>
+												}
+												<script>
+													function submitOverviewObjectDeleteForm(id) {
+														document.getElementById('overviewObjectDeleteForm' + id).submit();
+													}
+												</script>												
+												
+												<script>
+													function submitOverviewObjectEditForm(id) {
+														document.getElementById('overviewObjectEditForm' + id).submit();
+													}
+												</script>
+											</div>
+										} else {
+											<p class="noItemCreated"> You have nothing added, go add some by clicking on either Homework, Test, or Project at the left. This box will display all of your items with the class they are associated with, their due date, and a description. </p>
+										}
+									</div>
+									
+									
+									<div class="" style="display:none"> 
+										
+									</div>
+									
+								</td>
+								<!--homework -->
+								<td>
+									<h1 class="Header center"> HOMEWORK </h1>
+									<div class ="homeworkArea">
+										@if(homeworks.size() > 0) {
+											<div class="homeworkItemContainer"> 
+												@for(homework <- homeworks) {
+													<div class = "homeworkItem">
+														<span class="alertContent"> H </span>
+														<div class="homeworkContentInside">
+															<h2 class="homeworkItemHeader"> @homework.schoolClass.subject </h2>
+															<h3 class="homeworkItemDueDate"> @homework.dueDate </h3>
+															<p class="homeworkItemDesc"> @homework.description </p>
+															<!-- DELETE -->
+															@form(action = routes.Application.deleteHomework(String.valueOf(homework.id)), 'id -> ("homeworkDeleteForm" + String.valueOf(homework.id))) {
+																<a href="#" onclick="submitHomeworkDeleteForm(@homework.id); return false;">
+																	<i class="fa fa-trash"></i>
+																</a>
+															}
+
+															<!-- EDIT -->
+															@form(action = routes.Application.editPageHomework(String.valueOf(homework.id)), 'id -> ("homeworkEditForm" + String.valueOf(homework.id))) {
+																<a href="#" onclick="submitHomeworkEditForm(@homework.id); return false;">
+																	<i class="fa fa-pencil"></i>
+																</a>
+															}
+															
+															
+														</div>
+													</div>	
+												}
+												<script>
+													function submitHomeworkDeleteForm(id) {
+														document.getElementById('homeworkDeleteForm' + id).submit();
+													}
+												</script>
+												<script>
+													function submitHomeworkEditForm(id) {
+														document.getElementById('homeworkEditForm' + id).submit();
+													}
+												</script>
+											</div>
+										} else {
+											<p class="noItemCreated"> No homework added, go add some by clicking on Homework at the left. This is where all the added homework will show with what class they are for, their due date, and a description.</p>
+										}
+									</div>	
+								</td>
+							</tr>
+							<tr>
+								<!--tests -->
+								<td>
+									<h1 class="Header center"> TESTS </h1>
+									<div class ="testArea">
+										@if(tests.size() > 0) {
+											<div class="testItemContainer"> 
+												@for(test <- tests) {
+													<div class = "testItem">
+														<span class="alertContent"> T </span>
+														<div class="testContentInside">
+															<h2 class="testItemHeader"> @test.schoolClass.subject </h2>
+															<h3 class="testItemDateOf"> @test.dateOf </h3>
+															<p class="testItemDesc"> @test.description </p>
+															@form(action = routes.Application.deleteTest(String.valueOf(test.id)), 'id -> ("testDeleteForm" + String.valueOf(test.id))) {
+																<a href="#" onclick="submitTestDeleteForm(@test.id); return false;">
+																	<i class="fa fa-trash"></i>
+																</a>
+															}
+															
+															@form(action = routes.Application.editPageTest(String.valueOf(test.id)), 'id -> ("testEditForm" + String.valueOf(test.id))) {
+																<a href="#" onclick="submitTestEditForm(@test,id); return false;">
+																	<i class="fa fa-pencil"></i>
+																</a>
+															}
+															
+														</div>
+													</div>
+												}
+												<script>
+													function submitTestDeleteForm(id) {
+														document.getElementById('testDeleteForm' + id).submit();
+													}
+												</script>
+												<script>
+													function submitTestEditForm(id) {
+														document.getElementById('testEditForm' + id).submit();
+													}
+												</script>
+											</div>
+										} else {
+											<p class="noItemCreated"> No tests added, go add some by clicking on Tests at the left. This is where all the added tests will show with what class they are for, the date that they are, and their description.</p>
+										}
+									</div>
+								</td>
+								<!--projects-->
+								<td>
+									<h1 class="Header center"> PROJECTS </h1>
+									<div class ="projectArea">
+										@if(projects.size() > 0) {
+											<div class="projectItemContainer"> 
+												@for(project <- projects) {
+													<div class="projectItem">
+														<span class="alertContent"> P </span>
+														<div class="projectContentInside">
+															<h2 class="projectItemHeader"> @project.schoolClass.subject </h2>
+															<h3 class="projectItemDueDate"> @project.dueDate </h3>
+															<p class="projectItemDesc"> @project.description </p>
+															@form(action = routes.Application.deleteProject(String.valueOf(project.id)), 'id -> ("projectDeleteForm" + String.valueOf(project.id))) {
+																<a href="#" onclick="submitProjectDeleteForm(@project.id); return false;">
+																	<i class="fa fa-trash"></i>
+																</a>
+															}
+															
+															@form(action = routes.Application.editPageProject(String.valueOf(project.id)), 'id -> ("projectEditForm" + String.valueOf(project.id))) {
+																<a href="#" onclick="submitProjectEditForm(@project.id); return false;">
+																	<i class="fa fa-pencil fa"></i>
+																</a>
+															}
+															
+														</div>
+													</div>
+												}
+												<script>
+													function submitProjectDeleteForm(id) {
+														document.getElementById('projectDeleteForm' + id).submit();
+													}
+												</script>
+												<script>
+													function submitProjectEditForm(id) {
+														document.getElementById('projectEditForm' + id).submit();
+													}
+												</script>
+											</div>
+										} else {
+											<p class="noItemCreated"> No projects added, go add some by clicking on Projects at the left. This is where all the added projects will appear with what class they are for, their due date, and their description.</p>
+										}
+									</div>
+								</td>
+							</tr>
+							<!-- PASSED -->
+							
+							<tr>
+								<td colspan="2">
+									<h1 class="Header center"> PAST TASKS </h1>
+									<div class = "passedArea">
+										@if(passed.size() > 0) {
+											<div class="passedItemContainer">
+												@for(passedItem <- passed) {
+													<div class="passedItem">
+														<span class="alertContent">
+															@if(passedItem.spanner=="H"){
+																H
+															}
+															@if(passedItem.spanner=="P") {
+																P
+															}
+															@if(passedItem.spanner=="T") {
+																T
+															}	
+														</span>
+														<div class="passedContentInside">
+															<h2 class="passedItemHeader"> @passedItem.schoolClass.subject </h2>
+															<h3 class="passedItemDate"> @passedItem.date </h3>
+															<p class="passedItemDesc"> @passedItem.description </p>
+															@form(action = routes.Application.deletePassedObject(String.valueOf(passedItem.id), passedItem.spanner), 'id -> ("passedObjectDeleteForm" + String.valueOf(passedItem.id))) {
+																<a href="#" onclick="submitPassedObjectDeleteForm(@passedItem.id); return false;">
+																	<i class="fa fa-trash"></i>
+																</a>
+															}
+															
+														</div>
+													</div>
+												}
+												<script>
+													function submitPassedObjectDeleteForm(id) {
+														document.getElementById('passedObjectDeleteForm' + id).submit();
+													}
+												</script>
+											</div>
+										} else {
+											<p class="noItemCreated"> No homework, projects, or tests have passed. Once they do, they will appear here. </p>
+										}
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
 				</div>
 				<div style="display:none" class="homework" id="openHomework">
-					<div class="homeworkContainer">
-						<div class="homeworkInner">
-							<div class="Header"><h2>Add Homework</h2></div>
-							@form(action = routes.Application.newHomework) {
+					<div class="homeworkInner">
+						<h2> HOMEWORK </h2>
+						<div class="Header"><h2>Add Homework</h2></div>
+						@form(action = routes.Application.newHomework) {
 							<div class="center Header"><h2>Due Date:</h2></div>
-							<div class="center"><input type="date" name="dueDate" placeholder="Due Date"></div>
+							<div class="center"><input type="date" name="dueDate" placeholder="Due Date" min="2015-01-01" id="homeworkDueDate"></div>
 							<div class="center Header"><h2>Class:</h2></div>
 							<div class="center">
 								<select name="schoolClassId">
@@ -155,58 +413,126 @@
 								}
 								</select>
 							</div>
+							<div class="Header"> <h2> Description: </h2> </div>
+							<div class="center"> <input type="text" name="description" placeholder="Description"> </div>
 							<div class="center">
 								<button type="submit" value="Add Homework">Add Homework</button>
 							</div>
-							}
-						</div>
-					</div>
-					<div class="homeworkArea">
-						<div class="homeworkItemContainer">
-							<div class="homeworkItem">
-								<span class="alertContent">H</span>
-								<div class="homeworkContentInside">
-									<h2 class="homeworkItemHeader">TEXT</h2>
-									<p class="homeworkItemDesc">Placeholder Description For The Homework</p>
-								</div>
-							</div>
-						</div>
-						<div class="homeworkItemContainer">
-							<div class="homeworkItem">
-								<span class="alertContent">H</span>
-								<div class="homeworkContentInside">
-									<h2 class="homeworkItemHeader">TEXT</h2>
-									<p class="homeworkItemDesc">Placeholder Description For The Homework</p>
-								</div>
-							</div>
-						</div>
-						<div class="homeworkItemContainer">
-							<div class="homeworkItem">
-								<span class="alertContent">H</span>
-								<div class="homeworkContentInside">
-									<h2 class="homeworkItemHeader">TEXT</h2>
-									<p class="homeworkItemDesc">Placeholder Description For The Homework</p>
-								</div>
-							</div>
-						</div>
-						<div class="homeworkItemContainer">
-							<div class="homeworkItem">
-								<span class="alertContent">H</span>
-								<div class="homeworkContentInside">
-									<h2 class="homeworkItemHeader">TEXT</h2>
-									<p class="homeworkItemDesc">Placeholder Description For The Homework</p>
-								</div>
+						}
+						<div class ="homeworkArea">
+							<div class="homeworkItemContainer"> 
+								@for(homework <- homeworks) {
+									<div class = "homeworkItem">
+										<span class="alertContent"> H </span>
+										<div class="homeworkContentInside">
+											<h2 class="homeworkItemHeader"> @homework.schoolClass.subject </h2>
+											<h3 class="homeworkItemDueDate"> @homework.dueDate </h3>
+											<p class="homeworkItemDesc"> @homework.description </p>
+										</div>
+									</div>
+								}
 							</div>
 						</div>
 					</div>
 				</div>
 				<div style="display:none" class="tests" id="openTest">
-					<div class="testsInner"><h2>TESTS</h2></div>
+					<div class="testsInner"><h2>TESTS</h2>
+						<div class="Header"><h2>Add Test</h2></div>
+							@form(action = routes.Application.newTest) {
+								<div class="center Header"><h2>Date Of:</h2></div>
+								<div class="center"><input type="date" name="dateOf" placeholder="Due Of" min="2015-01-01" id="testDateOf"></div>
+								<div class="center Header"><h2>Class:</h2></div>
+								<div class="center">
+									<select name="schoolClassId">
+									@for(schoolClass <- schoolClasses) {
+										<option value=@Long.toString(schoolClass.id)> @schoolClass.subject </option>
+									}
+									</select>
+								</div>
+								<div class="Header"> <h2> Description: </h2> </div>
+								<div class="center"> <input type="text" name="description" placeholder="Description"> </div>
+								<div class="center">
+									<button type="submit" value="Add Test">Add Test</button>
+								</div>
+							}
+						
+						<div class ="testArea">
+							<div class="testItemContainer"> 
+								@for(test <- tests) {
+									<div class = "testItem">
+										<span class="alertContent"> T </span>
+										<div class="testContentInside">
+											<h2 class="testItemHeader"> @test.schoolClass.subject </h2>
+											<h3 class="testItemDateOf"> @test.dateOf </h3>
+											<p class="testItemDesc"> @test.description </p>
+										</div>
+									</div>
+								}
+							</div>
+						</div>
+					</div>
 				</div>
-				<div style="display:none" class="project" id="openProject">
-					<div class="projectInner"><h2>PROJECTS</h2></div>
+					
+				<div style="display:none" class="projects" id="openProject">
+					<div class="projectInner">
+						<h2>PROJECTS</h2>
+						
+						<div class="Header"><h2>Add Project</h2></div>
+						@form(action = routes.Application.newProject) {
+							<div class="center Header"><h2>Due Date:</h2></div>
+							<div class="center"><input type="date" name="dueDate" placeholder="Due Date" min="2015-01-01" id="projectDueDate"></div>
+							<div class="center Header"><h2>Class:</h2></div>
+							<div class="center">
+								<select name="schoolClassId">
+								@for(schoolClass <- schoolClasses) {
+									<option value=@Long.toString(schoolClass.id)> @schoolClass.subject </option>
+								}
+								</select>
+							</div>
+							<div class="Header"> <h2> Description: </h2> </div>
+							<div class="center"> <input type="text" name="description" placeholder="Description"> </div>
+							<div class="center">
+								<button type="submit" value="Add Project">Add Project</button>
+							</div>
+						}
+
+						<div class ="projectArea">
+							<div class="projectItemContainer"> 
+								@for(project <- projects) {
+									<div class = "projectItem">
+										<span class="alertContent"> P </span>
+										<div class="projectContentInside">
+											<h2 class="projectItemHeader"> @project.schoolClass.subject </h2>
+											<h3 class="projectItemDueDate"> @project.dueDate </h3>
+											<p class="projectItemDesc"> @project.description </p>
+										</div>
+									</div>
+								}
+							</div>
+						</div>
+					</div>
 				</div>
+					<!-- END NAVIGATION ITEMS -->
+				</div>
+				<script>
+					var today = new Date();
+					var dd = today.getDate();
+					var mm = today.getMonth()+1; //January is 0!
+					var yyyy = today.getFullYear();
+
+					if(dd<10) {
+						dd='0'+dd
+					} 
+
+					if(mm<10) {
+						mm='0'+mm
+					} 
+	
+					today = yyyy+'-'+mm+'-'+dd;
+					document.getElementById('homeworkDueDate').min=(today);
+					document.getElementById('testDateOf').min=(today);
+					document.getElementById('projectDueDate').min=(today);
+				</script>
 			</div>
-		</div>
 	</body>
 </html>

@@ -11,7 +11,6 @@ public class Note extends Model{
 	public Long id;
 	public String title;
 	public String notes;
-	//TODO this is an optional thing, is there a special annotation for that?
 	@ManyToOne
 	public Student student;
 	//TODO this is an optional thing, is there a special annotation for that?

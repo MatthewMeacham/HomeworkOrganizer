@@ -153,7 +153,7 @@ label.light {
 	position: relative;
 	margin-top: -10;
 	width: 450px;
-	height: 100%;
+	height: 95%;
 	background-color: #ecf0f1;
 	color: white;
 	padding-bottom: 20px;
@@ -319,8 +319,10 @@ label.light {
 	position: absolute;
 	margin-left: 450px;
 	padding-left: 20px;
-	width: 1000px;
+	width: 895px;
 	height: 100%;
+	overflow-Y: scroll;
+	overflow-X: hidden;
 }
 
 .footerList ul {
@@ -387,18 +389,362 @@ label.light {
 .homeworkItemHeader {
 	color: #ecf0f1;
 	margin-left: 60px;
-	font-size: 12px;
-	margin-top: 20px;
+	font-size: 15px;
+	margin-top: -25px;
+}
+
+.homeworkItemDueDate {
+	color: #ecf0f1;
+	margin-left: 60px;
+	font-size: 13px;
+	margin-top: -33px;
 }
 
 .homeworkItemDesc {
 	color: #ecf0f1;
 	margin-left: 60px;
 	font-size: 10px;
-	margin-top: -25px;
+	margin-top: -20px;
+	line-height: 15px;
+	padding-right: 2px;
 }
 
 .classNamesListItem {
 	text-align: center;
 	color: #6c7a89;
+}
+
+/* Test Box Stuff*/
+.testArea {
+	margin-left: auto;
+	margin-right: auto;
+	padding: 10px;
+	border: 2px solid #6c7a89;
+	max-height: 210px;
+	width: 400px;
+	overflow-Y: auto;
+}
+
+.testArea::-webkit-scrollbar-track {
+	background-color: #FFF;
+}
+
+.testArea::-webkit-scrollbar {
+	width: 7px;
+}
+
+.testArea::-webkit-scrollbar-thumb {
+	background-color: #6c7a89;
+}
+
+.testItemContainer {
+
+}
+
+.testItem {
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 20px;
+	border-radius: 20px;
+	padding-top: 5px;
+	width: 300px;
+	height: 90px;
+	line-height: 35px;
+	margin-bottom: 20px;
+	background-color: #6c7a89;
+}
+
+.testContentInside {
+	margin-top: -70px;
+}
+
+.testItemHeader {
+	color: #ecf0f1;
+	margin-left: 60px;
+	font-size: 15px;
+	margin-top: -25px;
+}
+
+.testItemDateOf {
+	color: #ecf0f1;
+	margin-left: 60px;
+	font-size: 13px;
+	margin-top: -33px;
+}
+
+.testItemDesc {
+	color: #ecf0f1;
+	margin-left: 60px;
+	font-size: 10px;
+	margin-top: -20px;
+	line-height: 15px;
+	padding-right: 2px;
+}
+/* End Test Box Stuff */
+
+/* Project Box Stuff */
+.projectArea {
+	margin-left: auto;
+	margin-right: auto;
+	padding: 10px;
+	border: 2px solid #6c7a89;
+	max-height: 210px;
+	width: 400px;
+	overflow-Y: auto;
+}
+
+.projectArea::-webkit-scrollbar-track {
+	background-color: #FFF;
+}
+
+.projectArea::-webkit-scrollbar {
+	width: 7px;
+}
+
+.projectArea::-webkit-scrollbar-thumb {
+	background-color: #6c7a89;
+}
+
+.projectItemContainer {
+
+}
+
+.projectItem {
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 20px;
+	border-radius: 20px;
+	padding-top: 5px;
+	width: 300px;
+	height: 90px;
+	line-height: 35px;
+	margin-bottom: 20px;
+	background-color: #6c7a89;
+}
+
+.projectContentInside {
+	margin-top: -70px;
+}
+
+.projectItemHeader {
+	color: #ecf0f1;
+	margin-left: 60px;
+	font-size: 15px;
+	margin-top: -25px;
+}
+
+.projectItemDueDate {
+	color: #ecf0f1;
+	margin-left: 60px;
+	font-size: 13px;
+	margin-top: -33px;
+}
+
+.projectItemDesc {
+	color: #ecf0f1;
+	margin-left: 60px;
+	font-size: 10px;
+	margin-top: -20px;
+	line-height: 15px;
+	padding-right: 2px;
+}
+/* End Project Box Stuff*/
+
+/* Overview Box Stuff */
+
+.overviewArea {
+	margin-left: auto;
+	margin-right: auto;
+	padding: 10px;
+	border: 2px solid #6c7a89;
+	max-height: 210px;
+	width: 400px;
+	overflow-Y: auto;
+}
+
+.overviewArea::-webkit-scrollbar-track {
+	background-color: #FFF;
+}
+
+.overviewArea::-webkit-scrollbar {
+	width: 7px;
+}
+
+.overviewArea::-webkit-scrollbar-thumb {
+	background-color: #6c7a89;
+}
+
+.overviewItemContainer {
+
+}
+
+.itemInOverview {
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 20px;
+	border-radius: 20px;
+	padding-top: 5px;
+	width: 300px;
+	height: 90px;
+	line-height: 35px;
+	margin-bottom: 20px;
+	background-color: #6c7a89;
+}
+
+.overviewContentInside {
+	margin-top: -70px;
+}
+
+.overviewItemHeader {
+	color: #ecf0f1;
+	margin-left: 60px;
+	font-size: 15px;
+	margin-top: -25px;
+}
+
+.overviewItemDate {
+	color: #ecf0f1;
+	margin-left: 60px;
+	font-size: 13px;
+	margin-top: -33px;
+}
+
+.overviewItemDesc {
+	color: #ecf0f1;
+	margin-left: 60px;
+	font-size: 10px;
+	margin-top: -20px;
+	line-height: 15px;
+	padding-right: 2px;
+}
+
+/* End Overview Box Stuff */
+
+.noItemCreated {
+	color: #6c7a89;
+	font-size: 15px;
+}
+
+.colorRed {
+	color: red;
+}
+
+.colorYellow {
+	color: yellow;
+}
+
+.colorGray {
+	color: #ecf0f1;
+}
+
+/* Uncolored Box Stuff */
+.uncoloredContentInside {
+	margin-top: -70px;
+}
+
+.uncoloredItemHeader {
+	margin-left: 60px;
+	font-size: 15px;
+	margin-top: -25px;
+}
+
+.uncoloredItemDate {
+	margin-left: 60px;
+	font-size: 13px;
+	margin-top: -33px;
+}
+
+.uncoloredItemDesc {
+	margin-left: 60px;
+	font-size: 10px;
+	margin-top: -20px;
+	line-height: 15px;
+	padding-right: 2px;
+}
+
+/* End Uncolored Box Stuff */
+
+/* Begin Passed Box Stuff */
+
+.passedArea {
+	margin-left: auto;
+	margin-right: auto;
+	padding: 10px;
+	border: 2px solid #6c7a89;
+	max-height: 210px;
+	width: 400px;
+	overflow-Y: auto;
+}
+
+.passedArea::-webkit-scrollbar-track {
+	background-color: #FFF;
+}
+
+.passedArea::-webkit-scrollbar {
+	width: 7px;
+}
+
+.passedArea::-webkit-scrollbar-thumb {
+	background-color: #6c7a89;
+}
+
+.passedItemContainer {
+
+}
+
+.passedItem {
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 20px;
+	border-radius: 20px;
+	padding-top: 5px;
+	width: 300px;
+	height: 90px;
+	line-height: 35px;
+	margin-bottom: 20px;
+	background-color: #6c7a89;
+}
+
+.passedContentInside {
+	margin-top: -70px;
+}
+
+.passedItemHeader {
+	color: #ecf0f1;
+	margin-left: 60px;
+	font-size: 15px;
+	margin-top: -25px;
+}
+
+.passedItemDate {
+	color: #ecf0f1;
+	margin-left: 60px;
+	font-size: 13px;
+	margin-top: -33px;
+}
+
+.passedItemDesc {
+	color: #ecf0f1;
+	margin-left: 60px;
+	font-size: 10px;
+	margin-top: -20px;
+	line-height: 15px;
+	padding-right: 2px;
+}
+/* End Passed Box Stuff */
+
+.fa {
+	color: black;
+	font-size: 50px;
+	float: right;
+	padding-right: 5px;
+	padding-top: 25px;
+}
+
+.fa-trash {
+	padding-right: 10px;
+}
+
+.homeworkEditContainer {
+
 }

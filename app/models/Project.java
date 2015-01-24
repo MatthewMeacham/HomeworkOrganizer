@@ -8,49 +8,49 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
-public class Test extends Model {
-
-	@Id
+public class Project extends Model {
+	
+	@Id 
 	public Long id;
-	public String dateOf;
-	public String description;
 	@ManyToOne
 	public SchoolClass schoolClass;
 	
+	public String description;
+	public String dueDate;
 	public int month;
 	public int day;
 	public int year;
 	//this is set to year * 366 - (12 - month) * 31 - (31 - day)
 	public int total;
 	
-	public static Finder<Long, Test> find = new Finder<Long, Test>(Long.class, Test.class);
+	public static Finder<Long, Project> find = new Finder<Long, Project>(Long.class, Project.class);
 	
-	public Test(String dateOf, String description, SchoolClass schoolClass, int month, int day, int year) {
-		this.dateOf = dateOf;
-		this.description = description;
+	public Project(String dueDate, SchoolClass schoolClass, String description, int month, int day, int year) {
+		this.dueDate = dueDate;
 		this.schoolClass = schoolClass;
+		this.description = description;
 		this.month = month;
 		this.day = day;
 		this.year = year;
 		total = (year * 366) - ((12 - month) * 31) - (31 - day);
 	}
 	
-	public static Test create(String dateOf, String schoolClassId, String description) {
+	public static Project create(String dueDate, String schoolClassId, String description) {
 		String month = "";
 		String day = "";
 		String year = "";
 		
-		for(int i = 0; i < dateOf.length(); i++) {
-			if(dateOf.charAt(i) == ('-')) continue;
-			if(i < 4) year = year + (String.valueOf(dateOf.charAt(i)));
-			if(i > 4 && i < 7) month = month + (String.valueOf(dateOf.charAt(i)));
-			if(i > 7 && i < dateOf.length()) day = day  + (String.valueOf(dateOf.charAt(i)));
+		for(int i = 0; i < dueDate.length(); i++) {
+			if(dueDate.charAt(i) == ('-')) continue;
+			if(i < 4) year = year + (String.valueOf(dueDate.charAt(i)));
+			if(i > 4 && i < 7) month = month + (String.valueOf(dueDate.charAt(i)));
+			if(i > 7 && i < dueDate.length()) day = day  + (String.valueOf(dueDate.charAt(i)));
 		}
 				
 		int monthInt = Integer.parseInt(month);
 		int dayInt = Integer.parseInt(day);
 		int yearInt = Integer.parseInt(year);
-
+		
 		switch(Integer.parseInt(month)) {
 			case 1:
 				month = "January";
@@ -98,22 +98,21 @@ public class Test extends Model {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-		Test test = new Test(date, description, SchoolClass.find.ref(schoolId), monthInt, dayInt, yearInt);
-		test.save();
-		return test;
+		Project project = new Project(date, SchoolClass.find.ref(schoolId), description, monthInt, dayInt, yearInt);
+		project.save();
+		return project;
 	}
 	
 	public static void edit(Long id, SchoolClass schoolClass, String date, String description) {
-		Test test = find.ref(id);
-		test.schoolClass = schoolClass;
+		Project project = find.ref(id);
+		project.schoolClass = schoolClass;
 		String[] array = parseDate(date);
-		test.dateOf = array[0];
-		test.year = Integer.parseInt(array[1]);
-		test.month = Integer.parseInt(array[2]);
-		test.day = Integer.parseInt(array[3]);
-		test.description = description;
-		test.save();
+		project.dueDate = array[0];
+		project.year = Integer.parseInt(array[1]);
+		project.month = Integer.parseInt(array[2]);
+		project.day = Integer.parseInt(array[3]);
+		project.description = description;
+		project.save();
 	}
 	
 	public static String[] parseDate(String dueDate) {
@@ -183,5 +182,5 @@ public class Test extends Model {
 	public static void delete(Long id) {
 		find.ref(id).delete();
 	}
-	
+
 }
