@@ -735,17 +735,15 @@ label.light {
 
 .fa {
 	color: black;
-	font-size: 50px;
 	float: right;
 	padding-right: 5px;
-	padding-top: 25px;
 }
 
 .fa-trash {
 	padding-right: 10px;
 }
 
-.icon {
+.myIcon {
 	color: black;'
 	float: right;
 	padding-bottom: 25px;

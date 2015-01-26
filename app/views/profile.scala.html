@@ -173,14 +173,14 @@
 															
 															@form(action = routes.Application.deleteOverviewObject(String.valueOf(overviewItem.id), overviewItem.spanner), 'id -> ("overviewObjectDeleteForm" + String.valueOf(overviewItem.id))) {
 																<a href="#" onclick="submitOverviewObjectDeleteForm(@overviewItem.id); return false;">
-																	<i class="fa fa-trash icon"></i>
+																	<i class="fa fa-trash myIcon"></i>
 																</a>
 															}
 
 															
 															@form(action = routes.Application.editOverviewObject(String.valueOf(overviewItem.id), overviewItem.spanner), 'id -> ("overviewObjectEditForm" + String.valueOf(overviewItem.id))) {
 																<a href="#" onclick="submitOverviewObjectEditForm(@overviewItem.id); return false;">
-																	<i class="fa fa-pencil icon"></i>
+																	<i class="fa fa-pencil myIcon"></i>
 																</a>
 															}
 															
@@ -227,14 +227,14 @@
 															<!-- DELETE -->
 															@form(action = routes.Application.deleteHomework(String.valueOf(homework.id)), 'id -> ("homeworkDeleteForm" + String.valueOf(homework.id))) {
 																<a href="#" onclick="submitHomeworkDeleteForm(@homework.id); return false;">
-																	<i class="fa fa-trash icon"></i>
+																	<i class="fa fa-trash myIcon"></i>
 																</a>
 															}
 
 															<!-- EDIT -->
 															@form(action = routes.Application.editPageHomework(String.valueOf(homework.id)), 'id -> ("homeworkEditForm" + String.valueOf(homework.id))) {
 																<a href="#" onclick="submitHomeworkEditForm(@homework.id); return false;">
-																	<i class="fa fa-pencil icon"></i>
+																	<i class="fa fa-pencil myIcon"></i>
 																</a>
 															}
 															
@@ -275,13 +275,13 @@
 															<p class="testItemDesc"> @test.description </p>
 															@form(action = routes.Application.deleteTest(String.valueOf(test.id)), 'id -> ("testDeleteForm" + String.valueOf(test.id))) {
 																<a href="#" onclick="submitTestDeleteForm(@test.id); return false;">
-																	<i class="fa fa-trash icon"></i>
+																	<i class="fa fa-trash myIcon"></i>
 																</a>
 															}
 															
 															@form(action = routes.Application.editPageTest(String.valueOf(test.id)), 'id -> ("testEditForm" + String.valueOf(test.id))) {
 																<a href="#" onclick="submitTestEditForm(@test,id); return false;">
-																	<i class="fa fa-pencil icon"></i>
+																	<i class="fa fa-pencil myIcon"></i>
 																</a>
 															}
 															
@@ -319,13 +319,13 @@
 															<p class="projectItemDesc"> @project.description </p>
 															@form(action = routes.Application.deleteProject(String.valueOf(project.id)), 'id -> ("projectDeleteForm" + String.valueOf(project.id))) {
 																<a href="#" onclick="submitProjectDeleteForm(@project.id); return false;">
-																	<i class="fa fa-trash icon"></i>
+																	<i class="fa fa-trash myIcon"></i>
 																</a>
 															}
 															
 															@form(action = routes.Application.editPageProject(String.valueOf(project.id)), 'id -> ("projectEditForm" + String.valueOf(project.id))) {
 																<a href="#" onclick="submitProjectEditForm(@project.id); return false;">
-																	<i class="fa fa-pencil fa icon"></i>
+																	<i class="fa fa-pencil fa myIcon"></i>
 																</a>
 															}
 															
@@ -376,7 +376,7 @@
 															<p class="passedItemDesc"> @passedItem.description </p>
 															@form(action = routes.Application.deletePassedObject(String.valueOf(passedItem.id), passedItem.spanner), 'id -> ("passedObjectDeleteForm" + String.valueOf(passedItem.id))) {
 																<a href="#" onclick="submitPassedObjectDeleteForm(@passedItem.id); return false;">
-																	<i class="fa fa-trash icon"></i>
+																	<i class="fa fa-trash myIcon"></i>
 																</a>
 															}
 															
