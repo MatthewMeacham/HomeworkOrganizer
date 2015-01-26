@@ -6,6 +6,7 @@ libraryDependencies ++= Seq(
   javaJdbc,
   javaEbean,
   cache
+  javaWs
 )     
 
 // PostgreSQl Plugin
