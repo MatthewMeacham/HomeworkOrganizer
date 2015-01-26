@@ -735,9 +735,9 @@ label.light {
 
 .fa {
 	color: black;
-	font-size: 50px;
 	float: right;
 	padding-right: 5px;
+	padding-bottom: 25px;
 }
 
 .fa-trash {
