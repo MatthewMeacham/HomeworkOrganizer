@@ -11,7 +11,4 @@ libraryDependencies ++= Seq(
 // PostgreSQl Plugin
 libraryDependencies += "postgresql" % "postgresql" % "9.1-901-1.jdbc4"
 
-// Assets Pipeline
-pipelineStages := Seq(digest, gzip)
-
 play.Project.playJavaSettings
