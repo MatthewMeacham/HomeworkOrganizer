@@ -5,7 +5,7 @@ version := "1.2.1"
 libraryDependencies ++= Seq(
   javaJdbc,
   javaEbean,
-  cache
+  cache,
   javaWs
 )     
 
