@@ -734,15 +734,18 @@ label.light {
 /* End Passed Box Stuff */
 
 .fa {
-	
+	color: black;
+	float: right;
+	padding-right: 5px;
 }
 
 .fa-trash {
 	padding-right: 10px;
+	padding-bottom: 25px;
 }
 
 .fa-pencil {
-
+	padding-bottom: 25px;
 }
 
 .icon {
