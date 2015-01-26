@@ -740,7 +740,14 @@ label.light {
 }
 
 .fa-trash {
+	float: right;
 	padding-right: 10px;
+	color:black;
+}
+
+.fa-pencil {
+	float: right;
+	color: black;
 }
 
 .myIcon {
