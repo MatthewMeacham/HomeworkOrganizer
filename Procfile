@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/homeworkorganizer -Dhttp.port=${PORT} -DapplyDownEvolutions.default=true -DapplyEvolutions.default=true
+web: target/universal/stage/bin/homeworkorganizer -Dhttp.port=${PORT} -DapplyDownEvolutions.default=true -DapplyEvolutions.default=true -Ddp=org.postgresql.Driver -Ddp.default.url="postgres://biskzpvjgbveab:hwpyd0GIkChYHL3y0j5PT8n1xv@ec2-23-23-210-37.compute-1.amazonaws.com:5432/d8teksr0j62cre"
