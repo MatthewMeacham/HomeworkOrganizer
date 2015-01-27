@@ -167,10 +167,6 @@
 															}
 														</span>
 														<div class="overviewContentInside">
-															<h2 class="overviewItemHeader"> @overviewItem.schoolClass.subject </h2>
-															<h3 class="overviewItemDate"> @overviewItem.date </h3>
-															<p class="overviewItemDesc"> @overviewItem.description </p>
-															
 															@form(action = routes.Application.deleteOverviewObject(String.valueOf(overviewItem.id), overviewItem.spanner), 'id -> ("overviewObjectDeleteForm" + String.valueOf(overviewItem.id))) {
 																<a href="#" onclick="submitOverviewObjectDeleteForm(@overviewItem.id); return false;">
 																	<i class="fa fa-trash myIcon"></i>
@@ -183,8 +179,9 @@
 																	<i class="fa fa-pencil myIcon"></i>
 																</a>
 															}
-															
-														
+															<h2 class="overviewItemHeader"> @overviewItem.schoolClass.subject </h2>
+															<h3 class="overviewItemDate"> @overviewItem.date </h3>
+															<p class="overviewItemDesc"> @overviewItem.description </p>														
 														</div>
 													</div>
 												}
@@ -221,9 +218,6 @@
 													<div class = "homeworkItem">
 														<span class="alertContent"> H </span>
 														<div class="homeworkContentInside">
-															<h2 class="homeworkItemHeader"> @homework.schoolClass.subject </h2>
-															<h3 class="homeworkItemDueDate"> @homework.dueDate </h3>
-															<p class="homeworkItemDesc"> @homework.description </p>
 															<!-- DELETE -->
 															@form(action = routes.Application.deleteHomework(String.valueOf(homework.id)), 'id -> ("homeworkDeleteForm" + String.valueOf(homework.id))) {
 																<a href="#" onclick="submitHomeworkDeleteForm(@homework.id); return false;">
@@ -237,8 +231,9 @@
 																	<i class="fa fa-pencil myIcon"></i>
 																</a>
 															}
-															
-															
+															<h2 class="homeworkItemHeader"> @homework.schoolClass.subject </h2>
+															<h3 class="homeworkItemDueDate"> @homework.dueDate </h3>
+															<p class="homeworkItemDesc"> @homework.description </p>	
 														</div>
 													</div>	
 												}
@@ -270,9 +265,6 @@
 													<div class = "testItem">
 														<span class="alertContent"> T </span>
 														<div class="testContentInside">
-															<h2 class="testItemHeader"> @test.schoolClass.subject </h2>
-															<h3 class="testItemDateOf"> @test.dateOf </h3>
-															<p class="testItemDesc"> @test.description </p>
 															@form(action = routes.Application.deleteTest(String.valueOf(test.id)), 'id -> ("testDeleteForm" + String.valueOf(test.id))) {
 																<a href="#" onclick="submitTestDeleteForm(@test.id); return false;">
 																	<i class="fa fa-trash myIcon"></i>
@@ -284,7 +276,9 @@
 																	<i class="fa fa-pencil myIcon"></i>
 																</a>
 															}
-															
+															<h2 class="testItemHeader"> @test.schoolClass.subject </h2>
+															<h3 class="testItemDateOf"> @test.dateOf </h3>
+															<p class="testItemDesc"> @test.description </p>
 														</div>
 													</div>
 												}
@@ -314,9 +308,6 @@
 													<div class="projectItem">
 														<span class="alertContent"> P </span>
 														<div class="projectContentInside">
-															<h2 class="projectItemHeader"> @project.schoolClass.subject </h2>
-															<h3 class="projectItemDueDate"> @project.dueDate </h3>
-															<p class="projectItemDesc"> @project.description </p>
 															@form(action = routes.Application.deleteProject(String.valueOf(project.id)), 'id -> ("projectDeleteForm" + String.valueOf(project.id))) {
 																<a href="#" onclick="submitProjectDeleteForm(@project.id); return false;">
 																	<i class="fa fa-trash myIcon"></i>
@@ -328,7 +319,9 @@
 																	<i class="fa fa-pencil fa myIcon"></i>
 																</a>
 															}
-															
+															<h2 class="projectItemHeader"> @project.schoolClass.subject </h2>
+															<h3 class="projectItemDueDate"> @project.dueDate </h3>
+															<p class="projectItemDesc"> @project.description </p>															
 														</div>
 													</div>
 												}
@@ -371,15 +364,14 @@
 															}	
 														</span>
 														<div class="passedContentInside">
-															<h2 class="passedItemHeader"> @passedItem.schoolClass.subject </h2>
-															<h3 class="passedItemDate"> @passedItem.date </h3>
-															<p class="passedItemDesc"> @passedItem.description </p>
 															@form(action = routes.Application.deletePassedObject(String.valueOf(passedItem.id), passedItem.spanner), 'id -> ("passedObjectDeleteForm" + String.valueOf(passedItem.id))) {
 																<a href="#" onclick="submitPassedObjectDeleteForm(@passedItem.id); return false;">
 																	<i class="fa fa-trash myIcon"></i>
 																</a>
 															}
-															
+															<h2 class="passedItemHeader"> @passedItem.schoolClass.subject </h2>
+															<h3 class="passedItemDate"> @passedItem.date </h3>
+															<p class="passedItemDesc"> @passedItem.description </p>															
 														</div>
 													</div>
 												}
@@ -425,6 +417,19 @@
 									<div class = "homeworkItem">
 										<span class="alertContent"> H </span>
 										<div class="homeworkContentInside">
+											<!-- DELETE -->
+											@form(action = routes.Application.deleteHomework(String.valueOf(homework.id)), 'id -> ("homeworkDeleteForm" + String.valueOf(homework.id))) {
+												<a href="#" onclick="submitHomeworkDeleteForm(@homework.id); return false;">
+													<i class="fa fa-trash myIcon"></i>
+												</a>
+											}
+
+											<!-- EDIT -->
+											@form(action = routes.Application.editPageHomework(String.valueOf(homework.id)), 'id -> ("homeworkEditForm" + String.valueOf(homework.id))) {
+												<a href="#" onclick="submitHomeworkEditForm(@homework.id); return false;">
+													<i class="fa fa-pencil myIcon"></i>
+												</a>
+											}
 											<h2 class="homeworkItemHeader"> @homework.schoolClass.subject </h2>
 											<h3 class="homeworkItemDueDate"> @homework.dueDate </h3>
 											<p class="homeworkItemDesc"> @homework.description </p>
@@ -462,6 +467,17 @@
 									<div class = "testItem">
 										<span class="alertContent"> T </span>
 										<div class="testContentInside">
+											@form(action = routes.Application.deleteTest(String.valueOf(test.id)), 'id -> ("testDeleteForm" + String.valueOf(test.id))) {
+												<a href="#" onclick="submitTestDeleteForm(@test.id); return false;">
+													<i class="fa fa-trash myIcon"></i>
+												</a>
+											}
+												
+											@form(action = routes.Application.editPageTest(String.valueOf(test.id)), 'id -> ("testEditForm" + String.valueOf(test.id))) {
+												<a href="#" onclick="submitTestEditForm(@test,id); return false;">
+													<i class="fa fa-pencil myIcon"></i>
+												</a>
+											}
 											<h2 class="testItemHeader"> @test.schoolClass.subject </h2>
 											<h3 class="testItemDateOf"> @test.dateOf </h3>
 											<p class="testItemDesc"> @test.description </p>
@@ -502,6 +518,17 @@
 									<div class = "projectItem">
 										<span class="alertContent"> P </span>
 										<div class="projectContentInside">
+											@form(action = routes.Application.deleteProject(String.valueOf(project.id)), 'id -> ("projectDeleteForm" + String.valueOf(project.id))) {
+												<a href="#" onclick="submitProjectDeleteForm(@project.id); return false;">
+													<i class="fa fa-trash myIcon"></i>
+												</a>
+											}
+												
+											@form(action = routes.Application.editPageProject(String.valueOf(project.id)), 'id -> ("projectEditForm" + String.valueOf(project.id))) {
+												<a href="#" onclick="submitProjectEditForm(@project.id); return false;">
+													<i class="fa fa-pencil fa myIcon"></i>
+												</a>
+											}
 											<h2 class="projectItemHeader"> @project.schoolClass.subject </h2>
 											<h3 class="projectItemDueDate"> @project.dueDate </h3>
 											<p class="projectItemDesc"> @project.description </p>

@@ -741,7 +741,7 @@ label.light {
 
 .fa-trash {
 	float: right;
-	padding-right: 10px;
+	padding-right: 15px;
 	color:black;
 }
 
@@ -753,10 +753,6 @@ label.light {
 .myIcon {
 	color: black;'
 	float: right;
-	padding-bottom: 25px;
+/*	padding-bottom: 25px; */
 	padding-right: 5px;
-}
-
-.homeworkEditContainer {
-
 }
