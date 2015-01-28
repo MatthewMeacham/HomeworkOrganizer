@@ -50,7 +50,7 @@ public class Test extends Model {
 		int monthInt = Integer.parseInt(month);
 		int dayInt = Integer.parseInt(day);
 		int yearInt = Integer.parseInt(year);
-
+		
 		switch(Integer.parseInt(month)) {
 			case 1:
 				month = "January";
@@ -108,11 +108,17 @@ public class Test extends Model {
 		Test test = find.ref(id);
 		test.schoolClass = schoolClass;
 		String[] array = parseDate(date);
-		test.dateOf = array[0];
-		test.year = Integer.parseInt(array[1]);
-		test.month = Integer.parseInt(array[2]);
-		test.day = Integer.parseInt(array[3]);
+		String dateOf = array[0];
+		test.dateOf = dateOf;
+		int year = Integer.parseInt(array[1]);
+		test.year = year;
+		int month = Integer.parseInt(array[2]);
+		test.month = month;
+		int day = Integer.parseInt(array[3]);
+		test.day = day;
 		test.description = description;
+		Test tempTest = new Test(dateOf, description, schoolClass, month, day, year);
+		test.total = tempTest.total;
 		test.save();
 	}
 	

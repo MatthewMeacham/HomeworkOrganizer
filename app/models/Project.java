@@ -50,7 +50,7 @@ public class Project extends Model {
 		int monthInt = Integer.parseInt(month);
 		int dayInt = Integer.parseInt(day);
 		int yearInt = Integer.parseInt(year);
-		
+				
 		switch(Integer.parseInt(month)) {
 			case 1:
 				month = "January";
@@ -107,11 +107,17 @@ public class Project extends Model {
 		Project project = find.ref(id);
 		project.schoolClass = schoolClass;
 		String[] array = parseDate(date);
-		project.dueDate = array[0];
-		project.year = Integer.parseInt(array[1]);
-		project.month = Integer.parseInt(array[2]);
-		project.day = Integer.parseInt(array[3]);
+		String dueDate = array[0];
+		project.dueDate = dueDate;
+		int year = Integer.parseInt(array[1]);
+		project.year = year;
+		int month = Integer.parseInt(array[2]);
+		project.month = month;
+		int day = Integer.parseInt(array[3]);
+		project.day = day;
 		project.description = description;
+		Project tempProject = new Project(dueDate, schoolClass, description, month, day, year);
+		project.total = tempProject.total;
 		project.save();
 	}
 	

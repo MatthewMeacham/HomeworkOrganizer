@@ -109,11 +109,19 @@ public class Homework extends Model {
 		Homework homework = find.ref(id);
 		homework.schoolClass = schoolClass;
 		String[] array = parseDate(date);
-		homework.dueDate = array[0];
-		homework.year = Integer.parseInt(array[1]);
-		homework.month = Integer.parseInt(array[2]);
-		homework.day = Integer.parseInt(array[3]);
+		String dueDate = array[0];
+		homework.dueDate = dueDate;
+		int year = Integer.parseInt(array[1]);
+		homework.year = year;
+		int month = Integer.parseInt(array[2]);
+		homework.month = month;
+		int day = Integer.parseInt(array[3]);
+		homework.day = day;
 		homework.description = description;
+		Homework tempHomework = new Homework(dueDate, schoolClass, description, month, day, year);
+		System.out.println("BEFORE TOTAL: " + homework.total);
+		homework.total = tempHomework.total;
+		System.out.println("NEW TOTAL: " + tempHomework.total);
 		homework.save();
 	}
 	
@@ -132,7 +140,7 @@ public class Homework extends Model {
 		int monthInt = Integer.parseInt(month);
 		int dayInt = Integer.parseInt(day);
 		int yearInt = Integer.parseInt(year);
-		
+				
 		switch(Integer.parseInt(month)) {
 			case 1:
 				month = "January";

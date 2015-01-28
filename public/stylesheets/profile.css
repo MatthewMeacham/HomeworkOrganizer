@@ -152,7 +152,8 @@ label.light {
 	float: left;
 	position: relative;
 	margin-top: -10;
-	width: 450px;
+/*	width: 450px; */
+	width: 31vw;
 	height: 95%;
 	background-color: #ecf0f1;
 	color: white;
@@ -319,7 +320,8 @@ label.light {
 	position: absolute;
 	margin-left: 450px;
 	padding-left: 20px;
-	width: 895px;
+/*	width: 895px; */
+	width: 69vw;
 	height: 100%;
 	overflow-Y: scroll;
 	overflow-X: hidden;
