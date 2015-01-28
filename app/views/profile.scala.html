@@ -111,7 +111,7 @@
 							}
 							@form(action = routes.Application.newSchoolClass) {
 								<div class="center">
-									<input type="text" name="subject" placeholder="New Class">
+									<input type="text" name="subject" placeholder="New Class" required>
 								</div>
 								<input type="hidden" name="studentEmail" value=@student.email><!--<tr>-->	
 								<div class="center">
@@ -396,10 +396,10 @@
 						<div class="Header"><h2>Add Homework</h2></div>
 						@form(action = routes.Application.newHomework) {
 							<div class="center Header"><h2>Due Date:</h2></div>
-							<div class="center"><input type="date" name="dueDate" placeholder="Due Date" min="2015-01-01" id="homeworkDueDate"></div>
+							<div class="center"><input type="date" name="dueDate" placeholder="Due Date" min="2015-01-01" id="homeworkDueDate" required></div>
 							<div class="center Header"><h2>Class:</h2></div>
 							<div class="center">
-								<select name="schoolClassId">
+								<select name="schoolClassId" required>
 								@for(schoolClass <- schoolClasses) {
 									<option value=@Long.toString(schoolClass.id)> @schoolClass.subject </option>
 								}
@@ -445,7 +445,7 @@
 						<div class="Header"><h2>Add Test</h2></div>
 							@form(action = routes.Application.newTest) {
 								<div class="center Header"><h2>Date Of:</h2></div>
-								<div class="center"><input type="date" name="dateOf" placeholder="Due Of" min="2015-01-01" id="testDateOf"></div>
+								<div class="center"><input type="date" name="dateOf" placeholder="Due Of" min="2015-01-01" id="testDateOf" required></div>
 								<div class="center Header"><h2>Class:</h2></div>
 								<div class="center">
 									<select name="schoolClassId">
@@ -496,7 +496,7 @@
 						<div class="Header"><h2>Add Project</h2></div>
 						@form(action = routes.Application.newProject) {
 							<div class="center Header"><h2>Due Date:</h2></div>
-							<div class="center"><input type="date" name="dueDate" placeholder="Due Date" min="2015-01-01" id="projectDueDate"></div>
+							<div class="center"><input type="date" name="dueDate" placeholder="Due Date" min="2015-01-01" id="projectDueDate" required></div>
 							<div class="center Header"><h2>Class:</h2></div>
 							<div class="center">
 								<select name="schoolClassId">

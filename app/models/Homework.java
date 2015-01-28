@@ -119,9 +119,7 @@ public class Homework extends Model {
 		homework.day = day;
 		homework.description = description;
 		Homework tempHomework = new Homework(dueDate, schoolClass, description, month, day, year);
-		System.out.println("BEFORE TOTAL: " + homework.total);
 		homework.total = tempHomework.total;
-		System.out.println("NEW TOTAL: " + tempHomework.total);
 		homework.save();
 	}
 	

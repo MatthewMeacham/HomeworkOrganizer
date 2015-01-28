@@ -44,11 +44,11 @@ public class Application extends Controller {
     }
 	
 	public static Result signup() {
-		return ok(signup.render(studentForm));
+		return ok(signup.render(studentForm, ""));
 	}
 
 	public static Result login() {
-		return ok(login.render(Form.form(Login.class)));
+		return ok(login.render(Form.form(Login.class), ""));
 	}
 
 	public static Result logout() {
@@ -90,9 +90,15 @@ public class Application extends Controller {
 	public static Result newStudent() {	
 		Form<Student> filledForm = studentForm.bindFromRequest();
 		if(filledForm.hasErrors()) {
-			return badRequest(index.render(Student.find.all(), Form.form(Login.class)));
+			return badRequest(signup.render(studentForm, "Form had errors."));
 		} else {
-			Student.create(filledForm.data().get("name"), filledForm.data().get("email"), filledForm.data().get("password"), filledForm.data().get("grade"));
+			if(!filledForm.data().get("email").contains("@")) {
+				return badRequest(signup.render(studentForm, "Invalid email address was given."));
+			}
+			Student student = Student.create(filledForm.data().get("name"), filledForm.data().get("email"), filledForm.data().get("password"), filledForm.data().get("grade"));
+			if(student == null) {
+				return badRequest(signup.render(studentForm, "That email is already associated with an account."));
+			}
 			return ok(index.render(Student.find.all(), Form.form(Login.class)));
 		}
 	}
@@ -518,22 +524,25 @@ public class Application extends Controller {
 	
 	public static Result profileLogin() {
 		createLists();
-		
 		return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
 	}
 						
 	public static Result authenticate() {
-		Form<Login> loginForm = null;
+		Form<Login> loginForm = Form.form(Login.class);
+		Form<Login> filledForm = null;
 		try {
-			loginForm = Form.form(Login.class).bindFromRequest();
+			filledForm = loginForm.bindFromRequest();
 		} catch(Exception e) {
-			return null;
+			return badRequest(login.render(loginForm, "Invalid email or password"));
 		}
-		if(loginForm.hasErrors()) {
-			return badRequest(index.render(Student.find.all(), Form.form(Login.class)));
+		if(filledForm.hasErrors()) {
+			return badRequest(login.render(loginForm, "Form had errors."));
 		} else {
+			if(Student.authenticate(filledForm.data().get("email"), filledForm.data().get("password")) == null) {
+				return badRequest(login.render(loginForm, "Invalid email or password."));
+			}
 			session.clear();
-			session.put("email", loginForm.get().email);
+			session.put("email", filledForm.get().email);
 			return redirect(routes.Application.profileLogin());
 		}
 	}

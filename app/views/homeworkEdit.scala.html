@@ -21,7 +21,7 @@
 				<div class="Header"><h2>Edit Homework</h2></div>
 				@form(action = routes.Application.editHomework(String.valueOf(homework.id))) {
 					<div class="center Header"><h2>Due Date:</h2></div>
-					<div class="center"><input type="date" name="dueDate" min="2015-01-01" value="2015-01-01" id="homeworkDueDate"></div>
+					<div class="center"><input type="date" name="dueDate" min="2015-01-01" value="2015-01-01" id="homeworkDueDate" required></div>
 					<script>
 						var today = new Date();
 						var dd = today.getDate();
@@ -51,7 +51,7 @@
 					</script>
 					<div class="center Header"><h2>Class:</h2></div>
 					<div class="center">
-						<select name="schoolClassId">
+						<select name="schoolClassId" required>
 						@for(schoolClass <- schoolClasses) {
 							<option value=@Long.toString(schoolClass.id) @if(Long.toString(schoolClass.id) == Long.toString(homework.schoolClass.id)){selected}> @schoolClass.subject </option>
 						}

@@ -31,9 +31,12 @@ public class Student extends Model{
 	//TODO MAKE SURE TO CHANGE THIS IN ORDER TO ONLY MAKE IT SO THERE CAN ONLY BE ONE USER WITH THE INFORMATION, SO TWO PEOPLE CANT HAVE THE SAME 
 	//TODO EMAIL.... 
 	public static Student create(String name, String email, String password, String grade) {
-		Student student = new Student(name, email, password, grade);
-		student.save();
-		return student;
+		if(find.where().eq("email", email).findUnique() == null) {
+			Student student = new Student(name, email, password, grade);
+			student.save();
+			return student;
+		}
+		return null;
 	}
 	
 	public static Student authenticate(String email, String password) {
