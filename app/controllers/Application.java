@@ -39,9 +39,17 @@ public class Application extends Controller {
 		return ok(index.render(Student.find.all(), Form.form(Login.class)));
     }
 	
+	public static Result indexForIE() {
+		return ok(indexIE.render(Student.find.all(), Form.form(Login.class)));
+	}
+	
 	public static Result blog() {
 		return ok(blog.render(Student.find.all(), Form.form(Login.class)));
     }
+	
+	public static Result blogForIE() {
+		return ok(blogIE.render(Student.find.all(), Form.form(Login.class)));
+	}
 	
 	public static Result signup() {
 		return ok(signup.render(studentForm, ""));
@@ -99,7 +107,10 @@ public class Application extends Controller {
 			if(student == null) {
 				return badRequest(signup.render(studentForm, "That email is already associated with an account."));
 			}
-			return ok(index.render(Student.find.all(), Form.form(Login.class)));
+			session.clear();
+			session.put("email", filledForm.get().email);
+			createLists();
+			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
 		}
 	}
 	

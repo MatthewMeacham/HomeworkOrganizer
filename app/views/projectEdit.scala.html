@@ -18,10 +18,91 @@
 	<body>
 		<div class="projects" id="openProject">
 			<div class="projectInner">		
-				<div class="Header"><h2>Edit Project</h2></div>
+				<div class="Header center2"><h2>Edit Project</h2></div>
 					@form(action = routes.Application.editProject(String.valueOf(project.id))) {
-					<div class="center Header"><h2>Due Date:</h2></div>
-					<div class="center"><input type="date" name="dueDate" placeholder="Due Date" min="2015-01-01" value="2015-01-01" id="projectDueDate" required></div>
+					<div class="center2 Header"><h2>Due Date:</h2></div>
+					<div class="center2">
+						<select id="monthproject">
+							<option value="01" onclick="changeDays('January', 'project')"> January </option>
+							<option value="02" onclick="changeDays('February', 'project')"> February </option>
+							<option value="03" onclick="changeDays('March', 'project')"> March </option>
+							<option value="04" onclick="changeDays('April', 'project')"> April </option>
+							<option value="05" onclick="changeDays('May', 'project')"> May </option>
+							<option value="06" onclick="changeDays('June', 'project')"> June </option>
+							<option value="07" onclick="changeDays('July', 'project')"> July </option>
+							<option value="08" onclick="changeDays('August', 'project')"> August </option>
+							<option value="09" onclick="changeDays('September', 'project')"> September </option>
+							<option value="10" onclick="changeDays('October', 'project')"> October </option>
+							<option value="11" onclick="changeDays('November', 'project')"> November </option>
+							<option value="12" onclick="changeDays('December', 'project')"> December </option>
+						</select>
+						<script>
+							var options = document.getElementById('monthproject').options;
+							for(i = 0; i < options.length; i++) {
+								if(options[i].value == @project.month) {
+									options[i].selected = true;
+									break;
+								}
+							}
+						</script>
+						<select id="daysproject">
+							<option value="01"> 1 </option>
+							<option value="02"> 2 </option>
+							<option value="03"> 3 </option>
+							<option value="04"> 4 </option>
+							<option value="05"> 5 </option>
+							<option value="06"> 6 </option>
+							<option value="07"> 7 </option>
+							<option value="08"> 8 </option>
+							<option value="09"> 9 </option>
+							<option value="10"> 10 </option>
+							<option value="11"> 11 </option>
+							<option value="12"> 12 </option>
+							<option value="13"> 13 </option>
+							<option value="14"> 14 </option>
+							<option value="15"> 15 </option>
+							<option value="16"> 16 </option>
+							<option value="17"> 17 </option>
+							<option value="18"> 18 </option>
+							<option value="19"> 19 </option>
+							<option value="20"> 20 </option>
+							<option value="21"> 21 </option>
+							<option value="22"> 22 </option>
+							<option value="23"> 23 </option>
+							<option value="24"> 24 </option>
+							<option value="25"> 25 </option>
+							<option value="26"> 26 </option>
+							<option value="27"> 27 </option>
+							<option value="28"> 28 </option>
+							<option value="29"> 29 </option>
+							<option value="30"> 30 </option>
+							<option value="31"> 31 </option>
+						</select>
+						<script>
+							var options = document.getElementById('daysproject').options;
+							for(i = 0; i < options.length; i++) {
+								if(options[i].value == @project.day) {
+									options[i].selected = true;
+									break;
+								}
+							}
+						</script>
+						<select id="yearproject">
+							<option value="2015" onclick="changeDaysLeapYear('2015', 'project')"> 2015 </option>
+							<option value="2016" onclick="changeDaysLeapYear('2016', 'project')"> 2016 </option>
+							<option value="2017" onclick="changeDaysLeapYear('2017', 'project')"> 2017 </option>
+							<option value="2018" onclick="changeDaysLeapYear('2018', 'project')"> 2018 </option>
+						</select>
+						<script>
+							var options = document.getElementById('yearproject').options;
+							for(i = 0; i < options.length; i++) {
+								if(options[i].value == @project.year) {
+									options[i].selected = true;
+									break;
+								}
+							}
+						</script>						
+					</div>
 					<script>
 						var today = new Date();
 						var dd = today.getDate();
@@ -49,21 +130,140 @@
 						document.getElementById('projectDueDate').min=today;
 						document.getElementById('projectDueDate').value=date;
 					</script>
-					<div class="center Header"><h2>Class:</h2></div>
-					<div class="center">
+					<div class="center2 Header"><h2>Class:</h2></div>
+					<div class="center2">
 						<select name="schoolClassId" required>
 							@for(schoolClass <- schoolClasses) {
 								<option value=@Long.toString(schoolClass.id) @if(schoolClass.id == project.schoolClass.id) {selected}> @schoolClass.subject </option>
 							}
 						</select>
 					</div>
-					<div class="Header"> <h2> Description: </h2> </div>
-					<div class="center"> <input type="text" name="description" placeholder="Description" value="@project.description"> </div>
-					<div class="center">
-						<button type="submit" value="Edit Project">Edit Project</button>
+					<div class="Header center2"> <h2> Description: </h2> </div>
+					<div class="center2"> <input type="text" name="description" placeholder="Description" value="@project.description"> </div>
+					<div class="center2">
+						<button type="submit" onclick="combine('projectDueDate', 'project')" value="Edit Project">Edit Project</button>
 					</div>
+					<div style="position: relative; left: -1600px;"><input type="date" id="projectDueDate" name="dueDate" placeholder="Due Date"></div>
 				}
 			</div>
 		</div>
+		
+		<!-- BEGIN SCRIPTS -->
+			<script>
+				function combine(id, category) {
+					console.log("year" + category);
+					var element = document.getElementById(id);
+					var year = document.getElementById('year' + category).options[document.getElementById('year' + category).selectedIndex].value;
+					var month = document.getElementById('month' + category).options[document.getElementById('month' + category).selectedIndex].value;
+					var day = document.getElementById('days' + category).options[document.getElementById('days' + category).selectedIndex].value;
+					console.log(year + "-" + month + "-" + day);
+					element.value = year + "-" + month + "-" + day;
+				}
+			</script>
+	
+		<script>
+			function removeOptions(selectbox) {
+				var i;
+				for(i=selectbox.options.length-1;i>=0;i--) {
+					selectbox.remove(i);
+				}
+			}
+			
+			function changeDaysLeapYear(year, category) {
+				if(document.getElementById('month' + category).options[document.getElementById('month' + category).selectedIndex].value == 02) {
+					removeOptions(document.getElementById('days' + category));
+					if(Number(document.getElementById('year' + category).options[document.getElementById('year' + category).selectedIndex].value) % 4 == 0) {
+						for(i = 1; i < 30; i++) {
+								var option = document.createElement("option");
+								option.text = i;
+								if(i < 10) {
+									i = "0" + i;
+								}
+								option.value = i;
+								document.getElementById('days' + category).add(option);
+							}
+					} else {
+						for(i = 1; i < 29; i++) {
+							var option = document.createElement("option");
+							option.text = i;
+							if(i < 10) {
+								i = "0" + i;
+							}
+							option.value = i;
+							document.getElementById('days' + category).add(option);
+						}
+					}
+				}
+			}
+
+			function changeDays(month, category) {
+				var sel = document.getElementById('days' + category);
+				removeOptions(sel);
+				var opts = sel.options;
+				switch(month) {
+					case 'January':
+					case 'March':
+					case 'May':
+					case 'July':
+					case 'August':
+					case 'October':
+					case 'December':
+						for(i = 1; i < 32; i++) {
+							var option = document.createElement("option");
+							option.text = i;
+							if(i < 10) {
+								i = "0" + i;
+							}
+							option.value = i;
+							sel.add(option);
+						}
+					break;
+					case 'April':
+					case 'June':
+					case 'September':
+					case 'November':
+						for(i = 1; i < 31; i++) {
+							var option = document.createElement("option");
+							option.text = i;
+							if(i < 10) {
+								i = "0" + i;
+							}
+							option.value = i;
+							sel.add(option);
+						}
+					break;
+					case 'February':
+						var years = document.getElementById('year' + category);
+						var yearOptions = years.options;
+						if(Number(yearOptions[years.selectedIndex].text) % 4 == 0) {
+							for(i = 1; i < 30; i++) {
+								var option = document.createElement("option");
+								option.text = i;
+								if(i < 10) {
+									i = "0" + i;
+								}
+								option.value = i;
+								sel.add(option);
+							}
+						} else {
+							for(i = 1; i < 29; i++) {
+								var option = document.createElement("option");
+								option.text = i;
+								if(i < 10) {
+									i = "0" + i;
+								}
+								option.value = i;
+								sel.add(option);
+							}
+						}
+						
+						
+					break;
+				}
+			}
+		</script>
+		<!-- END SCRIPTS -->
+		
+		
 	</body>
 </html>

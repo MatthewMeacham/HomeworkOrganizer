@@ -4,12 +4,14 @@
 
 # Home page
 GET     /                          			controllers.Application.index()
+GET		/indexIE							controllers.Application.indexForIE()
 GET		/profile							controllers.Application.profileLogin()
 GET		/signup								controllers.Application.signup()
 GET     /login          					controllers.Application.login()
 GET     /logout                    			controllers.Application.logout()
 GET 	/students							controllers.Application.students()
 GET     /blog          			  			controllers.Application.blog()
+GET		/blogIE								controllers.Application.blogForIE()
 GET 	/homework/:id/editPage				controllers.Application.editPageHomework(id: String)
 GET 	/test/:id/editPage					controllers.Application.editPageTest(id: String)
 GET 	/project/:id/editPage				controllers.Application.editPageProject(id: String)
@@ -30,4 +32,4 @@ POST	/project/:id/edit					controllers.Application.editProject(id: String)
 POST	/overviewObject/:spanner/:id/edit	controllers.Application.editOverviewObject(id: String, spanner: String)
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file              		 	controllers.Assets.at(path="/public", file)
+GET     /assets/*file               controllers.Assets.at(path="/public", file)

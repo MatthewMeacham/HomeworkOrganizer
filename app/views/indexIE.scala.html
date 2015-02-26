@@ -1,17 +1,6 @@
-@(students: List[Student], loginForm: Form[Application.Login]) 
+@(students: List[Student], loginForm: Form[Application.Login])
 
-@import helper._
-@import models._
-@import views.html.helper.input
-
-@main("Student List") {
-	
-	<script>
-		<!--[if IE]>
-			window.location = "@routes.Application.indexForIE()"
-		<![endif]--> 
-	</script>
-
+@main("Orgnizr") {
 	<div id="mainIndex">
 		<!-- NAVIGATION -->
 		<div class="topNav">
@@ -27,7 +16,7 @@
 		<!-- START MAIN TITLE -->
 
 		<div class="animated bounceInDown topText">
-			<a href="@routes.Application.index"><img src=@routes.Assets.at("images/Logo.png") alt="Orgnizr" style="max-width: 100%; padding: 10px;"></a>
+			<img src=@routes.Assets.at("images/Logo.png") alt="Orgnizr" style="max-width: 100%; padding: 10px;">
 			<div class="links">
 				<a href="/blog">Dev-BLog</a> | 
 				<div class="scroll" style="display: inline-block; cursor: pointer; cursor: hand;">About</div>
@@ -41,9 +30,9 @@
 			<div class="topContent" style="overflow: hidden;">
 				<div class="topContentInner">
 					<img src=@routes.Assets.at("images/Browser.png") alt="Orgnizr">
-					<img class="animated bounceInRight habout" style="position: absolute; margin-top: -500px; margin-left: -10px; overflow: hidden;" src=@routes.Assets.at("images/BrowserContent.png") alt="Homework Organizer">
-					<img class="animated bounceIn" style="position: absolute; margin-top: -500px; margin-left: -10px; overflow: hidden;" src=@routes.Assets.at("images/BrowserContent2.png") alt="Homework Organizer">
-					<img class="animated bounceInLeft" style="position: absolute; margin-top: -500px; margin-left: -10px; overflow: hidden;" src=@routes.Assets.at("images/BrowserContent3.png") alt="Homework Organizer">
+					<img class="animated bounceInRight habout" style="position: absolute; margin-top: 200px; margin-left: -815px; overflow: hidden;" src=@routes.Assets.at("images/BrowserContent.png") alt="Homework Organizer">
+					<img class="animated bounceIn" style="position: absolute; margin-top: 200px; margin-left: -815px; overflow: hidden;" src=@routes.Assets.at("images/BrowserContent2.png") alt="Homework Organizer">
+					<img class="animated bounceInLeft" style="position: absolute; margin-top: 200px; margin-left: -815px; overflow: hidden;" src=@routes.Assets.at("images/BrowserContent3.png") alt="Homework Organizer">
 				</div>
 			</div>
 
@@ -95,4 +84,3 @@
 		<!-- END FOOTER -->
 	</div>
 }
-

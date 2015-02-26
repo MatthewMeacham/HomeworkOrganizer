@@ -9,6 +9,7 @@ body {
   color: #384047;
   margin: 0;
   padding: 0;
+  background-color: white;
 }
 
 form {
@@ -51,18 +52,42 @@ select {
   resize: none;
   height: auto;
   margin: 0;
-  outline: 0;
+  outline: none;
   padding: 15px;
   width: 100%;
-  background-color: #e8eeef;
-  color: #8a97a0;
+  background-color: #c4413b;
+  border-radius: 10px;
+  color: white;
   box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 input[type="radio"],
 input[type="checkbox"] {
   margin: 0 4px 8px 0;
+}
+
+input::-webkit-input-placeholder {
+  color: white;
+  opacity: 0.9;
+}
+
+input:-moz-placeholder {
+  color: white;
+  opacity: 0.9;
+}
+
+input::-moz-placeholder {
+  color: white;
+  opacity: 0.9;
+}
+
+input:-ms-input-placeholder {
+  color: white;
+  opacity: 0.9;
 }
 
 select {
@@ -74,15 +99,15 @@ select {
 button {
   padding: 19px 39px 18px 39px;
   color: #FFF;
-  background-color: #34495e;
+  background-color: #c4413b;
   font-size: 18px;
   text-align: center;
   font-style: normal;
   border-radius: 5px;
   width: 100%;
-  border: 1px solid #2c3e50;
-  border-width: 1px 1px 3px;
-  box-shadow: 0 -1px 0 rgba(255,255,255,0.1) inset;
+  border: 1px solid #c34444;
+  border-width: 1px 1px;
+  box-shadow: 0 -5px 0 rgba(0,0,0,0.1) inset;
   margin-bottom: 20px;
   margin-top: 10px;
 }
@@ -133,6 +158,10 @@ label.light {
   color: #ecf0f1;
 }
 
+.noScrollMove {
+  margin-left: -6px;
+}
+
 .topNav {
   margin: 0;
   padding: 0;
@@ -144,6 +173,7 @@ label.light {
   width: auto;
   height: 600px;
   z-index: 0;
+  margin-bottom: -40px;
 }
 
 .topText {
@@ -282,4 +312,26 @@ label.light {
     max-width: 480px;
   }
 
+}
+
+html::-webkit-scrollbar-track
+{
+  background-color: #c34444;
+  width: 4px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+html::-webkit-scrollbar
+{
+  width: 10px;
+}
+
+html::-webkit-scrollbar-thumb
+{
+  background-color: white;
+  margin-left: -20px;
+  height: 10%;
+  border-radius: 20px;
+  border: 3px solid #c34444;
 }

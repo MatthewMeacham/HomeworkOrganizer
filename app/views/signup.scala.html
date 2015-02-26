@@ -8,50 +8,82 @@
 <html>
 	
 	<head>
-		<title>Homework Organizer | Sign Up</title>
+		<title>Orgnizr | Sign Up</title>
+
+		<!-- STYLESHEETS -->
 		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
 		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/animate.css")">
-        <link href='https://fonts.googleapis.com/css?family=Nunito' rel='stylesheet' type='text/css'>
-		<script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
-		<link rel="icon" href="@routes.Assets.at("images/faviconWithShadow.png")" sizes="32x32">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/font.css")">
+
+        <!-- META TAGS (FOR BROWSER INDEXING) -->
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Sign up to Orgnizr to experiance stress free homework!">
+        <meta name="keywords" content="Orgnizr, organizer, homework, project, high, school, test, quiz, sign, up, register">
+        <meta name="author" content="Matthew Meacham | Ross MacPhee">
+
+        <!-- OG TAGS (FOR FACEBOOK | G+ | TWITTER LINKS) -->
+        <meta property="og:title" content="Orgnizr | Sign Up" />
+        <meta property="og:type"   content="website" />
+        <meta property="og:url" content="http://aliquamgames.com/Orgnizr/" />
+        <meta property="og:image" content="@routes.Assets.at("images/og-logo.png")" />
+        <meta property="og:description" content="Sign up to Orgnizr to experiance stress free homework!" />
+        <meta property="og:locale" content="en_GB" />
+
+
+        <!-- APPLE ICONS (FOR APPLE DEVICES) -->
+        <link rel="apple-touch-icon" href="@routes.Assets.at("images/touch-icon-iphone.png")">
+        <link rel="apple-touch-icon" sizes="76x76" href="@routes.Assets.at("images/touch-icon-ipad.png")">
+        <link rel="apple-touch-icon" sizes="120x120" href="@routes.Assets.at("images/touch-icon-iphone-retina.png")">
+        <link rel="apple-touch-icon" sizes="152x152" href="@routes.Assets.at("images/touch-icon-ipad-retina.png")">
+
+        <!-- BROWSER ICON -->
+        <link rel="icon" type="image/png" href="@routes.Assets.at("images/favicon.png")" sizes="32x32">
+
+        <!-- LEGAL GOOGLE+ PUBLISHER (TO GIVE A HIGHER INDEX) -->
+        <link rel="publisher" href="https://plus.google.com/+AliquamgamesOfficial">
+
+        <!-- SCRIPTS -->
+        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
 	</head>
 	<body>
-
-	<!-- NAVIGATION -->
-	<div class="topNav">
-		<div class="topNavInner">
-			<div class="animated bounceIn topLinks">
-				<a href="@routes.Application.signup">Sign Up!</a> | 
-				<a href="@routes.Application.login">Sign In!</a>
+		<div class="noScrollMove">
+			<!-- NAVIGATION -->
+			<div class="topNav">
+				<div class="topNavInner">
+					<div class="animated bounceIn topLinks">
+						<a href="@routes.Application.signup">Sign Up!</a> | 
+						<a href="@routes.Application.login">Sign In!</a>
+					</div>
+				</div>
 			</div>
+			<!-- END NAVIGATION -->
+
+			<!-- START MAIN TITLE -->
+
+			<div class="topText">
+				<img src=@routes.Assets.at("/images/Logo.png") alt="Orgnizr" style="max-width: 100%; padding: 10px;">
+			</div>
+
+			<!-- END MAIN TITLE -->
+
+			<!-- BEGIN REGISTER FORM -->
+
+			@form(action = routes.Application.newStudent()) {
+				<div id="formContainer" class="center">
+					<form>
+						<h1 style="padding-top: 10px;">Sign Up</h1>
+						<input type="text" name="name" placeholder="Name" required/><br />
+						<input type="email" placeholder="Email" name="email" required>
+						<input type="password" placeholder="Password" name="password" autocomplete="off" required>
+						<input type="number" placeholder="Grade" name="grade" min="1" max="12" required>
+						<button type="submit" value="Sign Up">Register</button>
+					</form>
+				</div>
+			}
+
+			<!-- END REGISTER FORM -->
 		</div>
-	</div>
-	<!-- END NAVIGATION -->
-
-	<!-- START MAIN TITLE -->
-
-	<div class="animated bounceInDown topText">
-		<a href="@routes.Application.index"><h2>Homework Organizer</h2></a>
-	</div>
-
-	<!-- END MAIN TITLE -->
-
-	<!-- BEGIN REGISTER FORM -->
-
-	<h2 style="text-align:center; color:red;"> @message </h2>
-	
-	@form(action = routes.Application.newStudent()) {
-		<div id="formContainer" class="center">
-			<h1 style="padding-top: 10px;">Sign Up</h1>
-			<input type="text" name="name" placeholder="Name" required/><br/>
-			<input type="email" placeholder="Email" name="email" required>
-			<input type="password" placeholder="Password" name="password" autocomplete="off" required>
-			<input type="number" placeholder="Grade" name="grade" min="1" max="12" required>
-			<button type="submit" value="Sign Up">Register</button>
-		</div>
-	}
-
-	<!-- END REGISTER FORM -->
-
 	</body>
 </html>
