@@ -68,7 +68,7 @@
 	<body>
 		<div id="topSection">
 			<div class="topImage">
-				<a href="#" onclick="return false"><img style="pointer-events: none;" src=@routes.Assets.at("images/logo.png") alt="Orgnizr"></a>
+				<img src=@routes.Assets.at("images/logo.png") alt="Orgnizr">
 			</div>
 			
 			<script>
@@ -117,35 +117,35 @@
 					<div class="area center" style=" width: 100vw; margin-left: -10px; margin-right: 10px;">
 						<h2 style="text-align: center;">Overview</h2>
 						@if(overview.length > 0) {
-							@for(overviewItem <- overview) {
-								<div class="itemContainer">
-									<div class="item">
-										<span class="alert">
-										@if(overviewItem.spanner=="H"){
+							@for(overviewitemBig <- overview) {
+								<div class="itemBigContainer">
+									<div class="itemBig">
+										<span class="alertBig">
+										@if(overviewitemBig.spanner=="H"){
 											H
 										}
-										@if(overviewItem.spanner=="P") {
+										@if(overviewitemBig.spanner=="P") {
 											P
 										}
-										@if(overviewItem.spanner=="T") {
+										@if(overviewitemBig.spanner=="T") {
 											T
 										}
 										</span>
 										<div class="contentInside">
-											@form(action = routes.Application.deleteOverviewObject(String.valueOf(overviewItem.id), overviewItem.spanner), 'id -> ("overviewObjectDeleteForm" + String.valueOf(overviewItem.id))) {
-												<a href="#" onclick="submitOverviewObjectDeleteForm(@overviewItem.id); return false;">
+											@form(action = routes.Application.deleteOverviewObject(String.valueOf(overviewitemBig.id), overviewitemBig.spanner), 'id -> ("overviewObjectDeleteForm" + String.valueOf(overviewitemBig.id))) {
+												<a href="#" onclick="submitOverviewObjectDeleteForm(@overviewitemBig.id); return false;">
 													<i class="fa fa-trash myIcon"></i>
 												</a>
 											}
 		
-											@form(action = routes.Application.editOverviewObject(String.valueOf(overviewItem.id), overviewItem.spanner), 'id -> ("overviewObjectEditForm" + String.valueOf(overviewItem.id))) {
-												<a href="#" onclick="submitOverviewObjectEditForm(@overviewItem.id); return false;">
+											@form(action = routes.Application.editOverviewObject(String.valueOf(overviewitemBig.id), overviewitemBig.spanner), 'id -> ("overviewObjectEditForm" + String.valueOf(overviewitemBig.id))) {
+												<a href="#" onclick="submitOverviewObjectEditForm(@overviewitemBig.id); return false;">
 													<i class="fa fa-pencil myIcon"></i>
 												</a>
 											}
-											<h2 class="itemHeader">@overviewItem.schoolClass.subject</h2>
-											<h3 class="itemDueDate"> @overviewItem.date</h3>
-											<p class="itemDesc"> @overviewItem.description </p>
+											<p class="itemHeaderBig">@overviewitemBig.schoolClass.subject</p>
+											<p class="itemDueDateBig"> @overviewitemBig.date</p>
+											<p class="itemDescBig"> @overviewitemBig.description </p>
 										</div>
 									</div>
 								</div>
@@ -176,7 +176,7 @@
 							} else {	
 								<div style="margin-left: auto; margin-right: auto;">
 									@for(schoolClass <- schoolClasses) {
-										<b><p style="font-size: 20px; margin-bottom: 10px; margin-top: 0px;"> @schoolClass.subject </p></b> 
+										<br><p style="font-size: 20px; margin-bottom: -15px; margin-top: -15px;"> @schoolClass.subject </p><br> 
 									}
 								</div>
 							}
@@ -198,9 +198,9 @@
 						@if(homeworks.length > 0) {
 							<div class="innerContentMain">
 								@for(homework <- homeworks) {
-									<div class="itemContainer">
-										<div class="item">
-											<span class="alert">H</span>
+									<div class="itemBigContainer">
+										<div class="itemBig">
+											<span class="alertBig">H</span>
 											<div class="contentInside">
 												@form(action = routes.Application.deleteHomework(String.valueOf(homework.id)), 'id -> ("homeworkDeleteForm" + String.valueOf(homework.id))) {
 													<a href="#" onclick="submitHomeworkDeleteForm(@homework.id); return false;">
@@ -213,9 +213,9 @@
 														<i class="fa fa-pencil myIcon"></i>
 													<a>
 												}
-												<h2 class="itemHeader">@homework.schoolClass.subject</h2>
-												<h3 class="itemDueDate"> @homework.dueDate</h3>
-												<p class="itemDesc"> @homework.description </p>
+												<p class="itemHeaderBig">@homework.schoolClass.subject</p>
+												<p class="itemDueDateBig"> @homework.dueDate</p>
+												<p class="itemDescBig"> @homework.description </p>
 											</div>
 										</div>
 									</div>
@@ -234,7 +234,7 @@
 							@form(action = routes.Application.newHomework) {
 								@if(schoolClasses.length <= 0) {
 									<div class="notEnContainer">
-										<span class="alert">!</span>
+										<span class="alertBig">!</span>
 										<div class="notEnInner">
 											<h3 class="notEn">You need to enroll in a class first!</h3>
 										</div>
@@ -242,18 +242,18 @@
 								} else {
 									<div class="center Header"><h2>Due Date:</h2></div>								
 									<select id="monthhomework">
-										<option value="01" onclick="changeDays('January', 'test')"> January </option>
-										<option value="02" onclick="changeDays('February', 'test')"> February </option>
-										<option value="03" onclick="changeDays('March', 'test')"> March </option>
-										<option value="04" onclick="changeDays('April', 'test')"> April </option>
-										<option value="05" onclick="changeDays('May', 'test')"> May </option>
-										<option value="06" onclick="changeDays('June', 'test')"> June </option>
-										<option value="07" onclick="changeDays('July', 'test')"> July </option>
-										<option value="08" onclick="changeDays('August', 'test')"> August </option>
-										<option value="09" onclick="changeDays('September', 'test')"> September </option>
-										<option value="10" onclick="changeDays('October', 'test')"> October </option>
-										<option value="11" onclick="changeDays('November', 'test')"> November </option>
-										<option value="12" onclick="changeDays('December', 'test')"> December </option>
+										<option value="01" onclick="changeDays('January', 'homework')"> January </option>
+										<option value="02" onclick="changeDays('February', 'homework')"> February </option>
+										<option value="03" onclick="changeDays('March', 'homework')"> March </option>
+										<option value="04" onclick="changeDays('April', 'homework')"> April </option>
+										<option value="05" onclick="changeDays('May', 'homework')"> May </option>
+										<option value="06" onclick="changeDays('June', 'homework')"> June </option>
+										<option value="07" onclick="changeDays('July', 'homework')"> July </option>
+										<option value="08" onclick="changeDays('August', 'homework')"> August </option>
+										<option value="09" onclick="changeDays('September', 'homework')"> September </option>
+										<option value="10" onclick="changeDays('October', 'homework')"> October </option>
+										<option value="11" onclick="changeDays('November', 'homework')"> November </option>
+										<option value="12" onclick="changeDays('December', 'homework')"> December </option>
 									</select>
 									<select id="dayshomework">
 										<option value="01"> 1 </option>
@@ -289,10 +289,10 @@
 										<option value="31"> 31 </option>
 									</select>
 									<select id="yearhomework">
-										<option value="2015" onclick="changeDaysLeapYear('2015', 'test')"> 2015 </option>
-										<option value="2016" onclick="changeDaysLeapYear('2016', 'test')"> 2016 </option>
-										<option value="2017" onclick="changeDaysLeapYear('2017', 'test')"> 2017 </option>
-										<option value="2018" onclick="changeDaysLeapYear('2018', 'test')"> 2018 </option>
+										<option value="2015" onclick="changeDaysLeapYear('2015', 'homework')"> 2015 </option>
+										<option value="2016" onclick="changeDaysLeapYear('2016', 'homework')"> 2016 </option>
+										<option value="2017" onclick="changeDaysLeapYear('2017', 'homework')"> 2017 </option>
+										<option value="2018" onclick="changeDaysLeapYear('2018', 'homework')"> 2018 </option>
 									</select>
 									
 									<div class="center Header"><h2>Class:</h2></div>
@@ -323,9 +323,9 @@
 						@if(tests.length > 0) {
 							<div class="innerContentMain">
 								@for(test <- tests) {
-									<div class="itemContainer">
-										<div class="item">
-											<span class="alert">T</span>
+									<div class="itemBigContainer">
+										<div class="itemBig">
+											<span class="alertBig">T</span>
 											<div class="contentInside">
 												@form(action = routes.Application.deleteTest(String.valueOf(test.id)), 'id -> ("testDeleteForm" + String.valueOf(test.id))) {
 													<a href="#" onclick="submitTestDeleteForm(@test.id); return false;">
@@ -338,9 +338,9 @@
 														<i class="fa fa-pencil myIcon"></i>
 													</a>
 												}
-												<h2 class="itemHeader">@test.schoolClass.subject</h2>
-												<h3 class="itemDueDate"> @test.dateOf</h3>
-												<p class="itemDesc"> @test.description </p>
+												<h2 class="itemHeaderBig">@test.schoolClass.subject</h2>
+												<h3 class="itemDueDateBig"> @test.dateOf</h3>
+												<p class="itemDescBig"> @test.description </p>
 											</div>
 										</div>
 									</div>
@@ -359,7 +359,7 @@
 								@form(action = routes.Application.newTest) {
 									@if(schoolClasses.length <= 0) {
 										<div class="notEnContainer">
-											<span class="alert">!</span>
+											<span class="alertBig">!</span>
 											<div class="notEnInner">
 												<h3 class="notEn">You need to enroll in a class first!</h3>
 											</div>
@@ -447,9 +447,9 @@
 						@if(projects.length > 0) {
 							<div class="innerContentMain">
 								@for(project <- projects) {
-									<div class="itemContainer">
-										<div class="item">
-											<span class="alert">P</span>
+									<div class="itemBigContainer">
+										<div class="itemBig">
+											<span class="alertBig">P</span>
 											<div class="contentInside">
 												@form(action = routes.Application.deleteProject(String.valueOf(project.id)), 'id -> ("projectDeleteForm" + String.valueOf(project.id))) {
 													<a href="#" onclick="submitProjectDeleteForm(@project.id); return false;">
@@ -462,9 +462,9 @@
 														<i class="fa fa-pencil fa myIcon"></i>
 													</a>
 												}
-												<h2 class="itemHeader">@project.schoolClass.subject</h2>
-												<h3 class="itemDueDate"> @project.dueDate</h3>
-												<p class="itemDesc"> @project.description </p>
+												<h2 class="itemHeaderBig">@project.schoolClass.subject</h2>
+												<h3 class="itemDueDateBig"> @project.dueDate</h3>
+												<p class="itemDescBig"> @project.description </p>
 											</div>
 										</div>
 									</div>
@@ -483,7 +483,7 @@
 								@form(action = routes.Application.newProject) {
 									@if(schoolClasses.length <= 0) {
 										<div class="notEnContainer">
-											<span class="alert">!</span>
+											<span class="alertBig">!</span>
 											<div class="notEnInner">
 												<h3 class="notEn">You need to enroll in a class first!</h3>
 											</div>
@@ -569,24 +569,24 @@
 						<h2 style="text-align: center;">Archive</h2>
 						@if(passed.length > 0) {
 							<div class="innerContentMain">
-								@for(passedItem <- passed) {
-									<div class="itemContainer">
-										<div class="item">
-											<span class="alert">
-											@if(passedItem.spanner=="H"){
+								@for(passeditemBig <- passed) {
+									<div class="itemBigContainer">
+										<div class="itemBig">
+											<span class="alertBig">
+											@if(passeditemBig.spanner=="H"){
 												H
 											}
-											@if(passedItem.spanner=="P") {
+											@if(passeditemBig.spanner=="P") {
 												P
 											}
-											@if(passedItem.spanner=="T") {
+											@if(passeditemBig.spanner=="T") {
 												T
 											}
 											</span>
 											<div class="contentInside">
-												<h2 class="itemHeader">@passedItem.schoolClass.subject</h2>
-												<h3 class="itemDueDate"> @passedItem.date</h3>
-												<p class="itemDesc"> @passedItem.description </p>
+												<h2 class="itemHeaderBig">@passeditemBig.schoolClass.subject</h2>
+												<h3 class="itemDueDateBig"> @passeditemBig.date</h3>
+												<p class="itemDescBig"> @passeditemBig.description </p>
 											</div>
 										</div>
 									</div>

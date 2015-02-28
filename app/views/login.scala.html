@@ -37,6 +37,8 @@
 
         <!-- BROWSER ICON -->
         <link rel="icon" type="image/png" href="@routes.Assets.at("images/favicon.png")" sizes="32x32">
+		<link rel="icon" href="@routes.Assets.at("images/favicon.ico")" type="image/x-icon" sizes="32x32"/>
+		<link rel="shortcut icon" href="@routes.Assets.at("images/favicon.ico")" type="image/x-icon" />
 
         <!-- SCRIPTS -->
         <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
@@ -57,19 +59,22 @@
 			<!-- START MAIN TITLE -->
 
 			<div class="topText">
-				<a href="@routes.Application.index"><img src=@routes.Assets.at("images/logo.png")  alt="Orgnizr" style="max-width: 100%; padding: 10px;"></a>
+				<img src=@routes.Assets.at("images/logo.png")  alt="Orgnizr" style="max-width: 100%; padding: 10px;">
 			</div>
 
 			<!-- END MAIN TITLE -->
 
+			<div>
+				<h1 style="color: red; margin-left: auto; margin-right: auto;" align="center"> @message </h1>
+			<div>
 			<!-- BEGIN REGISTER FORM -->
 
 			@helper.form(routes.Application.authenticate) {
 				<div id="formContainer" class="center">
 					<form>
 						<h1 style="padding-top: 10px;">Login</h1>
-						<input type="text" name="email" placeholder="Email"/><br />
-						<input type="password" name="password" placeholder="Password"/><br />
+						<input type="text" name="email" placeholder="Email" required/><br />
+						<input type="password" name="password" placeholder="Password" required/><br />
 						<button type="submit" value="login">LOG IN</button>
 					</form>
 				</div>

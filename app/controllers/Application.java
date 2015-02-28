@@ -146,8 +146,7 @@ public class Application extends Controller {
 			homeworks.add(newHomework);
 			OverviewObject overviewObject = OverviewObject.create(newHomework);
 			overview.add(overviewObject);
-			if(homeworks.size() > 0) sortHomeworkListRecursively(0, homeworks.get(homeworks.size() - 1));
-			if(overview.size() > 0) sortOverviewListRecursively(0, overview.get(overview.size() - 1));
+			createLists();
 			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
 		}
 	}
@@ -163,8 +162,7 @@ public class Application extends Controller {
 			tests.add(newTest);
 			OverviewObject overviewObject = OverviewObject.create(newTest);
 			overview.add(overviewObject);
-			if(tests.size() > 0) sortTestListRecursively(0, tests.get(tests.size() - 1));
-			if(overview.size() > 0) sortOverviewListRecursively(0, overview.get(overview.size() - 1));
+			createLists();
 			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
 		}
 	}
@@ -180,8 +178,7 @@ public class Application extends Controller {
 			projects.add(newProject);
 			OverviewObject overviewObject = OverviewObject.create(newProject);
 			overview.add(overviewObject);
-			if(projects.size() > 0) sortProjectListRecursively(0, projects.get(projects.size() - 1));
-			if(overview.size() > 0) sortOverviewListRecursively(0, overview.get(overview.size() - 1));
+			createLists();
 			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
 		}
 	}
@@ -192,8 +189,7 @@ public class Application extends Controller {
 			return badRequest(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
 		} else {
 			Homework.edit(Long.parseLong(id), SchoolClass.find.ref(Long.parseLong(filledForm.data().get("schoolClassId"))), filledForm.data().get("dueDate"), filledForm.data().get("description"));
-			createHomeworkList();
-			createOverviewList();
+			createLists();
 			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
 		}
 	}
@@ -204,8 +200,7 @@ public class Application extends Controller {
 			return badRequest(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
 		} else {
 			Test.edit(Long.parseLong(id), SchoolClass.find.ref(Long.parseLong(filledForm.data().get("schoolClassId"))), filledForm.data().get("dateOf"), filledForm.data().get("description"));
-			createTestList();
-			createOverviewList();
+			createLists();
 			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
 		}
 	}
@@ -216,30 +211,26 @@ public class Application extends Controller {
 			return badRequest(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
 		} else {
 			Project.edit(Long.parseLong(id), SchoolClass.find.ref(Long.parseLong(filledForm.data().get("schoolClassId"))), filledForm.data().get("dueDate"), filledForm.data().get("description"));
-			createProjectList();
-			createOverviewList();
+			createLists();
 			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
 		}
 	}
 	
 	public static Result deleteHomework(String id) {
 		Homework.find.ref(Long.valueOf(id)).delete();
-		createHomeworkList();
-		createOverviewList();
+		createLists();
 		return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
 	}
 	
 	public static Result deleteTest(String id) {
 		Test.find.ref(Long.valueOf(id)).delete();
-		createTestList();
-		createOverviewList();
+		createLists();
 		return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
 	}
 	
 	public static Result deleteProject(String id) {
 		Project.find.ref(Long.valueOf(id)).delete();
-		createProjectList();
-		createOverviewList();
+		createLists();
 		return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
 	}
 	
@@ -247,18 +238,15 @@ public class Application extends Controller {
 		switch(spanner) {
 		case "H":
 			Homework.find.ref(Long.valueOf(id)).delete();
-			createHomeworkList();
 			break;
 		case "T":
 			Test.find.ref(Long.valueOf(id)).delete();
-			createTestList();
 			break;
 		case "P":
 			Project.find.ref(Long.valueOf(id)).delete();
-			createProjectList();
 			break;
 		}
-		createOverviewList();
+		createLists();
 		return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
 	}
 	
@@ -266,18 +254,15 @@ public class Application extends Controller {
 		switch(spanner) {
 		case "H":
 			Homework.find.ref(Long.valueOf(id)).delete();
-			createHomeworkList();
 			break;
 		case "T":
 			Test.find.ref(Long.valueOf(id)).delete();
-			createTestList();
 			break;
 		case "P":
 			Project.find.ref(Long.valueOf(id)).delete();
-			createProjectList();
 			break;
 		}
-		createPassedList();
+		createLists();
 		return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));		
 	}	
 	
