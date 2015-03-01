@@ -127,6 +127,21 @@ select {
 	font-weight: bold;
 }
 
+.alertBig {
+	height: 70px;
+	width: 70px;
+	border-radius: 50%;
+	background-color: #ecf0f1;
+	color: rgb(197, 67, 64);
+	display: inline-block;
+	line-height: 71px;
+	font-size: 55px;
+	margin-right: 2px;
+	display: inline-block;
+	text-align: center;
+	font-weight: bold;
+}
+
 .notEnContainer {
 	background-color: rgb(197, 67, 64);
 	color: #ecf0f1;
@@ -246,11 +261,32 @@ select {
 	background-color: #c34444;
 }
 
+.itemBig {
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 20px;
+	border-radius: 20px;
+	padding-top: 5px;
+	padding: 20px;
+	width: 50vw;
+	height: 80px;
+	line-height: 35px;
+	margin-bottom: 20px;
+	background-color: #c34444;
+}
+
 .itemHeader {
 	color: #ecf0f1;
 	margin-left: 60px;
 	font-size: 14px;
 	margin-top: 12px;
+}
+
+.itemHeaderBig {
+	color: #ecf0f1;
+	margin-left: 80px;
+	font-size: 32px;
+	margin-top: -80px;
 }
 
 .itemDueDate {
@@ -260,11 +296,25 @@ select {
 	margin-top: -33px;
 }	
 
+.itemDueDateBig {
+	color: #ecf0f1;
+	margin-left: 80px;
+	font-size: 20px;
+	margin-top: -40px;
+}
+
 .itemDesc {
 	color: #ecf0f1;
 	margin-left: 60px;
 	font-size: 10px;
 	margin-top: -28px;
+}
+
+.itemDescBig {
+	color: #ecf0f1;
+	margin-left: 80px;
+	font-size: 20px;
+	margin-top: -30px;
 }
 
 .topNav {
