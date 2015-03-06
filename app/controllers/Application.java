@@ -33,6 +33,8 @@ public class Application extends Controller {
 	private static List<OverviewObject> overview;
 	private static List<OverviewObject> passed;
 	
+	private static int today;
+	
 	static Session session = Http.Context.current().session();
 
     public static Result index() {
@@ -92,7 +94,7 @@ public class Application extends Controller {
 		case "P":
 			return editPageProject(id);
 		}
-		return badRequest(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
+		return badRequest(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));
 	}
 	
 	public static Result newStudent() {	
@@ -110,18 +112,18 @@ public class Application extends Controller {
 			session.clear();
 			session.put("email", filledForm.get().email);
 			createLists();
-			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
+			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));
 		}
 	}
 	
 	public static Result newSchoolClass() {
 		Form<SchoolClass> filledForm = schoolClassForm.bindFromRequest();
 		if(filledForm.hasErrors()) {
-			return badRequest(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
+			return badRequest(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));
 		} else {		
 			SchoolClass newSchoolClass = SchoolClass.create(filledForm.data().get("subject"), filledForm.data().get("studentEmail"));
 			schoolClasses.add(newSchoolClass);
-			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
+			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));
 		}	
 	}
 	
@@ -140,14 +142,14 @@ public class Application extends Controller {
 	public static Result newHomework() {
 		Form<Homework> filledForm = homeworkForm.bindFromRequest();
 		if(filledForm.hasErrors()) {
-			return badRequest(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
+			return badRequest(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));
 		} else {
 			Homework newHomework = Homework.create(filledForm.data().get("dueDate"), filledForm.data().get("schoolClassId"), filledForm.data().get("description"));
 			homeworks.add(newHomework);
 			OverviewObject overviewObject = OverviewObject.create(newHomework);
 			overview.add(overviewObject);
 			createLists();
-			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
+			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));
 		}
 	}
 	
@@ -155,7 +157,7 @@ public class Application extends Controller {
 		Form<Test> filledForm = testForm.bindFromRequest();
 		if(filledForm.hasErrors()) {
 			System.out.println("HAD ERRORS");
-			return badRequest(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
+			return badRequest(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));
 		} else {
 			System.out.println("DID NOT HAVE ERRORS");
 			Test newTest = Test.create(filledForm.data().get("dateOf"), filledForm.data().get("schoolClassId"), filledForm.data().get("description"));
@@ -163,7 +165,7 @@ public class Application extends Controller {
 			OverviewObject overviewObject = OverviewObject.create(newTest);
 			overview.add(overviewObject);
 			createLists();
-			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
+			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));
 		}
 	}
 	
@@ -171,7 +173,7 @@ public class Application extends Controller {
 		Form<Project> filledForm = projectForm.bindFromRequest();
 		if(filledForm.hasErrors()) {
 			System.out.println("HAD ERRORS");
-			return badRequest(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
+			return badRequest(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));
 		} else {
 			System.out.println("DID NOT HAVE ERRORS");
 			Project newProject = Project.create(filledForm.data().get("dueDate"), filledForm.data().get("schoolClassId"), filledForm.data().get("description"));
@@ -179,59 +181,59 @@ public class Application extends Controller {
 			OverviewObject overviewObject = OverviewObject.create(newProject);
 			overview.add(overviewObject);
 			createLists();
-			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
+			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));
 		}
 	}
 	
 	public static Result editHomework(String id) {
 		Form<Homework> filledForm = homeworkForm.bindFromRequest();
 		if(filledForm.hasErrors()) {
-			return badRequest(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
+			return badRequest(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));
 		} else {
 			Homework.edit(Long.parseLong(id), SchoolClass.find.ref(Long.parseLong(filledForm.data().get("schoolClassId"))), filledForm.data().get("dueDate"), filledForm.data().get("description"));
 			createLists();
-			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
+			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));
 		}
 	}
 	
 	public static Result editTest(String id) {
 		Form<Test> filledForm = testForm.bindFromRequest();
 		if(filledForm.hasErrors()) {
-			return badRequest(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
+			return badRequest(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));
 		} else {
 			Test.edit(Long.parseLong(id), SchoolClass.find.ref(Long.parseLong(filledForm.data().get("schoolClassId"))), filledForm.data().get("dateOf"), filledForm.data().get("description"));
 			createLists();
-			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
+			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));
 		}
 	}
 	
 	public static Result editProject(String id) {
 		Form<Project> filledForm = projectForm.bindFromRequest();
 		if(filledForm.hasErrors()) {
-			return badRequest(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
+			return badRequest(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));
 		} else {
 			Project.edit(Long.parseLong(id), SchoolClass.find.ref(Long.parseLong(filledForm.data().get("schoolClassId"))), filledForm.data().get("dueDate"), filledForm.data().get("description"));
 			createLists();
-			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
+			return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));
 		}
 	}
 	
 	public static Result deleteHomework(String id) {
 		Homework.find.ref(Long.valueOf(id)).delete();
 		createLists();
-		return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
+		return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));
 	}
 	
 	public static Result deleteTest(String id) {
 		Test.find.ref(Long.valueOf(id)).delete();
 		createLists();
-		return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
+		return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));
 	}
 	
 	public static Result deleteProject(String id) {
 		Project.find.ref(Long.valueOf(id)).delete();
 		createLists();
-		return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
+		return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));
 	}
 	
 	public static Result deleteOverviewObject(String id, String spanner) {
@@ -247,7 +249,7 @@ public class Application extends Controller {
 			break;
 		}
 		createLists();
-		return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
+		return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));
 	}
 	
 	public static Result deletePassedObject(String id, String spanner) {
@@ -263,7 +265,7 @@ public class Application extends Controller {
 			break;
 		}
 		createLists();
-		return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));		
+		return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));		
 	}	
 	
 	public static void sortHomeworkListRecursively(int index, Homework homework) {
@@ -505,6 +507,14 @@ public class Application extends Controller {
 		sortPassedListFully();
 	}
 	
+	public static void setToday() {
+		int day = Calendar.getInstance().get(Calendar.DATE);
+		int month = Calendar.getInstance().get(Calendar.MONTH)+1;
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		int total = (year * 366) - ((12 - month) * 31) - (31 - day);
+		today = total;
+	}
+	
 	public static void createLists() {	
 		student = Student.find.ref(session.get("email"));		
 		createSchoolClassList();
@@ -515,12 +525,13 @@ public class Application extends Controller {
 		createNotesList();
 		createPassedList();
 		createOverviewList();
+		setToday();
 	}
 	
 	
 	public static Result profileLogin() {
 		createLists();
-		return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed));
+		return ok(profile.render(student, homeworks, schoolClasses, teachers, tests, notes, projects, overview, passed, today));
 	}
 						
 	public static Result authenticate() {

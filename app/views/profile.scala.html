@@ -1,4 +1,4 @@
-@(student: Student, homeworks: List[Homework], schoolClasses: List[SchoolClass], teachers: List[Teacher], tests: List[Test], notes: List[Note], projects: List[Project], overview: List[OverviewObject], passed: List[OverviewObject])
+@(student: Student, homeworks: List[Homework], schoolClasses: List[SchoolClass], teachers: List[Teacher], tests: List[Test], notes: List[Note], projects: List[Project], overview: List[OverviewObject], passed: List[OverviewObject], today: Integer)
 
 @import helper._
 @import models._
@@ -119,7 +119,15 @@
 						@if(overview.length > 0) {
 							@for(overviewitemBig <- overview) {
 								<div class="itemBigContainer">
-									<div class="itemBig">
+									@if(overviewitemBig.total > today + 5) {
+									<div class="green">
+									} else {
+									@if(overviewitemBig.total <= today + 5 && overviewitemBig.total > today + 1){
+									<div class="yellow">
+									} else {
+									<div class="red">
+									}
+									}
 										<span class="alertBig">
 										@if(overviewitemBig.spanner=="H"){
 											H
@@ -199,7 +207,15 @@
 							<div class="innerContentMain">
 								@for(homework <- homeworks) {
 									<div class="itemBigContainer">
-										<div class="itemBig">
+										@if(homework.total > today + 5) {
+										<div class="green">
+										} else {
+										@if(homework.total <= today + 5 && homework.total > today + 1){
+										<div class="yellow">
+										} else {
+										<div class="red">
+										}
+										}							
 											<span class="alertBig">H</span>
 											<div class="contentInside">
 												@form(action = routes.Application.deleteHomework(String.valueOf(homework.id)), 'id -> ("homeworkDeleteForm" + String.valueOf(homework.id))) {
@@ -324,7 +340,15 @@
 							<div class="innerContentMain">
 								@for(test <- tests) {
 									<div class="itemBigContainer">
-										<div class="itemBig">
+										@if(test.total > today + 5) {
+										<div class="green">
+										} else {
+										@if(test.total <= today + 5 && test.total > today + 1){
+										<div class="yellow">
+										} else {
+										<div class="red">
+										}
+										}											
 											<span class="alertBig">T</span>
 											<div class="contentInside">
 												@form(action = routes.Application.deleteTest(String.valueOf(test.id)), 'id -> ("testDeleteForm" + String.valueOf(test.id))) {
@@ -448,7 +472,15 @@
 							<div class="innerContentMain">
 								@for(project <- projects) {
 									<div class="itemBigContainer">
-										<div class="itemBig">
+										@if(project.total > today + 5) {
+										<div class="green">
+										} else {
+										@if(project.total <= today + 5 && project.total > today + 1){
+										<div class="yellow">
+										} else {
+										<div class="red">
+										}
+										}												
 											<span class="alertBig">P</span>
 											<div class="contentInside">
 												@form(action = routes.Application.deleteProject(String.valueOf(project.id)), 'id -> ("projectDeleteForm" + String.valueOf(project.id))) {

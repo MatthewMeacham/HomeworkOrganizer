@@ -132,6 +132,7 @@ select {
 	width: 70px;
 	border-radius: 50%;
 	background-color: #ecf0f1;
+	/*background-color: black;*/
 	color: rgb(197, 67, 64);
 	display: inline-block;
 	line-height: 71px;
@@ -283,7 +284,8 @@ select {
 }
 
 .itemHeaderBig {
-	color: #ecf0f1;
+ /*	color: #ecf0f1; */
+	color: black;
 	margin-left: 80px;
 	font-size: 32px;
 	margin-top: -80px;
@@ -297,7 +299,8 @@ select {
 }	
 
 .itemDueDateBig {
-	color: #ecf0f1;
+	/*color: #ecf0f1;*/
+	color: black;
 	margin-left: 80px;
 	font-size: 20px;
 	margin-top: -40px;
@@ -311,10 +314,58 @@ select {
 }
 
 .itemDescBig {
-	color: #ecf0f1;
+	/*color: #ecf0f1; */
+	color: black;
 	margin-left: 80px;
 	font-size: 20px;
 	margin-top: -30px;
+}
+
+.green {
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 20px;
+	border-radius: 20px;
+	padding-top: 5px;
+	padding: 20px;
+	width: 50vw;
+	height: 80px;
+	line-height: 35px;
+	margin-bottom: 20px;
+	background-color: #00B700;
+}
+
+.yellow {
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 20px;
+	border-radius: 20px;
+	padding-top: 5px;
+	padding: 20px;
+	width: 50vw;
+	height: 80px;
+	line-height: 35px;
+	margin-bottom: 20px;
+	background-color: #CECE00;
+}
+
+.red {
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 20px;
+	border-radius: 20px;
+	padding-top: 5px;
+	padding: 20px;
+	width: 50vw;
+	height: 80px;
+	line-height: 35px;
+	margin-bottom: 20px;
+	/*background-color: #c34444; */
+	background-color: #E02016;
+}
+
+.white {
+	background-color: #ecf0f1;
 }
 
 .topNav {
