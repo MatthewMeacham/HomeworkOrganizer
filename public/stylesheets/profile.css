@@ -12,6 +12,19 @@ button {
   box-shadow: 0 -5px 0 rgba(0,0,0,0.1) inset;
   margin-bottom: 20px;
   margin-top: 10px;
+  cursor: pointer;
+  transition: 200ms ease-in-out;
+  -webkit-transition: 200ms ease-in-out;
+  -moz-transition: 200ms ease-in-out;
+  -ms-transition: 200ms ease-in-out;
+	
+}
+button:hover {
+	transition: 200ms ease-in-out;
+	-webkit-transition: 200ms ease-in-out;
+	-moz-transition: 200ms ease-in-out;
+	-ms-transition: 200ms ease-in-out;
+	background-color: rgb(182,61,54);
 }
 
 html,body { height: 100%; margin: 0px; padding: 0px; overflow-X: hidden; font-family: 'Nunito', sans-serif;}
@@ -99,11 +112,10 @@ select {
 	margin-right: auto;
 }
 
-#overview {
-	max-width: 1080px;
-	margin-left: auto;
-	margin-right: auto;
-	vertical-align: middle;
+.overview {
+	width: 100vw;
+	margin-left: -10px;
+	margin-right: 10px;
 }
 
 .center2{
@@ -906,4 +918,78 @@ nav a#pull {
   background-color: #c34444;
   margin-left: -20px;
   height: 10%;
+}
+.changeSettings {
+	position: relative;
+	top: 50px;
+}
+.changeSettings label {
+	font-weight: bold;
+	font-size: 22px;
+}
+.changeSettings input {
+	width: 80%;
+}
+.saveChanges {
+	
+}
+.btn {
+	text-align: center;
+}
+.section {
+	clear: both;
+	padding: 0px;
+	margin: 0px;
+}
+.changeSettings select {
+	width: 80%;
+}
+/*  COLUMN SETUP  */
+.col {
+	display: block;
+	float:left;
+	left: 10px;
+	position: relative;
+	margin: 1% 0 1% 1.6%;
+}
+.col:first-child { margin-left: 0; }
+
+/*  GROUPING  */
+.group:before,
+.group:after { content:""; display:table; }
+.group:after { clear:both;}
+.group { zoom:1; /* For IE 6/7 */ }
+/*  GRID OF FOUR  */
+.span_4_of_4 {
+	width: 100%;
+}
+.span_3_of_4 {
+	width: 74.6%;
+}
+.span_2_of_4 {
+	width: 49.2%;
+}
+.span_1_of_4 {
+	width: 23.8%;
+}
+@media screen and (max-width: 860px ) {
+	.col {
+		left: 5px;
+	}
+}
+/*  GO FULL WIDTH BELOW 480 PIXELS */
+@media only screen and (max-width: 787px) {
+	.col {  
+		margin: 1% 0 1% 0%; 
+	}
+	.span_1_of_4, .span_2_of_4, .span_3_of_4, .span_4_of_4 { 
+		width: 110%; 
+	}
+	.saveChanges {
+		width: 50%;
+	}
+	.btn {
+		text-align: center;
+		margin-left: 0px;
+	}
 }

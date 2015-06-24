@@ -1,25 +1,44 @@
 package models;
 
-import javax.persistence.*;
-import play.db.ebean.*;
-import com.avaje.ebean.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
-import play.data.validation.Constraints.*;
+import play.data.validation.Constraints.Required;
+import play.db.ebean.Model;
 
 @Entity
-public class Student extends Model{
+public class Student extends Model {
+	private static final long serialVersionUID = 1L;
 
 	@Required
 	public String name;
-	@Id
 	@Required
 	public String email;
 	@Required
 	public String password;
 	@Required
 	public String grade;
+
+	@Id
+	public Long id;
 	
-	public static Finder<String, Student> find = new Finder<String, Student>(String.class, Student.class);
+	@OneToMany
+	public Teacher teacher;
+	@OneToMany
+	public Note note;
+	@OneToMany
+	public Assignment assignment;
+	@OneToMany
+	public Assignment finishedAssignment;
+	@OneToMany
+	public Assignment lateAssignment;
+	
+	@ManyToOne
+	public Parent parent;
+
+	public static Finder<Long, Student> find = new Finder<Long, Student>(Long.class, Student.class);
 
 	public Student(String name, String email, String password, String grade) {
 		this.email = email;
@@ -27,22 +46,27 @@ public class Student extends Model{
 		this.name = name;
 		this.grade = grade;
 	}
-	
-	//TODO MAKE SURE TO CHANGE THIS IN ORDER TO ONLY MAKE IT SO THERE CAN ONLY BE ONE USER WITH THE INFORMATION, SO TWO PEOPLE CANT HAVE THE SAME 
-	//TODO EMAIL.... 
+
 	public static Student create(String name, String email, String password, String grade) {
-		if(find.where().eq("email", email).findUnique() == null) {
+		if (find.where().eq("email", email).eq("password", password).findUnique() == null) {
 			Student student = new Student(name, email, password, grade);
 			student.save();
 			return student;
 		}
 		return null;
 	}
-	
+
 	public static Student authenticate(String email, String password) {
-		Student student =  find.where().eq("email", email).eq("password", password).findUnique();
+		Student student = find.where().eq("email", email).eq("password", password).findUnique();
+		if (student == null) return null;
 		System.err.println("found student " + student.email);
 		return student;
 	}
-	
+
+	public static boolean exists(String email) {
+		Student student = find.where().eq("email", email).findUnique();
+		if (student == null) return false;
+		return true;
+	}
+
 }

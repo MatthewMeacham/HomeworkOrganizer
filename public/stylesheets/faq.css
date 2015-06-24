@@ -1,0 +1,63 @@
+body {
+	font-family: 'Nunito', sans-serif;
+	color: #384047;
+	margin: 0;
+	padding: 0;
+	background-color: white;
+}
+
+.content {
+	width: auto;
+}
+
+.topNav {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 70px;
+}
+
+.topNavInner {
+	margin: 20px;
+	width: 100%;
+	position: relative;
+	right: 50px;
+	height: 50px;
+}
+
+.topLinks {
+	color: #3498db;
+	float: right;
+}
+
+.topLinks a {
+	line-height: 2;
+	text-decoration: none;
+	padding: 10px;
+	color: #c34444;
+}
+
+.topText {
+	max-width: 100%;
+	text-align: center;
+}
+
+
+.questionsContainers {
+	width: 100%;
+	text-align: center;
+}
+
+.question {
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+.answer {
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
