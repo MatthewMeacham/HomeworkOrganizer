@@ -36,7 +36,38 @@ h1 {
 .responsiveImages {
 	max-width: 100%;
 }
-
+/* SIGN UP PAGE IMAGES */
+.imageHolder {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+}
+.imageHolder img {
+	max-width: 100%;
+	margin: 10px auto;
+	position: relative;
+	padding: 5px;
+}
+@media screen and (max-width: 670px) {
+	.imageHolder {
+	width: 100%;
+	display: inline-block;
+	align-items: center;
+	justify-content: center;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+	.imageHolder img {
+	max-width: 80%;
+	margin: 0px auto;
+	position: relative;
+	padding: 5px;
+}
+}
+/* END OF SIGN UP PAGE IMAGES */
 .largeImage {
 	max-width: 100%;
 	position: relative;
@@ -102,6 +133,7 @@ button {
 	font-size: 18px;
 	text-align: center;
 	font-style: normal;
+	font-family: 'Nunito', Arial, sans-serif, Helvetica;
 	border-radius: 5px;
 	width: 100%;
 	border: 1px solid #c34444;
@@ -207,6 +239,7 @@ label.light {
 	margin-right: auto;
 	width: 800px;
 }
+
 @media screen and (max-width: 815px) {
 	.topContentInner {
 		position: relative;
@@ -218,21 +251,6 @@ label.light {
 	.responsiveImages {
 		position: relative;
 		bottom: -50px;
-	}
-}
-@media screen and (max-width: 500px) {
-	.responsiveImages {
-		position: relative;
-		bottom: 20px;
-	}
-	.Content {
-	
-	}
-	.topText {
-	  width: auto;
-	  text-align: center;
-	  font-size: 24px;
-	  text-transform: uppercase;
 	}
 }
 
@@ -249,14 +267,17 @@ label.light {
 }
 
 .footerInner {
-	color: #ecf0f1;
+	color: black;
 	text-align: center;
 }
 
 .footerInner a {
-	color: #ecf0f1;
+	color: #34495e;
 	text-decoration: none;
+	text-transform: uppercase;
+	
 }
+
 
 .Content {
 	position: relative;
@@ -354,6 +375,38 @@ label.light {
 		padding: 10px;
 		color: #c34444;
 	}
+		.responsiveImages {
+		position: relative;
+		bottom: 20px;
+	}
+	.Content {
+	
+	}
+	.topText {
+		width: auto;
+		text-align: center;
+		font-size: 24px;
+		text-transform: uppercase;
+	}
+	.Content {
+		position: relative;
+		width: auto;
+		height: inherit;
+		background-color: #c34444;
+		z-index: 0;
+		overflow: hidden;
+		z-index: 8;
+		bottom: 175px;
+}
+	.lastContent {
+		width: auto;
+		height: inherit;
+		background-color: #56ced6;
+		z-index: 0;
+		overflow: hidden;
+		bottom: 175px;
+		position: relative;
+	}
 }
 
 @media screen and (min-width: 480px) {
@@ -397,4 +450,55 @@ html::-webkit-scrollbar-thumb {
 		border-radius: 0px;
 		border: 5px solid rgba(0, 0, 0, 0.2);
 	}
+}
+@media screen and (max-width: 425px) {
+		.Content {
+		position: relative;
+		width: auto;
+		height: inherit;
+		background-color: #c34444;
+		z-index: 0;
+		overflow: hidden;
+		z-index: 8;
+		bottom: 220px;
+}
+	.lastContent {
+		width: auto;
+		height: inherit;
+		background-color: #56ced6;
+		z-index: 0;
+		overflow: hidden;
+		bottom: 220px;
+		position: relative;
+	}
+}
+
+.contactForm {
+	position: relative;
+	top: 50px;
+	width: 100%;
+	margin: 0px auto;
+	padding: 0;
+}
+.contactForm input {
+	font-family: 'Nunito', sans-serif, Arial, Helvetica;
+	margin: 3px;
+}
+.contactForm label {
+	position: relative;
+	top: 5px;
+	left: 3px;
+}
+.contactForm .message {
+	height: 150px;
+	font-family: 'Nunito', sans-serif, Arial, Helvetica;
+	color: white;
+	margin: 3px;
+	resize: vertical;
+}
+::-webkit-textarea-placeholder {
+	color: white;
+}
+:-moz-textarea-placeholder {
+	color: white;
 }

@@ -15,6 +15,7 @@ create table assignment (
   day                       integer,
   year                      integer,
   total                     integer,
+  student_id                bigint,
   constraint pk_assignment primary key (id))
 ;
 
@@ -31,13 +32,16 @@ create table parent (
   email                     varchar(255) not null,
   name                      varchar(255),
   password                  varchar(255),
+  salt                      varchar(255),
   constraint pk_parent primary key (email))
 ;
 
 create table school_class (
   id                        bigint not null,
   subject                   varchar(255),
+  color                     varchar(255),
   student_id                bigint,
+  password                  varchar(255),
   constraint pk_school_class primary key (id))
 ;
 
@@ -46,16 +50,17 @@ create table student (
   name                      varchar(255),
   email                     varchar(255),
   password                  varchar(255),
+  salt                      varchar(255),
   grade                     varchar(255),
   parent_email              varchar(255),
   constraint pk_student primary key (id))
 ;
 
 create table teacher (
-  id                        bigint not null,
+  email                     varchar(255) not null,
+  password                  varchar(255),
   name                      varchar(255),
-  school_class_id           bigint,
-  constraint pk_teacher primary key (id))
+  constraint pk_teacher primary key (email))
 ;
 
 create sequence assignment_seq;
@@ -80,8 +85,6 @@ alter table school_class add constraint fk_school_class_student_4 foreign key (s
 create index ix_school_class_student_4 on school_class (student_id);
 alter table student add constraint fk_student_parent_5 foreign key (parent_email) references parent (email) on delete restrict on update restrict;
 create index ix_student_parent_5 on student (parent_email);
-alter table teacher add constraint fk_teacher_schoolClass_6 foreign key (school_class_id) references school_class (id) on delete restrict on update restrict;
-create index ix_teacher_schoolClass_6 on teacher (school_class_id);
 
 
 

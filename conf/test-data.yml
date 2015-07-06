@@ -15,3 +15,8 @@
     password: hunter2
     name: Rachel
     grade: 11
+
+- !!models.Parent
+    email: eddie@gmail.com
+    password: hunter2
+    name: Eddie

@@ -9,7 +9,7 @@ import play.db.ebean.Model;
 @Entity
 public class Parent extends Model {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Required
 	public String name;
 	@Id
@@ -17,18 +17,20 @@ public class Parent extends Model {
 	public String email;
 	@Required
 	public String password;
+	public String salt;
 
 	public static Finder<String, Parent> find = new Finder<String, Parent>(String.class, Parent.class);
 
-	public Parent(String name, String email, String password) {
+	public Parent(String name, String email, String salt, String password) {
 		this.email = email;
+		this.salt = salt;
 		this.password = password;
 		this.name = name;
 	}
 
-	public static Parent create(String name, String email, String password) {
-		if (find.where().eq("email", email).findUnique() == null) {
-			Parent parent = new Parent(name, email, password);
+	public static Parent create(String name, String email, String salt, String password) {
+		if (find.where().eq("email", email.toLowerCase()).findUnique() == null && Student.find.where().eq("email", email).findUnique() == null && Teacher.find.where().eq("email", email).findUnique() == null) {
+			Parent parent = new Parent(name, email, salt, password);
 			parent.save();
 			return parent;
 		}
@@ -36,25 +38,14 @@ public class Parent extends Model {
 	}
 
 	public static Parent authenticate(String email, String password) {
-		Parent parent = find.where().eq("email", email).eq("password", password).findUnique();
+		Parent parent = find.where().eq("email", email.toLowerCase()).eq("password", password).findUnique();
 		if (parent == null) return null;
-		System.err.println("found parent " + parent.email);
 		return parent;
 	}
 
 	public static boolean exists(String email) {
-		Parent parent = find.where().eq("email", email).findUnique();
+		Parent parent = find.where().eq("email", email.toLowerCase()).findUnique();
 		if (parent == null) return false;
 		return true;
 	}
-
-	// public static Parent addStudent(String parentEmail, String childName,
-	// String childPassword, String childGrade) {
-	// Parent parent = find.where().eq("email", parentEmail).findUnique();
-	// parent.children.add(new Student(childName, parentEmail, childPassword,
-	// childGrade));
-	// parent.save();
-	// return parent;
-	// }
-
 }

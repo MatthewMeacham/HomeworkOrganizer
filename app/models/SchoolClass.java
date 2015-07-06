@@ -15,19 +15,34 @@ public class SchoolClass extends Model {
 	public Long id;
 	@Required
 	public String subject;
+	@Required
+	public String color;
+	//TODO CHANGE TO FOREIGN KEY
 	@ManyToOne
 	public Student student;
+	
+	public String password;
+	
 
 	public static Finder<Long, SchoolClass> find = new Finder<Long, SchoolClass>(Long.class, SchoolClass.class);
 
-	public SchoolClass(String subject, Student student) {
+	public SchoolClass(String subject, Student student, String color) {
 		this.subject = subject;
 		this.student = student;
+		this.color = color;
 	}
 
-	public static SchoolClass create(String subject, Long studentId) {
-		SchoolClass schoolClass = new SchoolClass(subject, Student.find.ref(studentId));
+	public static SchoolClass create(String subject, Long studentId, String color) {
+		SchoolClass schoolClass = new SchoolClass(subject, Student.find.ref(studentId), color);
 		schoolClass.save();
 		return schoolClass;
+	}
+	
+	public static void edit(Long id, String subject, String color, Student student) {
+		SchoolClass schoolClass = find.ref(id);
+		schoolClass.subject = subject;
+		schoolClass.color = color;
+		schoolClass.student = student;
+		schoolClass.save();
 	}
 }

@@ -1,0 +1,147 @@
+.box h1 {
+  font-size: 24px;
+  color: #C34444;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 300;
+  max-width: 100%;
+}
+
+.logo {
+  height: 50px;
+  width: 150px;
+  border: 1px solid #c34444;
+  cursor: pointer;
+  background: #c4413b;
+  margin: 0 auto;
+  transition: 200ms ease-in-out;
+  -webkit-transition: 200ms ease-in-out;
+  -moz-transition: 200ms ease-in-out;
+  -ms-transition: 200ms ease-in-out;
+}
+.colorText {
+	color: white;
+	font-weight: 300;
+	position: relative;
+	bottom: 5px;
+}
+.colors {
+  width: 150px;
+  height: 150px;
+  margin: 15px auto;
+  padding: 20px;
+  border: 3px solid #c4413b;
+  cursor: default;
+  background: #fff;
+  display: none;
+  font-family: sans-serif;
+  position: relative;
+  right: 22px;
+}
+
+.innerContent {
+  position: relative;
+  bottom: 0px;
+}
+
+.redForColorChooser {
+  background-color: #ED2828;
+  cursor: pointer;
+}
+.orange {
+  background-color: #FA9F20;
+  cursor: pointer;
+}
+.yellowForColorChooser {
+  background-color: #FFE629;
+  cursor: pointer;
+}
+.greenForColorChooser {
+  background-color: #61FA85;
+  cursor: pointer;
+}
+.blue {
+  background-color: #7CD7E6;
+  cursor: pointer;
+}
+.indigo {
+  background-color: #0060FA;
+  cursor: pointer;
+}
+.purple {
+  background-color: #941FCF;
+  cursor: pointer;
+}
+.pink {
+  background-color: #FF61E7;
+  cursor: pointer;
+}
+.whiteForColorChooser {
+  background-color: #EDEDED;
+  cursor: pointer;
+}
+.black {
+  background-color: #1F1F1F;
+  cursor: pointer;
+}
+.grey {
+  background-color: #737373;
+  cursor: pointer;
+}
+.brown {
+  background-color: #8F5E3B;
+  cursor: pointer;
+}
+.reset {
+  padding: 3px;
+  cursor: pointer;
+  background: transparent;
+  border: 2px solid  #c4413b;
+  color:  #c4413b;
+  width: 94%;
+  text-align: center;
+  position: relative;
+  margin: 5px auto;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+}
+.reset:active {
+  background-color:  #c4413b;
+  color: white;
+  border: 2px solid  #c4413b;
+}
+.reset:hover {
+	transition: none;
+	
+}
+table {
+  width: 100%;
+}
+table td {
+  border-radius: 0%;
+  height: 35px;
+  width: 30px;
+  transform: scale(1);
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -moz-transform: scale(1);
+  transition: 100ms ease-in-out;
+  -webkit-transition: 100ms ease-in-out;
+  -moz-transition: 100ms ease-in-out;
+  -ms-transition: 100ms ease-in-out;
+}
+table td:hover {
+  transform: scale(0.9);
+  -webkit-transform: scale(0.9);
+  -moz-transform: scale(0.9);
+  -moz-transform: scale(0.9);
+  transition: 100ms ease-in-out;
+  -webkit-transition: 100ms ease-in-out;
+  -moz-transition: 100ms ease-in-out;
+  -ms-transition: 100ms ease-in-out;
+}
+#moveDown {
+	position: relative;
+	top: 50px;
+}
+

@@ -8,6 +8,21 @@ $(document).ready(function() {
 	$('#email').on('input', function(){
 		checkPassword('email');
 	});
+	$('#currentPassword').on('input', function(){
+		checkPassword('currentPassword');
+	});
+	$('#newPassword').on('input', function(){
+		checkPassword('newPassword');
+	});
+	$('#newPasswordAgain').on('input', function(){
+		checkPassword('newPasswordAgain');
+	});
+	$('#subject').on('input', function(){
+		checkPassword('subject');
+	});
+	$('#description').on('input', function(){
+		checkPassword('description');
+	});
 });
 
 function checkPassword(id) {

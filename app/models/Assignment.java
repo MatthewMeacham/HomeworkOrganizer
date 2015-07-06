@@ -30,6 +30,8 @@ public class Assignment extends Model {
 	public int year;
 	// this is set to year * 366 - (12 - month) * 31 - (31 - day)
 	public int total;
+	
+	public long studentID;
 
 	public static Finder<Long, Assignment> find = new Finder<Long, Assignment>(Long.class, Assignment.class);
 
@@ -43,6 +45,7 @@ public class Assignment extends Model {
 		this.day = day;
 		this.year = year;
 		total = (year * 366) - ((12 - month) * 31) - (31 - day);
+		this.studentID = schoolClass.student.id;
 	}
 
 	public static Assignment create(String dueDate, String schoolClassId, String kindOfAssignment, String description) {
@@ -128,8 +131,7 @@ public class Assignment extends Model {
 		assignment.day = day;
 		assignment.spanner = kindOfAssignment.substring(0, 1);
 		assignment.description = description;
-		Assignment tempAssignment = new Assignment(dueDate, schoolClass, kindOfAssignment, description, month, day, year);
-		assignment.total = tempAssignment.total;
+		assignment.total = (year * 366) - ((12 - month) * 31) - (31 - day);
 		assignment.save();
 	}
 

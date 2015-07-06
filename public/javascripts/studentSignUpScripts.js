@@ -12,7 +12,6 @@ $(document).ready(function() {
 
 function checkPassword(id) {
 	var e = document.getElementById(id);
-	console.log(e.value.length);
 	if(e.value.length >= 250) {
 		document.getElementById((id + 'Error')).innerHTML = "Too long";
 	} else {

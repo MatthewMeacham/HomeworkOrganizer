@@ -5,13 +5,6 @@
 @import views.html.helper.input
 
 @main("Student List") {
-	
-	<script>
-		<!--[if IE]>
-			window.location = "@routes.Application.indexForIE()"
-		<![endif]--> 
-	</script>
-
 	<div id="mainIndex">
 		<!-- NAVIGATION -->
 		<div class="topNav">
@@ -29,7 +22,7 @@
 		<!-- START MAIN TITLE -->
 	
 		<div class="animated bounceInDown topText">
-			<a href="@routes.Application.index"><img src=@routes.Assets.at("images/logo.png") alt="Orgnizr" style="max-width: 100%; padding: 10px;"></a>
+			<a href="@routes.Application.index"><img src=@routes.Assets.at("images/logo.png") alt="Orgnizer" style="max-width: 100%; padding: 10px;"></a>
 			<div class="links">
 				<div class="scroll" style="display: inline-block; cursor: pointer; cursor: hand;">About</div> |
 				<a href="@routes.Application.FAQ">FAQ</a>
@@ -42,7 +35,7 @@
 
 			<div class="topContent" style="overflow: hidden;">
 				<div class="topContentInner">
-					<img class="largeImage" src=@routes.Assets.at("images/Browser.png") alt="Orgnizr">
+					<img class="largeImage" src=@routes.Assets.at("images/Browser.png") alt="Orgnizer">
 					<img class="animated bounceInRight habout responsiveImages" style="position: absolute; margin-top: -550px; margin-left: -10px; overflow: hidden;" src=@routes.Assets.at("images/BrowserContent.png") alt="Homework Organizer">
 					<img class="animated bounceIn responsiveImages" style="position: absolute; margin-top: -550px; margin-left: -10px; overflow: hidden;" src=@routes.Assets.at("images/BrowserContent2.png") alt="Homework Organizer">
 					<img class="animated bounceInLeft responsiveImages" style="position: absolute; margin-top: -540px; margin-left: -10px; overflow: hidden;" src=@routes.Assets.at("images/BrowserContent3.png") alt="Homework Organizer"> 
@@ -57,13 +50,13 @@
 			<div class="contentInner animated fadeInUp">
 				<h1>@students WORLD WIDE USERS SO FAR</h1>
 				<br />
-				<h1 class="textHeader">What is Orgnizr?</h1>
+				<h1 class="textHeader">What is Orgnizer?</h1>
 				<ul class="contentList">
-					<p>Have you ever felt like you can't keep track of your homework or you just can't be bothered to write it in your planner? Well Orgnizr is the best solution for you. Here's why!</p>
-					<li>Orgnizr is the easiest way for a student of any grade to organize all their homework, projects, and tests.</li>
-					<li>Orgnizr allows for you to take notes, set dates for tests, quizzes, or projects. Then Orgnizr will remind you of these events a predetermined time before them for you to be able to study.</li>
+					<p>Have you ever felt like you can't keep track of your homework or you just can't be bothered to write it in your planner? Well Orgnizer is the best solution for you. Here's why!</p>
+					<li>Orgnizer is the easiest way for a student of any grade to organize all their homework, projects, and tests.</li>
+					<li>Orgnizer allows for you to take notes, set dates for tests, quizzes, or projects. Then Orgnizer will remind you of these events a predetermined time before them for you to be able to study.</li>
 					<li>This method will keep you informed and will keep track of your homework, projects, and tests for you.</li>
-					<li>Orgnizr uses a simple, yet intuitive interface in order to create the best possible experience for you.</li>
+					<li>Orgnizer uses a simple, yet intuitive interface in order to create the best possible experience for you.</li>
 				</ul>
 				<div class="spacer"></div>
 			</div>
@@ -75,10 +68,10 @@
 
 		<div class="lastContent">
 			<div class="contentInner animated fadeInUp">
-				<h1 class="textHeader">Why use Orgnizr?</h1>
+				<h1 class="textHeader">Why use Orgnizer?</h1>
 				<ul class="contentList">
-					<li>Orgnizr is the best in internet organizers that is specifically made for students.</li>
-					<li>Experts say that you should use a planner in order to keep track of your homework, quizzes, tests. Orgnizr is the easiest place for exactly that.</li>
+					<li>Orgnizer is the best in internet organizers that is specifically made for students.</li>
+					<li>Experts say that you should use a planner in order to keep track of your homework, quizzes, tests. Orgnizer is the easiest place for exactly that.</li>
 					<li>It boasts an interactive user interface and allows for the most convenience in keeping track of your assignments.</li>
 				</ul>
 				<div class="spacer"></div>
@@ -87,13 +80,19 @@
 
 		<!-- END LAST AREA -->
 
-		<!-- START FOOTER -->
+		<footer class="footer">
+			<div class="footerInner">
+				<h2><a href="#">Privacy Policy</a> | <a href="@routes.Application.contactUsPage">Contact Us</a></h2>
+			</div>
+		</footer>
+
+		<!-- START FOOTER 
 		<div class="footer">
 			<div class="footerInner">
-				<h2>MATTHEW MEACHAM &copy; COPYRIGHT SINCE 2014</h2>
+				<h2>MATTHEW MEACHAM | ROSS MACPHEE &copy; COPYRIGHT SINCE 2014</h2>
 			</div>
 		</div>
-		<!-- END FOOTER -->
+		< END FOOTER -->
 	</div>
 }
 

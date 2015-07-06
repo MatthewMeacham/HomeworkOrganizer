@@ -18,38 +18,34 @@ public class Student extends Model {
 	public String email;
 	@Required
 	public String password;
+	public String salt;
 	@Required
 	public String grade;
 
 	@Id
 	public Long id;
-	
-	@OneToMany
-	public Teacher teacher;
-	@OneToMany
-	public Note note;
-	@OneToMany
-	public Assignment assignment;
-	@OneToMany
-	public Assignment finishedAssignment;
-	@OneToMany
-	public Assignment lateAssignment;
-	
+
 	@ManyToOne
+	// TODO CHANGE TO FOREIGN KEY
 	public Parent parent;
+
+	@OneToMany
+	// TODO CHANGE TO FOREIGN KEY
+	public Teacher teacher;
 
 	public static Finder<Long, Student> find = new Finder<Long, Student>(Long.class, Student.class);
 
-	public Student(String name, String email, String password, String grade) {
+	public Student(String name, String email, String salt, String password, String grade) {
 		this.email = email;
+		this.salt = salt;
 		this.password = password;
 		this.name = name;
 		this.grade = grade;
 	}
 
-	public static Student create(String name, String email, String password, String grade) {
-		if (find.where().eq("email", email).eq("password", password).findUnique() == null) {
-			Student student = new Student(name, email, password, grade);
+	public static Student create(String name, String email, String salt, String password, String grade) {
+		if (find.where().eq("email", email.toLowerCase()).eq("password", password).findUnique() == null && Teacher.find.where().eq("email", email).findUnique() == null) {
+			Student student = new Student(name, email, salt, password, grade);
 			student.save();
 			return student;
 		}
@@ -57,14 +53,13 @@ public class Student extends Model {
 	}
 
 	public static Student authenticate(String email, String password) {
-		Student student = find.where().eq("email", email).eq("password", password).findUnique();
+		Student student = find.where().eq("email", email.toLowerCase()).eq("password", password).findUnique();
 		if (student == null) return null;
-		System.err.println("found student " + student.email);
 		return student;
 	}
 
 	public static boolean exists(String email) {
-		Student student = find.where().eq("email", email).findUnique();
+		Student student = find.where().eq("email", email.toLowerCase()).findUnique();
 		if (student == null) return false;
 		return true;
 	}

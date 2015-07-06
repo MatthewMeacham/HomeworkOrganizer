@@ -1,0 +1,85 @@
+@(students: Integer, loginForm: Form[Application.Login])
+
+@main("Orgnizr") {
+	<div id="mainIndex">
+		<!-- NAVIGATION -->
+		<div class="topNav">
+			<div class="topNavInner">
+				<div class="animated bounceIn topLinks">
+					<a href="@routes.Application.signup">Sign Up!</a> | 
+					<a href="@routes.Application.login">Sign In!</a>
+				</div>
+			</div>
+		</div>
+		<!-- END NAVIGATION -->
+
+		<!-- START MAIN TITLE -->
+
+		<div class="animated bounceInDown topText">
+			<img src=@routes.Assets.at("images/logo.png") alt="Orgnizr" style="max-width: 100%; padding: 10px;">
+			<div class="links">
+				<a href="/blog">Dev-BLog</a> | 
+				<div class="scroll" style="display: inline-block; cursor: pointer; cursor: hand;">About</div>
+			</div>
+		</div>
+
+		<!-- END MAIN TITLE -->
+
+		<!-- START TOP AREA -->
+
+			<div class="topContent" style="overflow: hidden;">
+				<div class="topContentInner">
+					<img src=@routes.Assets.at("images/Browser.png") alt="Orgnizr">
+					<img class="animated bounceInRight habout" style="position: absolute; margin-top: 200px; margin-left: -815px; overflow: hidden;" src=@routes.Assets.at("images/BrowserContent.png") alt="Homework Organizer">
+					<img class="animated bounceIn" style="position: absolute; margin-top: 200px; margin-left: -815px; overflow: hidden;" src=@routes.Assets.at("images/BrowserContent2.png") alt="Homework Organizer">
+					<img class="animated bounceInLeft" style="position: absolute; margin-top: 200px; margin-left: -815px; overflow: hidden;" src=@routes.Assets.at("images/BrowserContent3.png") alt="Homework Organizer">
+				</div>
+			</div>
+
+		<!-- END TOP AREA -->
+
+		<!-- START MIDDLE AREA -->
+		
+		<div class="Content" id="about">
+			<div class="contentInner animated fadeInUp">
+				<h1>@students WORLD WIDE USERS SO FAR</h1>
+				<br />
+				<h1 class="textHeader">What is Orgnizr?</h1>
+				<ul class="contentList">
+					<p>Have you ever felt like you can't keep track of your homework or you just can't be bothered to write it in your planner? Well Orgnizr is the best solution for you. Here's why!</p>
+					<li>Orgnizr is the easiest way for a student of any grade to organize all their homework, projects, and tests.</li>
+					<li>Orgnizr allows for you to take notes, set dates for tests, quizzes, or projects. Then Orgnizr will remind you of these events a predetermined time before them for you to be able to study.</li>
+					<li>This method will keep you informed and will keep track of your homework, projects, and tests for you.</li>
+					<li>Orgnizr uses a simple, yet intuitive interface in order to create the best possible experience for you.</li>
+				</ul>
+				<div class="spacer"></div>
+			</div>
+		</div>
+
+		<!-- END MIDDLE AREA -->
+
+		<!-- START LAST AREA -->
+
+		<div class="lastContent">
+			<div class="contentInner animated fadeInUp">
+				<h1 class="textHeader">Why use Orgnizr?</h1>
+				<ul class="contentList">
+					<li>Orgnizr is the best in internet organizers that is specifically made for students.</li>
+					<li>Experts say that you should use a planner in order to keep track of your homework, quizzes, tests. Orgnizr is the easiest place for exactly that.</li>
+					<li>It boasts an interactive user interface and allows for the most convenience in keeping track of your assignments.</li>
+				</ul>
+				<div class="spacer"></div>
+			</div>
+		</div>
+
+		<!-- END LAST AREA -->
+
+		<!-- START FOOTER -->
+		<div class="footer">
+			<div class="footerInner">
+				<h2>MATTHEW MEACHAM &copy; COPYRIGHT SINCE 2014</h2>
+			</div>
+		</div>
+		<!-- END FOOTER -->
+	</div>
+}
