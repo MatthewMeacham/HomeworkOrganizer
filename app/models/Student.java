@@ -33,7 +33,7 @@ public class Student extends Model {
 	// TODO CHANGE TO FOREIGN KEY
 	public Teacher teacher;
 
-	public static Finder<Long, Student> find = new Finder<Long, Student>(Long.class, Student.class);
+	public static Model.Finder<Long, Student> find = new Model.Finder<Long, Student>(Long.class, Student.class);
 
 	public Student(String name, String email, String salt, String password, String grade) {
 		this.email = email;

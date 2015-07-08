@@ -128,9 +128,9 @@ select {
 }
 
 .overview {
-	width: 100vw;
-	margin-left: -10px;
-	margin-right: 10px;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .center2{
@@ -379,7 +379,7 @@ select {
 	border-radius: 20px;
 	padding-top: 5px;
 	padding: 20px;
-	width: 50vw;
+	width: 50%;
 	max-height: 100%;
 	min-height: 75px;
 	line-height: 15px;
@@ -394,7 +394,7 @@ select {
 	border-radius: 20px;
 	padding-top: 5px;
 	padding: 20px;
-	width: 50vw;
+	width: 50%;
 	max-height: 100%;
 	min-height: 75px;
 	line-height: 15px;
@@ -409,7 +409,7 @@ select {
 	border-radius: 20px;
 	padding-top: 5px;
 	padding: 20px;
-	width: 50vw;
+	width: 50%;
 	max-height: 100%;
 	min-height: 75px;
 	line-height: 15px;
@@ -427,6 +427,7 @@ select {
 	width: 100%;
 	color: white;
 	font-weight: bold;
+	height: auto;
 }
 
 .topNav img {
@@ -434,11 +435,12 @@ select {
 	margin-top: -30px;
 }
 .topNav li {
-	display: inline;
+	display: inline-block;
+	
 }
 .topNav a {
 	width: 100%;
-	display: inline;
+	display: inline-block;
 }
 .topImage {
 	width: auto;
@@ -496,17 +498,20 @@ nav:focus {
 	outline: none;
 }
 
+
 nav ul {
 	padding: 0;
 	margin: 0 auto;
 	text-align: center;
 	width: 779px;
-	height: 40px;
+	height: auto;
 	outline: none;
+	position: relative;
+	right: 15px;
 }
 
 nav li {
-	display: inline;
+	display: inline-block;
 	margin-left: 30px;
 	outline: none;
 	text-align: center;
@@ -565,6 +570,8 @@ nav a#pull {
 
 .center {
 	align: center;
+	margin-left: auto;
+	margin-right: auto;
 }
 .thisColorhere {
 	height: 10px;
@@ -665,7 +672,6 @@ nav a#pull {
 }	
 
 
-@media screen and (max-width: 1650px) {
 	.innerContentMain {
 		max-height: 354px;
 		max-width: 100%;
@@ -701,55 +707,7 @@ nav a#pull {
 	#browser {
 		display: none;
 	}
-	/*
-	nav { 
-  		height: 80px;
-  		outline: 0;
-		text-transform: uppercase;
-  	}
 
-  	nav:focus {
-		outline: none;
-	}
-  	nav ul {
-  		width: 100%;
-  		display: block;
-  		height: 80px;
-  		outline: none;
-  	}
-  	nav li {
-  		width: 100%;
-  		text-align: center;
-  		float: left;
-  		position: relative;
-  		outline: none;
-  		margin: 0;
-  		display: inline;
-  	}
-  	nav li a {
-		outline: none;
-		text-align: center;
-	  	-o-transition:.5s;
-		-ms-transition:.5s;
-		-moz-transition:.5s;
-		-webkit-transition:.5s;
-		transition:.5s;
-	}
-
-	nav li a:hover {
-		outline: none;
-		text-align: center;
-		color: #e74c3c;
-	}
-
-  	nav a {
-	  	text-align: left;
-	  	width: 50%;
-	  	outline: none;
-	  	text-indent: 5px;
-  	}
-*/
-}
 @media screen and (max-width: 840px) {
 	nav a {
 		font-size: 14px;
@@ -771,7 +729,8 @@ nav a#pull {
 		width: 100%;
 		color: #c4413b;
 	}
-		nav a {
+	
+	nav a {
 		font-size: 16px;
 	}
 
@@ -799,6 +758,9 @@ nav a#pull {
   		height: auto;
   		outline: 0;
 		text-transform: uppercase;
+		border-bottom: 0;
+		outline: none;
+		text-align: center;
   	}
 
   	nav:focus {
@@ -809,6 +771,7 @@ nav a#pull {
   		display: block;
   		height: auto;
   		outline: none;
+  		right: 0px;
   	}
   	nav li {
   		width: 100%;
@@ -876,12 +839,6 @@ nav a#pull {
 		display: none;
 	}
 
-	nav {
-		border-bottom: 0;
-		outline: none;
-		text-transform: uppercase;
-		text-align: center;
-	}
 
 	nav:focus {
 		outline: none;
@@ -962,27 +919,14 @@ nav a#pull {
 		transform: rotate(-45deg) translate(7px, -8px);
 	}
 	#delete, #edit {
-		opacity: 1;
+		opacity: 1 !important;
+		display: inline-block;
 		cursor: pointer;
-		-webkit-transition: 50ms ease-in-out;
-		-moz-transition: 50ms ease-in-out;
-		-o-transition: 50ms ease-in-out;
-		transition: 50ms ease-in-out;
 		position: relative;
 	}
-	#classColor:hover #delete {
-		opacity: 1;
-		-webkit-transition: 50ms ease-in-out;
-		-moz-transition: 50ms ease-in-out;
-		-o-transition: 50ms ease-in-out;
-		transition: 50ms ease-in-out;
-	}
-	#classColor:hover #edit {
-		opacity: 1;
-		-webkit-transition: 50ms ease-in-out;
-		-moz-transition: 50ms ease-in-out;
-		-o-transition: 50ms ease-in-out;
-		transition: 50ms ease-in-out;
+	.edit, .delete {
+		top: -1px !important;
+		position: relative;
 	}
 	#edit {
 		font-size: 14px;
@@ -1060,7 +1004,7 @@ nav a#pull {
 	.addClass {
 		width: 95%;
 	}
-	#subject {
+	#subject, #password {
 		width: 85%;
 	}
 	#addAssignment .container select {
@@ -1073,6 +1017,20 @@ nav a#pull {
 	#description {
 		width: 82%;
 	}
+	.alignContentParent button {
+		width: 90%;
+		margin: 5 auto;
+		right: 3px;
+		position: relative;
+	}	
+	.alignContentParent input {
+		width: 80%;
+		margin: 15 auto;
+	}
+	.bottomInputFields input {
+		width: 85%;
+	}
+
 	
 }
 ::-webkit-scrollbar-track
@@ -1109,9 +1067,7 @@ nav a#pull {
 	width: 80%;
 }
 
-.btn {
-	text-align: center;
-}
+
 .section {
 	clear: both;
 	padding: 0px;
@@ -1166,7 +1122,7 @@ nav a#pull {
 	}
 .choosePerson {
 	text-align: center;
-	width: 75vw;
+	width: 50%;
 	margin: 0 auto;
 }
 
@@ -1186,18 +1142,26 @@ nav a#pull {
 		width: 100%; 
 	}
 	.saveChanges {
-		width: 50%;
+		width: 70%;
+		margin: 0 auto;
+		left: 10px;
+		position: relative;
 	}
 	.btn {
 		text-align: center;
-		margin-left: 0px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.btnStudent {
+		position: relative;
+		right: 5%;
 	}
 	.span_3_of_3, .span_2_of_3, .span_1_of_3 { 
 		width: 100%; 
 	}
 	.choosePerson {
 		text-align: center;
-		width: 100%;
+		width: 105%;
 		margin: 0 auto;
 	}
 	.changeSettings .email {
@@ -1505,11 +1469,42 @@ nav a#pull {
 	position: relative;
 	left: 15px;
 	top: 25px;
-	
+	max-width: 90%;
+	margin: 0 auto;
+	text-align: center;
 }
+.acctSettings {
+	position: relative;
+	right: 10px;
+}
+.acctSettings h2 {
+	left: 10px;
+	position: relative;
 	
-	
-	
+}	
+.alignContentParent {
+	position: relative;
+	right: 15px;
+}
+.alignContentParent h3 {
+	max-width: 90%;
+	text-align: center;
+	margin: 0 auto;
+	position: relative;
+	right: 0px;
+}
+#addChild h2 {
+	position: relative;
+	right: 15px;
+}
+.teacherName {
+	color: white;
+}
+.saveChanges {
+	margin: 0 auto;
+	left: 10px;
+	position: relative;
+	}
 	
 	
 	

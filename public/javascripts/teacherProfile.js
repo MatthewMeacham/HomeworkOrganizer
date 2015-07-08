@@ -152,11 +152,6 @@ function submitAssignmentEditForm(id) {
 	document.getElementById('assignmentEditForm' + id).submit();
 }
 
-function submitFinishedAssignmentForm(id) {
-	if(submitted) return;
-	document.getElementById('assignmentFinishedForm' + id).submit();
-}
-
 function submitSchoolClassDeleteForm(id) {
 	if(submitted) return;
 	document.getElementById('schoolClassDeleteForm' + id).submit();
@@ -183,15 +178,11 @@ function toggle_visibility(id) {
 	document.getElementById('overview').style.display = 'none';		
 	document.getElementById('schoolClasses').style.display = 'none';
 	document.getElementById('addAssignment').style.display = 'none';
-	document.getElementById('lateAssignments').style.display = 'none';
-	document.getElementById('finishedAssignments').style.display = 'none';
 	document.getElementById('accountSettings').style.display = 'none';
 	document.getElementById('errorMessageText').innerHTML = "";
 	document.getElementById('overviewAnchor').style.color = "white";
 	document.getElementById('schoolClassesAnchor').style.color = "white";
 	document.getElementById('addAssignmentAnchor').style.color = "white";
-	document.getElementById('lateAssignmentsAnchor').style.color = "white";
-	document.getElementById('finishedAssignmentsAnchor').style.color = "white";
 	document.getElementById('accountSettingsAnchor').style.color = "white";
 	e.style.display = 'block';
 	anchor.style.color = '#56ced6';
@@ -204,8 +195,6 @@ function changeNavColor(id) {
 	document.getElementById('overviewAnchor').style.color = "white";
 	document.getElementById('schoolClassesAnchor').style.color = "white";
 	document.getElementById('addAssignmentAnchor').style.color = "white";
-	document.getElementById('lateAssignmentsAnchor').style.color = "white";
-	document.getElementById('finishedAssignmentsAnchor').style.color = "white";
 	document.getElementById('accountSettingsAnchor').style.color = "white";
 	e.style.color = '#56ced6';	
 }

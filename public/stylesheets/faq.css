@@ -38,10 +38,15 @@ body {
 }
 
 .topText {
-	max-width: 100%;
+	width: 100%;
 	text-align: center;
+	margin: 0 auto;
 }
-
+.topText img {
+	max-width: 50%;
+	margin: 0 auto;
+	position: relative;
+}
 
 .questionsContainers {
 	width: 100%;

@@ -15,7 +15,7 @@ create table assignment (
   day                       integer,
   year                      integer,
   total                     integer,
-  student_id                bigint,
+  foreign_id                bigint,
   constraint pk_assignment primary key (id))
 ;
 
@@ -23,8 +23,8 @@ create table note (
   id                        bigint not null,
   title                     varchar(255),
   notes                     varchar(255),
-  student_id                bigint,
   school_class_id           bigint,
+  foreign_id                bigint,
   constraint pk_note primary key (id))
 ;
 
@@ -40,7 +40,7 @@ create table school_class (
   id                        bigint not null,
   subject                   varchar(255),
   color                     varchar(255),
-  student_id                bigint,
+  teacher_id                bigint,
   password                  varchar(255),
   constraint pk_school_class primary key (id))
 ;
@@ -57,12 +57,20 @@ create table student (
 ;
 
 create table teacher (
-  email                     varchar(255) not null,
+  id                        bigint not null,
+  email                     varchar(255),
   password                  varchar(255),
   name                      varchar(255),
-  constraint pk_teacher primary key (email))
+  salt                      varchar(255),
+  constraint pk_teacher primary key (id))
 ;
 
+
+create table school_class_student (
+  school_class_id                bigint not null,
+  student_id                     bigint not null,
+  constraint pk_school_class_student primary key (school_class_id, student_id))
+;
 create sequence assignment_seq;
 
 create sequence note_seq;
@@ -77,16 +85,16 @@ create sequence teacher_seq;
 
 alter table assignment add constraint fk_assignment_schoolClass_1 foreign key (school_class_id) references school_class (id) on delete restrict on update restrict;
 create index ix_assignment_schoolClass_1 on assignment (school_class_id);
-alter table note add constraint fk_note_student_2 foreign key (student_id) references student (id) on delete restrict on update restrict;
-create index ix_note_student_2 on note (student_id);
-alter table note add constraint fk_note_schoolClass_3 foreign key (school_class_id) references school_class (id) on delete restrict on update restrict;
-create index ix_note_schoolClass_3 on note (school_class_id);
-alter table school_class add constraint fk_school_class_student_4 foreign key (student_id) references student (id) on delete restrict on update restrict;
-create index ix_school_class_student_4 on school_class (student_id);
-alter table student add constraint fk_student_parent_5 foreign key (parent_email) references parent (email) on delete restrict on update restrict;
-create index ix_student_parent_5 on student (parent_email);
+alter table note add constraint fk_note_schoolClass_2 foreign key (school_class_id) references school_class (id) on delete restrict on update restrict;
+create index ix_note_schoolClass_2 on note (school_class_id);
+alter table student add constraint fk_student_parent_3 foreign key (parent_email) references parent (email) on delete restrict on update restrict;
+create index ix_student_parent_3 on student (parent_email);
 
 
+
+alter table school_class_student add constraint fk_school_class_student_schoo_01 foreign key (school_class_id) references school_class (id) on delete restrict on update restrict;
+
+alter table school_class_student add constraint fk_school_class_student_stude_02 foreign key (student_id) references student (id) on delete restrict on update restrict;
 
 # --- !Downs
 
@@ -99,6 +107,8 @@ drop table if exists note;
 drop table if exists parent;
 
 drop table if exists school_class;
+
+drop table if exists school_class_student;
 
 drop table if exists student;
 

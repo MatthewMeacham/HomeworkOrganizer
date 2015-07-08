@@ -35,7 +35,8 @@ public class EmailSender {
 			generateMailMessage.setFrom(new InternetAddress(email));
 			generateMailMessage.setSender(new InternetAddress(email));
 			generateMailMessage.setSubject(subject);
-			generateMailMessage.setContent("From: " + name + " | " + email + "<br><br><pre>" + message + "</pre>", "text/html");
+
+			generateMailMessage.setContent("From: " + name + " | " + email + "<br><br><pre><p style=\"font-size:14px; font-family: 'Arial'; \">" + message + "</p></pre>", "text/html");
 
 			Transport transport = getMailSession.getTransport("smtp");
 
@@ -47,5 +48,4 @@ public class EmailSender {
 			e.printStackTrace();
 		}
 	}
-
 }

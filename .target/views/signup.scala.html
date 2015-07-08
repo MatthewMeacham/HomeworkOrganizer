@@ -50,7 +50,6 @@
 					<div class="animated bounceIn topLinks">
 						<a href="@routes.Application.index"> Home </a> |
 						<a href="@routes.Application.FAQ"> FAQ </a> |
-						<a href="@routes.Application.signup">Sign Up!</a> | 
 						<a href="@routes.Application.login">Sign In!</a>
 					</div>
 				</div>
@@ -60,7 +59,7 @@
 			<!-- START MAIN TITLE -->
 
 			<div class="topText">
-				<img src=@routes.Assets.at("images/logo.png") alt="Orgnizer" style="max-width: 100%; padding: 10px;">
+				<a href="@routes.Application.index"><img src=@routes.Assets.at("images/logo.png") alt="Orgnizer" style="max-width: 100%; padding: 10px;"></a>
 			</div>
 
 			<!-- END MAIN TITLE -->
@@ -71,12 +70,24 @@
 			
 			
 			<div class="imageHolder">
-				<a href="@routes.Application.studentSignup">
-					<img src=@routes.Assets.at("images/student.png") alt="Orgnizer")>
-				</a>
-				<a href="@routes.Application.parentSignup">
-					<img src=@routes.Assets.at("images/parent.png") alt="Orgnizer")>
-				</a>
+				<div> 
+					<label> Student Account </label>
+					<a href="@routes.Application.studentSignup">
+						<img src=@routes.Assets.at("images/student.png") alt="Student">
+					</a>
+				</div>
+				<div>
+					<label> Parent Account </label>
+					<a href="@routes.Application.parentSignup"> 
+						<img src=@routes.Assets.at("images/parent.png") alt="Parent">
+					</a>
+				</div>
+				<div>
+					<label> Teacher Account </label>
+					<a href="@routes.Application.teacherSignup">
+						<img src=@routes.Assets.at("images/teacher.png") alt="Teacher">
+					</a>
+				</div>
 			</div>
 			
 			<!-- BEGIN REGISTER FORM -

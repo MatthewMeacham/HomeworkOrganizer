@@ -40,16 +40,44 @@ h1 {
 .imageHolder {
 	width: 100%;
 	display: flex;
-	align-items: center;
 	justify-content: center;
-	
+	align-items: center;
 }
 .imageHolder img {
 	max-width: 100%;
 	margin: 10px auto;
 	position: relative;
-	padding: 5px;
+	padding: 10px;
+	-webkit-transform: scale(1);
+	-moz-transform: scale(1);
+	-ms-transform: scale(1);
+	-o-transform: scale(1);
+	transform: scale(1);
+	-webkit-transition: 125ms ease-in-out;
+	-moz-transition: 125ms ease-in-out;
+	-o-transition: 125ms ease-in-out;
+	-ms-transition: 125ms ease-in-out;
+	transition: 125ms ease-in-out;
 }
+.imageHolder img:hover {
+	-webkit-transform: scale(1.02);
+	-moz-transform: scale(1.02);
+	-ms-transform: scale(1.02);
+	-o-transform: scale(1.02);
+	transform: scale(1.02);
+	-webkit-transition: 125ms ease-in-out;
+	-moz-transition: 125ms ease-in-out;
+	-o-transition: 125ms ease-in-out;
+	-ms-transition: 125ms ease-in-out;
+	transition: 125ms ease-in-out;
+}
+.imageHolder a {
+	text-align: center;
+	text-decoration: none;
+	color: black;
+	display: inline;
+}
+
 @media screen and (max-width: 670px) {
 	.imageHolder {
 	width: 100%;
@@ -65,6 +93,15 @@ h1 {
 	margin: 0px auto;
 	position: relative;
 	padding: 5px;
+}
+}
+@media screen and (max-width: 738px) {
+	.imageHolder {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
 }
 }
 /* END OF SIGN UP PAGE IMAGES */
@@ -263,11 +300,13 @@ label.light {
 .footer {
 	width: auto;
 	height: 90px;
-	line-height: 90px;
+	line-height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .footerInner {
-	color: black;
 	text-align: center;
 }
 
@@ -379,9 +418,7 @@ label.light {
 		position: relative;
 		bottom: 20px;
 	}
-	.Content {
-	
-	}
+
 	.topText {
 		width: auto;
 		text-align: center;
@@ -406,6 +443,12 @@ label.light {
 		overflow: hidden;
 		bottom: 175px;
 		position: relative;
+	}
+
+	footer {
+		position: relative;
+		height: auto;
+		margin-top: -175px;
 	}
 }
 
@@ -471,6 +514,11 @@ html::-webkit-scrollbar-thumb {
 		bottom: 220px;
 		position: relative;
 	}
+	footer {
+		position: relative;
+		height: auto;
+		margin-top: -220px;
+	}
 }
 
 .contactForm {
@@ -501,4 +549,13 @@ html::-webkit-scrollbar-thumb {
 }
 :-moz-textarea-placeholder {
 	color: white;
+}
+@media only screen and (max-width: 380px) {
+	.footerInner {
+		font-size: 12px;
+		transition: 200ms ease-in-out;
+	}
+}
+img {
+	border: 0;
 }

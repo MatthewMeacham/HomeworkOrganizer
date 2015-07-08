@@ -15,22 +15,21 @@ public class Note extends Model {
 	public String title;
 	public String notes;
 	@ManyToOne
-	public Student student;
-	// TODO this is an optional thing, is there a special annotation for that?
-	@ManyToOne
 	public SchoolClass schoolClass;
+	
+	public long foreignID;
 
 	public static Finder<Long, Note> find = new Finder<Long, Note>(Long.class, Note.class);
 
-	public Note(String title, String notes, Student student, SchoolClass schoolClass) {
+	public Note(String title, String notes, long foreignID, SchoolClass schoolClass) {
 		this.title = title;
 		this.notes = notes;
-		if (student != null) this.student = student;
+		this.foreignID = foreignID;
 		if (schoolClass != null) this.schoolClass = schoolClass;
 	}
 
-	public static Note create(String title, String notes, Long studentId, Long schoolClassId) {
-		Note note = new Note(title, notes, Student.find.ref(studentId), SchoolClass.find.ref(schoolClassId));
+	public static Note create(String title, String notes, Long foreignID, Long schoolClassId) {
+		Note note = new Note(title, notes, foreignID, SchoolClass.find.ref(schoolClassId));
 		note.save();
 		return note;
 	}

@@ -95,7 +95,7 @@
 				
 				<!-- BEGIN OVERVIEW -->
 				<div id="overview" class="overview" style="@if(startingBlock == "overview" || startingBlock == "") {display: block;} else {display: none}">
-					<div class="area center" style=" width: 100vw; margin-left: -10px; margin-right: 10px;">
+					<div class="area center">
 						<h2 style="text-align: center;">Overview</h2>
 						@if(assignments.length > 0) {
 							@for(assignment <- assignments) {
@@ -115,18 +115,18 @@
 											@assignment.spanner
 										</span>
 										<div class="contentInside" >
-											@form(action = routes.Application.deleteAssignment(String.valueOf(assignment.id), String.valueOf(assignment.schoolClass.student.id)), 'id -> ("assignmentDeleteForm" + String.valueOf(assignment.id))) {
+											@form(action = routes.Application.deleteAssignment(String.valueOf(assignment.id), String.valueOf(assignment.foreignID)), 'id -> ("assignmentDeleteForm" + String.valueOf(assignment.id))) {
 												<a href="#" onclick="submitAssignmentDeleteForm(@assignment.id); return false;">
 													<i data-toggle="tooltip" data-placement="top" title="Delete" class="fa fa-trash myIcon"></i>
 												</a>
 											}
 		
-											@form(action = routes.Application.editPageAssignment(String.valueOf(assignment.id), String.valueOf(assignment.schoolClass.student.id)), 'id -> ("assignmentEditForm" + String.valueOf(assignment.id))) {
+											@form(action = routes.Application.editPageAssignment(String.valueOf(assignment.id), String.valueOf(assignment.foreignID)), 'id -> ("assignmentEditForm" + String.valueOf(assignment.id))) {
 												<a href="#"  onclick="submitAssignmentEditForm(@assignment.id); return false;">
 													<i data-toggle="tooltip" data-placement="top" title="Edit" class="fa fa-pencil myIcon"></i>
 												</a>
 											}
-											@form(action = routes.Application.finishedAssignment(String.valueOf(assignment.id), String.valueOf(assignment.schoolClass.student.id)), 'id -> ("assignmentFinishedForm" + String.valueOf(assignment.id))) {
+											@form(action = routes.Application.finishedAssignment(String.valueOf(assignment.id), String.valueOf(assignment.foreignID)), 'id -> ("assignmentFinishedForm" + String.valueOf(assignment.id))) {
 												<a href="#" onclick="submitFinishedAssignmentForm(@assignment.id); return false">
 													<i data-toggle="tooltip" data-placement="top" title="Finished" class="fa fa-check myIcon"></i>
 												</a>
@@ -170,11 +170,11 @@
 												<p id="classColor" style="font-size: 20px; margin-bottom: -15px; margin-top: -15px;">
 													<span class="thisColorhere" style="background-color: @schoolClass.color "></span> 
 													@schoolClass.subject 
-													<i id="delete" data-toggle="tooltip" data-placement="right" title="Delete" class="fa fa-trash" onclick="submitSchoolClassDeleteForm(@schoolClass.id); return false;"></i>
-													<i id="edit" data-toggle="tooltip" data-placement="right" title="Edit" class="fa fa-pencil" onclick="submitSchoolClassEditForm(@schoolClass.id); return false;"></i>													
-													@form(action = routes.Application.deleteSchoolClass(String.valueOf(schoolClass.id), String.valueOf(schoolClass.student.id)), 'id -> ("schoolClassDeleteForm" + String.valueOf(schoolClass.id))) {
+													<i id="delete" data-toggle="tooltip" data-placement="right" title="Delete" class="fa fa-trash delete" onclick="submitSchoolClassDeleteForm(@schoolClass.id); return false;"></i>
+													<i id="edit" data-toggle="tooltip" data-placement="right" title="Edit" class="fa fa-pencil edit" onclick="submitSchoolClassEditForm(@schoolClass.id); return false;"></i>													
+													@form(action = routes.Application.deleteSchoolClass(String.valueOf(schoolClass.id), String.valueOf(student.id)), 'id -> ("schoolClassDeleteForm" + String.valueOf(schoolClass.id))) {
 													}
-													@form(action = routes.Application.schoolClassEditPage(String.valueOf(schoolClass.id), String.valueOf(schoolClass.student.id)), 'id -> ("schoolClassEditForm" + String.valueOf(schoolClass.id))) {
+													@form(action = routes.Application.schoolClassEditPage(String.valueOf(schoolClass.id), String.valueOf(student.id)), 'id -> ("schoolClassEditForm" + String.valueOf(schoolClass.id))) {
 													}
 												</p>
 											</div>
@@ -223,8 +223,17 @@
 										<!-- END COLOR CHOOSER BOX -->							
 									<br>
 									<button class="addClass" type="submit" value="Add Class">Add Class</button>
-									}
-									<footer>  </footer>
+								}
+								<br>
+								<h2> OR, add a class by ID </h2>
+								@form(action = routes.Application.newSchoolClassFromTeacher(String.valueOf(student.id))) {
+									<div class="bottomInputFields">
+										<input type="number" name="schoolClassID" placeholder="Class ID" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required><br/>
+										<input type="password" name="password" placeholder="Class password"><br/>
+									</div>
+									<button class="addClass" type="submit" value="Add Class">Add Class</button>
+								}
+								
 								</div>
 							</div>
 				</div>
@@ -318,7 +327,7 @@
 										<input id="description" type="text" name="description" placeholder="Description">
 										<div class="spacer"></div>
 										<button class="submit" type="submit"  value="Add Assignment">Add Assignment</button>
-										<div style="position: relative; left: -1600px;"><input type="date" id="assignmentDueDate" name="dueDate" placeholder="Due Date"></div>
+										<div style="position: relative; left: -2000px;"><input type="hidden" id="assignmentDueDate" name="dueDate" placeholder="Due Date"></div>
 									</div>
 								}
 							}
@@ -345,21 +354,21 @@
 												@lateAssignment.spanner
 											</span>
 											<div class="contentInside">
-												@form(action = routes.Application.deleteAssignment(String.valueOf(lateAssignment.id), String.valueOf(lateAssignment.schoolClass.student.id)), 'id -> ("assignmentDeleteForm" + String.valueOf(lateAssignment.id))) {
+												@form(action = routes.Application.deleteAssignment(String.valueOf(lateAssignment.id), String.valueOf(student.id)), 'id -> ("assignmentDeleteForm" + String.valueOf(lateAssignment.id))) {
 													<a href="#" onclick="submitAssignmentDeleteForm(@lateAssignment.id); return false;">
-														<i class="fa fa-trash myIcon" data-toggle="tooltip" title="Hooray!"></i>
+														<i class="fa fa-trash myIcon" data-toggle="tooltip" title="Delete"></i>
 														
 													</a>
 												}
 			
-												@form(action = routes.Application.editPageAssignment(String.valueOf(lateAssignment.id), String.valueOf(lateAssignment.schoolClass.student.id)), 'id -> ("assignmentEditForm" + String.valueOf(lateAssignment.id))) {
+												@form(action = routes.Application.editPageAssignment(String.valueOf(lateAssignment.id), String.valueOf(student.id)), 'id -> ("assignmentEditForm" + String.valueOf(lateAssignment.id))) {
 													<a href="#" onclick="submitAssignmentEditForm(@lateAssignment.id); return false;">
-														<i class="fa fa-pencil myIcon"></i>
+														<i class="fa fa-pencil myIcon" data-toggle="tooltip" title="Edit"></i>
 													</a>
 												}
-												@form(action = routes.Application.finishedAssignment(String.valueOf(lateAssignment.id), String.valueOf(lateAssignment.schoolClass.student.id)), 'id -> ("assignmentFinishedForm" + String.valueOf(lateAssignment.id))) {
+												@form(action = routes.Application.finishedAssignment(String.valueOf(lateAssignment.id), String.valueOf(student.id)), 'id -> ("assignmentFinishedForm" + String.valueOf(lateAssignment.id))) {
 													<a href="#" onclick="submitFinishedAssignmentForm(@lateAssignment.id); return false">
-														<i class="fa fa-check myIcon"></i>
+														<i class="fa fa-check myIcon" data-toggle="tooltip" title="Finished"></i>
 													</a>
 												}
 												<h2 class="itemHeaderBig">@lateAssignment.schoolClass.subject</h2>
@@ -449,7 +458,7 @@
 										
 									</div>
 									<br><br><br><br><br>
-									<div class="btn">
+									<div class="btn btnStudent" style="text-align: center;">
 										<button class="saveChanges"> Save Changes </button>
 									</div>
 								}

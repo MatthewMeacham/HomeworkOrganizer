@@ -12,26 +12,30 @@ public class Teacher extends Model {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	public long id;
+	@Required
 	public String email;
 	@Required
 	public String password;
 	@Required
 	public String name;
+	public String salt;
 
 	@OneToMany
 	public SchoolClass schoolClass;
 
 	public static Finder<Long, Teacher> find = new Finder<Long, Teacher>(Long.class, Teacher.class);
 
-	public Teacher(String email, String password, String name) {
+	public Teacher(String name, String email, String salt, String password) {
 		this.email = email;
 		this.password = password;
 		this.name = name;
+		this.salt = salt;
 	}
 
-	public static Teacher create(String email, String password, String name) {
+	public static Teacher create(String name, String email, String salt, String password) {
 		if (find.where().eq("email", email.toLowerCase()).eq("password", password).findUnique() == null && Parent.find.where().eq("email", email.toLowerCase()).findUnique() == null && Student.find.where().eq("email", email.toLowerCase()).findUnique() == null) {
-			Teacher teacher = new Teacher(email, password, name);
+			Teacher teacher = new Teacher(name, email, salt, password);
 			teacher.save();
 			return teacher;
 		}
