@@ -5,7 +5,7 @@
 }
 
 body {
-	font-family: 'Nunito', sans-serif;
+	font-family: "Nunito", sans-serif;
 	color: #384047;
 	margin: 0;
 	padding: 0;
@@ -558,4 +558,10 @@ html::-webkit-scrollbar-thumb {
 }
 img {
 	border: 0;
+}
+.promptAction {
+	text-align: center;
+	padding: 0px;
+	font-size: 20px;
+	text-transform: uppercase;
 }

@@ -3,6 +3,7 @@ package models;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.PersistenceException;
 
 import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
@@ -15,7 +16,6 @@ public class Assignment extends Model {
 	public Long id;
 	@Required(message = "You must specify a due date.")
 	public String dueDate;
-	// TODO CHANGE THIS TO A FOREIGN KEY
 	@ManyToOne
 	public SchoolClass schoolClass;
 	@Required
@@ -141,7 +141,11 @@ public class Assignment extends Model {
 		assignment.spanner = kindOfAssignment.substring(0, 1);
 		assignment.description = description;
 		assignment.total = (year * 366) - ((12 - month) * 31) - (31 - day);
-		assignment.save();
+		try {
+			assignment.save();
+		} catch (PersistenceException e) {
+			System.err.println("Unable to save an assignment after editing. ID: " + id);
+		}
 	}
 
 	public static String[] parseDate(String dueDate) {

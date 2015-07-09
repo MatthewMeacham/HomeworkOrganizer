@@ -41,6 +41,12 @@
 
         <!-- SCRIPTS -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
+        <script src="@routes.Assets.at("javascripts/modernizr.js")"></script>
+        
+        <!--[if IE]>
+       		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/IEstyle.css")"/>
+        <![endif]-->
+        
 	</head>
 	<body>
 		<div class="noScrollMove">
@@ -66,24 +72,24 @@
 
 			<div>
 				<h1 style="color: red; margin-left: auto; margin-right: auto;" align="center"> @message </h1>
-			<div>
+			</div>
 			
+			<div class="promptAction">
+				<h3> Sign up as a </h3>	
+			</div>
 			
 			<div class="imageHolder">
 				<div> 
-					<label> Student Account </label>
 					<a href="@routes.Application.studentSignup">
 						<img src=@routes.Assets.at("images/student.png") alt="Student">
 					</a>
 				</div>
 				<div>
-					<label> Parent Account </label>
 					<a href="@routes.Application.parentSignup"> 
 						<img src=@routes.Assets.at("images/parent.png") alt="Parent">
 					</a>
 				</div>
 				<div>
-					<label> Teacher Account </label>
 					<a href="@routes.Application.teacherSignup">
 						<img src=@routes.Assets.at("images/teacher.png") alt="Teacher">
 					</a>
@@ -107,5 +113,7 @@
 
 			END REGISTER FORM -->
 		</div>
+		
 	</body>
+	
 </html>

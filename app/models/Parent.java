@@ -1,25 +1,23 @@
 package models;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 
 import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 
 @Entity
-public class Parent extends Model {
+public class Parent extends User {
 	private static final long serialVersionUID = 1L;
 
 	@Required
 	public String name;
-	@Id
 	@Required
 	public String email;
 	@Required
 	public String password;
 	public String salt;
 
-	public static Finder<String, Parent> find = new Finder<String, Parent>(String.class, Parent.class);
+	public static Model.Finder<Long, Parent> find = new Model.Finder<Long, Parent>(Long.class, Parent.class);
 
 	public Parent(String name, String email, String salt, String password) {
 		this.email = email;

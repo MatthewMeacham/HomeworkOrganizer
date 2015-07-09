@@ -1,7 +1,6 @@
 package models;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -9,7 +8,7 @@ import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 
 @Entity
-public class Student extends Model {
+public class Student extends User {
 	private static final long serialVersionUID = 1L;
 
 	@Required
@@ -22,15 +21,10 @@ public class Student extends Model {
 	@Required
 	public String grade;
 
-	@Id
-	public Long id;
-
 	@ManyToOne
-	// TODO CHANGE TO FOREIGN KEY
 	public Parent parent;
 
 	@OneToMany
-	// TODO CHANGE TO FOREIGN KEY
 	public Teacher teacher;
 
 	public static Model.Finder<Long, Student> find = new Model.Finder<Long, Student>(Long.class, Student.class);

@@ -29,11 +29,12 @@ create table note (
 ;
 
 create table parent (
-  email                     varchar(255) not null,
+  id                        bigint not null,
   name                      varchar(255),
+  email                     varchar(255),
   password                  varchar(255),
   salt                      varchar(255),
-  constraint pk_parent primary key (email))
+  constraint pk_parent primary key (id))
 ;
 
 create table school_class (
@@ -52,7 +53,7 @@ create table student (
   password                  varchar(255),
   salt                      varchar(255),
   grade                     varchar(255),
-  parent_email              varchar(255),
+  parent_id                 bigint,
   constraint pk_student primary key (id))
 ;
 
@@ -63,6 +64,11 @@ create table teacher (
   name                      varchar(255),
   salt                      varchar(255),
   constraint pk_teacher primary key (id))
+;
+
+create table user (
+  id                        bigint not null,
+  constraint pk_user primary key (id))
 ;
 
 
@@ -83,12 +89,14 @@ create sequence student_seq;
 
 create sequence teacher_seq;
 
+create sequence user_seq;
+
 alter table assignment add constraint fk_assignment_schoolClass_1 foreign key (school_class_id) references school_class (id) on delete restrict on update restrict;
 create index ix_assignment_schoolClass_1 on assignment (school_class_id);
 alter table note add constraint fk_note_schoolClass_2 foreign key (school_class_id) references school_class (id) on delete restrict on update restrict;
 create index ix_note_schoolClass_2 on note (school_class_id);
-alter table student add constraint fk_student_parent_3 foreign key (parent_email) references parent (email) on delete restrict on update restrict;
-create index ix_student_parent_3 on student (parent_email);
+alter table student add constraint fk_student_parent_3 foreign key (parent_id) references parent (id) on delete restrict on update restrict;
+create index ix_student_parent_3 on student (parent_id);
 
 
 
@@ -114,6 +122,8 @@ drop table if exists student;
 
 drop table if exists teacher;
 
+drop table if exists user;
+
 SET REFERENTIAL_INTEGRITY TRUE;
 
 drop sequence if exists assignment_seq;
@@ -127,4 +137,6 @@ drop sequence if exists school_class_seq;
 drop sequence if exists student_seq;
 
 drop sequence if exists teacher_seq;
+
+drop sequence if exists user_seq;
 

@@ -320,23 +320,23 @@
 					<div class="area center" style="text-align: center;"> 
 						<h2 style="text-algin: center;"> Account Settings</h2>
 				 		
-				 		@form(action = routes.Application.changeParentAccountSettings(teacher.email, "0"), 'id -> "accountSettingsForm0", 'onsubmit -> "return changeRoute();") {
-							<div style="display: block;" id="accountSettings0">
+				 		@form(action = routes.Application.changeTeacherAccountSettings(String.valueOf(teacher.id)), 'id -> "accountSettingsForm") {
+							<div style="display: block;" id="accountSettings">
 								<div class="changeSettings section group">
 									<div class="col span_1_of_3">
 										<label>Change Email</label> <br>
-										<input id="accountEmail0" type="text" name="email" value="@teacher.email">
+										<input id="accountEmail" type="text" name="email" value="@teacher.email">
 									</div>
 									<div class="col span_1_of_3">
 										<label>Change Password</label> <br>
-										<input id="accountCurrentPassword0" type="password" name="currentPassword" placeholder="Enter Current Password">
-										<input id="accountNewPassword0" type="password" name="newPassword" placeholder="Enter New Password">
-										<input id="accountNewPasswordAgain0" type="password" name="newPasswordAgain" placeholder="Enter New Password Again">
+										<input id="accountCurrentPassword" type="password" name="currentPassword" placeholder="Enter Current Password">
+										<input id="accountNewPassword" type="password" name="newPassword" placeholder="Enter New Password">
+										<input id="accountNewPasswordAgain" type="password" name="newPasswordAgain" placeholder="Enter New Password Again">
 										
 									</div>
 									<div class="col span_1_of_3">
 										<label>Change Name</label> <br>
-										<input id="accountName0" type="text" name="name" value="@teacher.name">
+										<input id="accountName" type="text" name="name" value="@teacher.name">
 									</div>									
 										
 									

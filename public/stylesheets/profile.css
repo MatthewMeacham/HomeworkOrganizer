@@ -1505,8 +1505,42 @@ nav a#pull {
 	left: 10px;
 	position: relative;
 	}
-	
-	
+img {
+	border: 0;	
+}
+.refresh {
+	padding: 0px;
+	cursor: pointer;
+	display: inline;
+	float: right;
+	color: white;
+	font-size: 40px;
+	-webkit-transition: 150ms ease-in-out;
+	-moz-transition: 150ms ease-in-out;
+	-o-transition: 150ms ease-in-out;
+	-ms-transition: 150ms ease-in-out;
+	transition: 150ms ease-in-out;
+}
+.refresh:hover {
+	-webkit-transform: rotate(50deg);
+	-moz-transform: rotate(50deg);
+	-o-transform: rotate(50deg);
+	-ms-transform: rotate(50deg);
+	transform: rotate(50deg);
+	-webkit-transition: 150ms ease-in-out;
+	-moz-transition: 150ms ease-in-out;
+	-o-transition: 150ms ease-in-out;
+	-ms-transition: 150ms ease-in-out;
+	transition: 150ms ease-in-out;
+}
+#logo {
+	position: relative;
+	left: 13.5px;
+}
+.studentName {
+	position: relative;
+	left: 5px;
+}
 	
 	
 	

@@ -48,9 +48,12 @@
 	<body>
 					
 		<div id="topSection">
-		
 			<div class="topImage">
-				<img src=@routes.Assets.at("images/logo.png") alt="Orgnizer">
+				<a href="@routes.Application.refresh(student.id)">
+					<i class="fa fa-refresh refresh fa-2x"></i>
+				</a>
+				
+				<img id="logo" src=@routes.Assets.at("images/logo.png") alt="Orgnizer">
 				<h3 class="studentName">Logged In As @student.name </h3>
 			</div>
 
@@ -84,7 +87,6 @@
 		<!-- ENWRAPS ALL CONTENT -->
 		<div class="contentContainer">
 			<div id="main">
-				
 				<!-- ERROR MESSAGE -->
 				@if(errorMessage.contains("successfully")) {
 					<h1 id="errorMessageText" style="color:green; text-align:center;"> @errorMessage</h1>
@@ -115,16 +117,18 @@
 											@assignment.spanner
 										</span>
 										<div class="contentInside" >
-											@form(action = routes.Application.deleteAssignment(String.valueOf(assignment.id), String.valueOf(assignment.foreignID)), 'id -> ("assignmentDeleteForm" + String.valueOf(assignment.id))) {
-												<a href="#" onclick="submitAssignmentDeleteForm(@assignment.id); return false;">
-													<i data-toggle="tooltip" data-placement="top" title="Delete" class="fa fa-trash myIcon"></i>
-												</a>
-											}
-		
-											@form(action = routes.Application.editPageAssignment(String.valueOf(assignment.id), String.valueOf(assignment.foreignID)), 'id -> ("assignmentEditForm" + String.valueOf(assignment.id))) {
-												<a href="#"  onclick="submitAssignmentEditForm(@assignment.id); return false;">
-													<i data-toggle="tooltip" data-placement="top" title="Edit" class="fa fa-pencil myIcon"></i>
-												</a>
+											@if(assignment.schoolClass.teacherID == null) {
+												@form(action = routes.Application.deleteAssignment(String.valueOf(assignment.id), String.valueOf(assignment.foreignID)), 'id -> ("assignmentDeleteForm" + String.valueOf(assignment.id))) {
+													<a href="#" onclick="submitAssignmentDeleteForm(@assignment.id); return false;">
+														<i data-toggle="tooltip" data-placement="top" title="Delete" class="fa fa-trash myIcon"></i>
+													</a>
+												}
+			
+												@form(action = routes.Application.editPageAssignment(String.valueOf(assignment.id), String.valueOf(assignment.foreignID)), 'id -> ("assignmentEditForm" + String.valueOf(assignment.id))) {
+													<a href="#"  onclick="submitAssignmentEditForm(@assignment.id); return false;">
+														<i data-toggle="tooltip" data-placement="top" title="Edit" class="fa fa-pencil myIcon"></i>
+													</a>
+												}
 											}
 											@form(action = routes.Application.finishedAssignment(String.valueOf(assignment.id), String.valueOf(assignment.foreignID)), 'id -> ("assignmentFinishedForm" + String.valueOf(assignment.id))) {
 												<a href="#" onclick="submitFinishedAssignmentForm(@assignment.id); return false">
@@ -165,15 +169,14 @@
 							} else {	
 								<div style="margin-left: auto; margin-right: auto;">
 									@for(schoolClass <- schoolClasses) {
-										
 											<div>
 												<p id="classColor" style="font-size: 20px; margin-bottom: -15px; margin-top: -15px;">
 													<span class="thisColorhere" style="background-color: @schoolClass.color "></span> 
-													@schoolClass.subject 
+													@schoolClass.subject @if(schoolClass.teacherID != null){- @Teacher.find.ref(schoolClass.teacherID).name}
 													<i id="delete" data-toggle="tooltip" data-placement="right" title="Delete" class="fa fa-trash delete" onclick="submitSchoolClassDeleteForm(@schoolClass.id); return false;"></i>
-													<i id="edit" data-toggle="tooltip" data-placement="right" title="Edit" class="fa fa-pencil edit" onclick="submitSchoolClassEditForm(@schoolClass.id); return false;"></i>													
 													@form(action = routes.Application.deleteSchoolClass(String.valueOf(schoolClass.id), String.valueOf(student.id)), 'id -> ("schoolClassDeleteForm" + String.valueOf(schoolClass.id))) {
 													}
+													<i id="edit" data-toggle="tooltip" data-placement="right" title="Edit" class="fa fa-pencil edit" onclick="submitSchoolClassEditForm(@schoolClass.id); return false;"></i>													
 													@form(action = routes.Application.schoolClassEditPage(String.valueOf(schoolClass.id), String.valueOf(student.id)), 'id -> ("schoolClassEditForm" + String.valueOf(schoolClass.id))) {
 													}
 												</p>

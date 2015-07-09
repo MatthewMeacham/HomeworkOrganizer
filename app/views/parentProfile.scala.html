@@ -57,7 +57,7 @@
 					<ul class="clearfix">
 						<li><a id="overviewAnchor" href="#Overview" onclick="toggle_visibility('overview')"><div id="overviewToggle" style="display: inline-block;">Overview</div></a></li>
 						@for(student <- students) {
-							<li><a href="@routes.Application.redirectToStudent(student.id, parent.email)" target="_blank"><div style="display: inline-block;">@student.name</div></a></li>
+							<li><a href="@routes.Application.redirectToStudent(student.id, String.valueOf(parent.id))" target="_blank"><div style="display: inline-block;">@student.name</div></a></li>
 						}
 						<li><a id="addChildAnchor" href="#AddChild" onclick="toggle_visibility('addChild')"><div id="addChildToggle" style="display: inline-block;">Add Child</div></a></li>
 						<li><a id="accountSettingsAnchor" href="#Account" onclick="toggle_visibility('accountSettings')"><div id="accountSettingsToggle" style="display: inline-block;">Account</div></a></li> 
@@ -142,7 +142,7 @@
 				<div id="addChild" style=@if(startingBlock == "addChild") {"display: block;"} else {"display: none"}>
 					<div class="area center" style=" width: 100%; margin-left: auto; margin-right: auto;">
 						<h2 style="text-align: center;">Add Child</h2>
-							@form(action = routes.Application.addChild()) {
+							@form(action = routes.Application.addChild(String.valueOf(parent.id))) {
 								<div class="alignContentParent" style="text-align: center; margin-left: auto; margin-right: auto;">
 									<h3> Name Of Child: </h3>
 									<input type="text" name="name" placeholder="Name" required/><br/>
@@ -273,20 +273,12 @@
 				var frm = document.getElementById('accountSettingsForm');
 				var dropDown = document.getElementById('ids');
 				var selectedValue = dropDown.options[dropDown.selectedIndex].value;
-				@defining(new ArrayList[String]()) {arr => 
-				@{	
-					arr.add(parent.email.split("@")(0)) 
-					arr.add(parent.email.split("@")(1))
-				}
 				frm.action = 
 					"/parentProfileSettingsChanged/?parentID=" +
-					"@arr(0)" +
-					"%40" +
-					"@arr(1)" +
+					"@parent.id" +
 					"&studentID=" + 
 					selectedValue;
 				frm.submit();
-				}
 			}
 		</script>
 		
