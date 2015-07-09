@@ -1,1 +1,1 @@
-Orgnizr - An Online Homework Organiser
+Orgnizer - An Online Homework Organiser [![Build Status](https://travis-ci.org/hwaldstein1997/HomeworkOrganizer.svg?branch=master)](https://travis-ci.org/hwaldstein1997/HomeworkOrganizer)
