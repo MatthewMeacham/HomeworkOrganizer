@@ -15,7 +15,8 @@ public class IntegrationTest {
      * add your integration test here
      * in this example we just check if the welcome page is being shown
      */
-    @Test
+    /** Commented out because it's generic and doesn't apply to Orgnizer.
+	@Test
     public void test() {
         running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) {
@@ -24,5 +25,5 @@ public class IntegrationTest {
             }
         });
     }
-
+	**/
 }
