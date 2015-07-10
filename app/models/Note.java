@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import play.db.ebean.Model;
+import com.avaje.ebean.Model;
 
 @Entity
 public class Note extends Model {
@@ -19,7 +19,7 @@ public class Note extends Model {
 	
 	public long foreignID;
 
-	public static Finder<Long, Note> find = new Finder<Long, Note>(Long.class, Note.class);
+	public static Finder<Long, Note> find = new Finder<Long, Note>(Note.class);
 
 	public Note(String title, String notes, long foreignID, SchoolClass schoolClass) {
 		this.title = title;

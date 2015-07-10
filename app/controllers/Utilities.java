@@ -1,5 +1,5 @@
-//package controllers;
-//
+package controllers;
+
 //import java.util.ArrayList;
 //import java.util.List;
 //
@@ -8,8 +8,8 @@
 //import models.SchoolClass;
 //import models.Student;
 //import models.Teacher;
-//
-//public class Utilities {
+
+public class Utilities {
 //
 //	// Checks to see if the student account with the given studentID is a child
 //	// account meaning it was parent created
@@ -160,4 +160,4 @@
 //			}
 //			return returnAssignments;
 //		}
-//}
+}

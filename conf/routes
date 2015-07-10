@@ -44,5 +44,12 @@ POST	/parentProfileSettingsChanged/		controllers.Application.changeParentAccount
 POST	/teacher/accountSettings/changed/	controllers.Application.changeTeacherAccountSettings(teacherID: String)
 POST	/schoolClass/delete/				controllers.Application.deleteSchoolClass(schoolClassID: String, studentID: String)
 POST	/teacher/schoolClass/delete/		controllers.Application.deleteSchoolClassForTeacher(schoolClassID: String, teacherID: String)
+
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+# This is the old way of making assets available and shouldn't be used...
+# GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+
+# Map static resources from the /public folder to the /assets URL path
+# This is the new, better way to make assets available in Play
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

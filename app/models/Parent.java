@@ -3,7 +3,7 @@ package models;
 import javax.persistence.Entity;
 
 import play.data.validation.Constraints.Required;
-import play.db.ebean.Model;
+import com.avaje.ebean.Model;
 
 @Entity
 public class Parent extends User {
@@ -17,7 +17,7 @@ public class Parent extends User {
 	public String password;
 	public String salt;
 
-	public static Model.Finder<Long, Parent> find = new Model.Finder<Long, Parent>(Long.class, Parent.class);
+	public static Model.Finder<Long, Parent> find = new Model.Finder<Long, Parent>(Parent.class);
 
 	public Parent(String name, String email, String salt, String password) {
 		this.email = email;

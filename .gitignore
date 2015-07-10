@@ -1,15 +1,66 @@
+###############################################################################
+# Custom
+###############################################################################
+.cache-main
+.cache-tests
+
+###############################################################################
+# Play
+###############################################################################
 logs
-project/project
-project/target
 target
-tmp
-.history
-dist
 /.idea
-/*.iml
-/out
 /.idea_modules
 /.classpath
 /.project
-/RUNNING_PID
 /.settings
+/RUNNING_PID
+
+###############################################################################
+# Eclipse
+###############################################################################
+*.pydevproject
+.metadata
+.gradle
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.loadpath
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# Java annotation processor (APT)
+.factorypath
+
+# PDT-specific
+.buildpath
+
+# TeXlipse plugin
+.texlipse
+
+###############################################################################
+# Simple Build Tool
+# http://www.scala-sbt.org/release/docs/Getting-Started/Directories.html#configuring-version-control
+###############################################################################
+lib_managed/
+src_managed/
+project/boot/
+.history
+.cache
+
+###############################################################################
+# Notepad++
+###############################################################################
+# Backups
+*.bak

@@ -25,6 +25,7 @@ import views.html.profile;
 import views.html.signup;
 import views.html.studentSignUp;
 import views.html.teacherProfile;
+import controllers.Utilities.*;
 
 import com.matthew.hasher.Hasher;
 
@@ -54,53 +55,53 @@ public class Application extends Controller {
 	private static int today;
 
 	// Directs the request to the index
-	public static Result index() {
+	public Result index() {
 		return ok(index.render(Student.find.all().size() + Parent.find.all().size() + Teacher.find.all().size(), loginForm));
 	}
 
 	// Directs the request to the sign up page
-	public static Result signup() {
+	public Result signup() {
 		return ok(signup.render(""));
 	}
 
 	// Directs the request to the student sign up
-	public static Result studentSignup() {
+	public Result studentSignup() {
 		return ok(studentSignUp.render(studentForm, ""));
 	}
 
 	// Directs the request to the parent sign up
-	public static Result parentSignup() {
+	public Result parentSignup() {
 		return ok(parentSignUp.render(parentForm, ""));
 	}
 
 	// Directs the request to the teacher sign up page
-	public static Result teacherSignup() {
+	public Result teacherSignup() {
 		return ok(views.html.teacherSignUp.render(teacherForm, ""));
 	}
 
 	// Directs the request to the login page
-	public static Result login() {
+	public Result login() {
 		setToday();
 		return ok(login.render(loginForm, ""));
 	}
 
 	// Redirects the request to the index for logging out
-	public static Result logout() {
+	public Result logout() {
 		return redirect(routes.Application.index());
 	}
 
 	// Directs the user to the FAQ page
-	public static Result FAQ() {
+	public Result FAQ() {
 		return ok(views.html.faq.render());
 	}
 
 	// Directs the user to the contact us page
-	public static Result contactUsPage() {
+	public Result contactUsPage() {
 		return ok(views.html.contact.render(""));
 	}
 
 	// Refreshed the profile page
-	public static Result refresh(Long studentID) {
+	public Result refresh(Long studentID) {
 		System.out.println("CALLED");
 		Student student = Student.find.where().eq("ID", studentID).findUnique();
 		if (student == null) return badRequest(index.render(Student.find.all().size() + Parent.find.all().size() + Teacher.find.all().size(), loginForm));
@@ -108,7 +109,7 @@ public class Application extends Controller {
 	}
 
 	// Performs the email sending operation and then redirects back to the index
-	public static Result contactUs() {
+	public Result contactUs() {
 		Form<ContactUs> filledForm = contactUsForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			return badRequest(views.html.contact.render("Error while processing."));
@@ -138,7 +139,7 @@ public class Application extends Controller {
 
 	// Changes the account settings for the student with the given studentID and
 	// returns either A) Successful or B) Error
-	public static Result changeAccountSettings(String studentID) {
+	public Result changeAccountSettings(String studentID) {
 		Form<AccountSettings> filledForm = accountSettingsForm.bindFromRequest();
 		Student student = Student.find.ref(Long.valueOf(studentID));
 		if (filledForm.hasErrors()) {
@@ -190,7 +191,7 @@ public class Application extends Controller {
 	// Changes account settings for a parent account OR account settings for one
 	// of their kids and return
 	// either A) successful or B) Error
-	public static Result changeParentAccountSettings(String parentID, String studentID) {
+	public Result changeParentAccountSettings(String parentID, String studentID) {
 		Form<AccountSettings> filledForm = accountSettingsForm.bindFromRequest();
 		Parent parent = Parent.find.ref(Long.valueOf(parentID));
 		List<Student> children = createChildrenList(parent);
@@ -283,7 +284,7 @@ public class Application extends Controller {
 	}
 
 	// Changes account settings for a teacher
-	public static Result changeTeacherAccountSettings(String teacherID) {
+	public Result changeTeacherAccountSettings(String teacherID) {
 		Form<AccountSettings> filledForm = accountSettingsForm.bindFromRequest();
 		Teacher teacher = Teacher.find.ref(Long.valueOf(teacherID));
 		if (filledForm.hasErrors()) {
@@ -328,35 +329,35 @@ public class Application extends Controller {
 	}
 
 	// Direct to the edit assignment page
-	public static Result editPageAssignment(String assignmentID, String studentID) {
+	public Result editPageAssignment(String assignmentID, String studentID) {
 		Assignment assignment = Assignment.find.ref(Long.valueOf(assignmentID));
 		Student student = Student.find.ref(Long.valueOf(studentID));
 		return ok(views.html.assignmentEdit.render(student, assignment, createSchoolClassesList(student), ""));
 	}
 
 	// Direct a teacher to the edit assignment page
-	public static Result editPageAssignmentForTeacher(String assignmentID, String teacherID) {
+	public Result editPageAssignmentForTeacher(String assignmentID, String teacherID) {
 		Assignment assignment = Assignment.find.ref(Long.valueOf(assignmentID));
 		Teacher teacher = Teacher.find.ref(Long.valueOf(teacherID));
 		return ok(views.html.assignmentEditForTeacher.render(teacher, assignment, createSchoolClassListForTeacher(teacher), ""));
 	}
 
 	// Direct to the edit school class page
-	public static Result schoolClassEditPage(String schoolClassID, String studentID) {
+	public Result schoolClassEditPage(String schoolClassID, String studentID) {
 		SchoolClass schoolClass = SchoolClass.find.ref(Long.valueOf(schoolClassID));
 		Student student = Student.find.ref(Long.valueOf(studentID));
 		return ok(views.html.schoolClassEdit.render(schoolClass, student, ""));
 	}
 
 	// Direct to the edit school class page for teacher
-	public static Result schoolClassEditPageForTeacher(String schoolClassID, String teacherID) {
+	public Result schoolClassEditPageForTeacher(String schoolClassID, String teacherID) {
 		SchoolClass schoolClass = SchoolClass.find.where().eq("ID", Long.valueOf(schoolClassID)).findUnique();
 		Teacher teacher = Teacher.find.where().eq("ID", Long.valueOf(teacherID)).findUnique();
 		return ok(views.html.schoolClassEditForTeacher.render(schoolClass, teacher, ""));
 	}
 
 	// Create a new student from the request
-	public static Result newStudent() {
+	public Result newStudent() {
 		Form<Student> filledForm = studentForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			return badRequest(studentSignUp.render(studentForm, "Form had errors."));
@@ -385,7 +386,7 @@ public class Application extends Controller {
 	}
 
 	// Create a new parent from the request
-	public static Result newParent() {
+	public Result newParent() {
 		Form<Parent> filledForm = parentForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			return badRequest(parentSignUp.render(parentForm, "Form had errors."));
@@ -412,7 +413,7 @@ public class Application extends Controller {
 	}
 
 	// Create a new Teacher account from the request
-	public static Result newTeacher() {
+	public Result newTeacher() {
 		Form<Teacher> filledForm = teacherForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			return badRequest(views.html.teacherSignUp.render(teacherForm, "Form had errors."));
@@ -439,7 +440,7 @@ public class Application extends Controller {
 	}
 
 	// Creates a new school class for the teacher from the request
-	public static Result newSchoolClassForTeacher(String teacherID) {
+	public Result newSchoolClassForTeacher(String teacherID) {
 		Form<SchoolClass> filledForm = schoolClassForm.bindFromRequest();
 		Teacher teacher = Teacher.find.ref(Long.valueOf(teacherID));
 		if (teacher == null) return badRequest(index.render(Student.find.all().size() + Parent.find.all().size() + Teacher.find.all().size(), loginForm));
@@ -456,7 +457,7 @@ public class Application extends Controller {
 	}
 
 	// Create a new school class from the request
-	public static Result newSchoolClass(String studentID) {
+	public Result newSchoolClass(String studentID) {
 		Form<SchoolClass> filledForm = schoolClassForm.bindFromRequest();
 		Student student = Student.find.ref(Long.valueOf(studentID));
 		if (student == null) return badRequest(index.render(Student.find.all().size() + Parent.find.all().size() + Teacher.find.all().size(), loginForm));
@@ -474,7 +475,7 @@ public class Application extends Controller {
 	}
 
 	// Create a new school class from a teacher provided id and password
-	public static Result newSchoolClassFromTeacher(String studentID) {
+	public Result newSchoolClassFromTeacher(String studentID) {
 		Form<SchoolClassFromCode> filledForm = schoolClassFromCodeForm.bindFromRequest();
 		Student student = Student.find.ref(Long.valueOf(studentID));
 		if (student == null) return badRequest(index.render(Student.find.all().size() + Parent.find.all().size() + Teacher.find.all().size(), loginForm));
@@ -494,7 +495,7 @@ public class Application extends Controller {
 	}
 
 	// Add a child to a parent
-	public static Result addChild(String parentID) {
+	public Result addChild(String parentID) {
 		Form<Student> filledForm = studentForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			Parent parent = Parent.find.ref(Long.valueOf(parentID));
@@ -530,12 +531,12 @@ public class Application extends Controller {
 	}
 
 	// TODO need to do these
-	public static Result addNote(String studentID) {
+	public Result addNote(String studentID) {
 		return TODO;
 	}
 
 	// Create a new assignment from the request
-	public static Result newAssignment(String studentID) {
+	public Result newAssignment(String studentID) {
 		Form<Assignment> filledForm = assignmentForm.bindFromRequest();
 		Student student = Student.find.ref(Long.valueOf(studentID));
 		if (filledForm.hasErrors()) {
@@ -548,7 +549,7 @@ public class Application extends Controller {
 		}
 	}
 
-	public static Result newAssignmentForTeacher(String teacherID) {
+	public Result newAssignmentForTeacher(String teacherID) {
 		Form<Assignment> filledForm = assignmentForm.bindFromRequest();
 		Teacher teacher = Teacher.find.ref(Long.valueOf(teacherID));
 		if (filledForm.hasErrors()) return badRequest(teacherProfile.render(teacher, createAssignmentsListForTeacher(teacher), createSchoolClassListForTeacher(teacher), today, "addAssignment", "Error while processing."));
@@ -563,7 +564,7 @@ public class Application extends Controller {
 
 	// Edit an assignment from a request
 	// TODO make errors take them back to edit page
-	public static Result editAssignment(String assignmentID, String studentID) {
+	public Result editAssignment(String assignmentID, String studentID) {
 		Form<Assignment> filledForm = assignmentForm.bindFromRequest();
 		Student student = Student.find.ref(Long.valueOf(studentID));
 		if (filledForm.hasErrors()) {
@@ -578,7 +579,7 @@ public class Application extends Controller {
 
 	// Edit an assignment from a teacher request
 	// TODO make errors take them back to edit page
-	public static Result editAssignmentForTeacher(String assignmentID, String teacherID) {
+	public Result editAssignmentForTeacher(String assignmentID, String teacherID) {
 		Form<Assignment> filledform = assignmentForm.bindFromRequest();
 		Teacher teacher = Teacher.find.ref(Long.valueOf(teacherID));
 		if (filledform.hasErrors()) return badRequest(teacherProfile.render(teacher, createAssignmentsListForTeacher(teacher), createSchoolClassListForTeacher(teacher), today, "", "Error while trying to change assignment."));
@@ -599,7 +600,7 @@ public class Application extends Controller {
 	}
 
 	// Edit a schoolClass from a request
-	public static Result editSchoolClass(String schoolClassID, String studentID) {
+	public Result editSchoolClass(String schoolClassID, String studentID) {
 		Form<SchoolClass> filledForm = schoolClassForm.bindFromRequest();
 		SchoolClass schoolClass = SchoolClass.find.ref(Long.valueOf(schoolClassID));
 		Student student = Student.find.ref(Long.valueOf(studentID));
@@ -622,7 +623,7 @@ public class Application extends Controller {
 	}
 
 	// Edit a schoolClass for a teacher from a request
-	public static Result editSchoolClassForTeacher(String schoolClassID, String teacherID) {
+	public Result editSchoolClassForTeacher(String schoolClassID, String teacherID) {
 		Form<SchoolClass> filledForm = schoolClassForm.bindFromRequest();
 		SchoolClass schoolClass = SchoolClass.find.where().eq("ID", Long.valueOf(schoolClassID)).findUnique();
 		Teacher teacher = Teacher.find.where().eq("ID", Long.valueOf(teacherID)).findUnique();
@@ -642,7 +643,7 @@ public class Application extends Controller {
 	}
 
 	// Delete an assignment
-	public static Result deleteAssignment(String assignmentID, String studentID) {
+	public Result deleteAssignment(String assignmentID, String studentID) {
 		Assignment assignment = Assignment.find.ref(Long.valueOf(assignmentID));
 		Student student = Student.find.ref(Long.valueOf(studentID));
 		if (assignment == null) return badRequest(profile.render(student, createSchoolClassesList(student), createAssignmentsList(student), createFinishedAssignmentsList(student), createLateAssignmentsList(student), createTeachersList(student), createNotesList(student), today, "overview", "Error while processing."));
@@ -655,7 +656,7 @@ public class Application extends Controller {
 	}
 
 	// Delete an assignment for teacher
-	public static Result deleteAssignmentForTeacher(String assignmentID, String teacherID) {
+	public Result deleteAssignmentForTeacher(String assignmentID, String teacherID) {
 		Assignment assignment = Assignment.find.where().eq("ID", Long.valueOf(assignmentID)).findUnique();
 		Teacher teacher = Teacher.find.where().eq("ID", Long.valueOf(teacherID)).findUnique();
 		if (assignment == null) return badRequest(teacherProfile.render(teacher, createAssignmentsListForTeacher(teacher), createSchoolClassListForTeacher(teacher), today, "overview", "Error while processing."));
@@ -679,7 +680,7 @@ public class Application extends Controller {
 	}
 
 	// Delete a late assignment
-	public static Result deleteLateAssignment(String assignmentID, String studentID) {
+	public Result deleteLateAssignment(String assignmentID, String studentID) {
 		Assignment lateAssignment = Assignment.find.ref(Long.valueOf(assignmentID));
 		Student student = Student.find.ref(Long.valueOf(studentID));
 		if (lateAssignment == null) return badRequest(profile.render(student, createSchoolClassesList(student), createAssignmentsList(student), createFinishedAssignmentsList(student), createLateAssignmentsList(student), createTeachersList(student), createNotesList(student), today, "lateAssignments", "Error while processing."));
@@ -692,7 +693,7 @@ public class Application extends Controller {
 	}
 
 	// Delete a finished assignment
-	public static Result deleteFinishedAssignment(String assignmentID, String studentID) {
+	public Result deleteFinishedAssignment(String assignmentID, String studentID) {
 		Assignment finishedAssignment = Assignment.find.ref(Long.valueOf(assignmentID));
 		Student student = Student.find.ref(Long.valueOf(studentID));
 		if (finishedAssignment == null) return badRequest(profile.render(student, createSchoolClassesList(student), createAssignmentsList(student), createFinishedAssignmentsList(student), createLateAssignmentsList(student), createTeachersList(student), createNotesList(student), today, "finishedAssignments", "Error while processing."));
@@ -705,7 +706,7 @@ public class Application extends Controller {
 	}
 
 	// Set the finished value of an assignment to true
-	public static Result finishedAssignment(String assignmentID, String studentID) {
+	public Result finishedAssignment(String assignmentID, String studentID) {
 		Assignment assignment = Assignment.find.ref(Long.valueOf(assignmentID));
 		Student student = Student.find.ref(Long.valueOf(studentID));
 		if (assignment == null) return badRequest(profile.render(student, createSchoolClassesList(student), createAssignmentsList(student), createFinishedAssignmentsList(student), createLateAssignmentsList(student), createTeachersList(student), createNotesList(student), today, "overview", "Error while processing."));
@@ -718,7 +719,7 @@ public class Application extends Controller {
 		return ok(profile.render(student, createSchoolClassesList(student), createAssignmentsList(student), createFinishedAssignmentsList(student), createLateAssignmentsList(student), createTeachersList(student), createNotesList(student), today, "finishedAssignments", ""));
 	}
 
-	public static Result deleteSchoolClass(String schoolClassID, String studentID) {
+	public Result deleteSchoolClass(String schoolClassID, String studentID) {
 		SchoolClass schoolClass = SchoolClass.find.where().eq("ID", Long.valueOf(schoolClassID)).findUnique();
 		Student student = Student.find.where().eq("ID", Long.valueOf(studentID)).findUnique();
 		if (schoolClass == null) return badRequest(profile.render(student, createSchoolClassesList(student), createAssignmentsList(student), createFinishedAssignmentsList(student), createLateAssignmentsList(student), createTeachersList(student), createNotesList(student), today, "schoolClasses", "Error while processing."));
@@ -751,7 +752,7 @@ public class Application extends Controller {
 		}
 	}
 
-	public static Result deleteSchoolClassForTeacher(String schoolClassID, String teacherID) {
+	public Result deleteSchoolClassForTeacher(String schoolClassID, String teacherID) {
 		SchoolClass schoolClass = SchoolClass.find.where().eq("ID", Long.valueOf(schoolClassID)).findUnique();
 		Teacher teacher = Teacher.find.where().eq("ID", Long.valueOf(teacherID)).findUnique();
 		if (schoolClass == null) return badRequest(teacherProfile.render(teacher, createAssignmentsListForTeacher(teacher), createSchoolClassListForTeacher(teacher), today, "schoolClasses", "Error while processing."));
@@ -779,25 +780,25 @@ public class Application extends Controller {
 	}
 
 	// Direct to the student profile page after authentication
-	public static Result profileLogin(String studentID) {
+	public Result profileLogin(String studentID) {
 		Student student = Student.find.ref(Long.valueOf(studentID));
 		return ok(profile.render(student, createSchoolClassesList(student), createAssignmentsList(student), createFinishedAssignmentsList(student), createLateAssignmentsList(student), createTeachersList(student), createNotesList(student), today, "overview", ""));
 	}
 
 	// Direct to the parent profile page after authentication
-	public static Result parentProfileLogin(String parentID) {
+	public Result parentProfileLogin(String parentID) {
 		Parent parent = Parent.find.ref(Long.valueOf(parentID));
 		return ok(parentProfile.render(parent, createChildrenList(parent), createAssignmentsListForParent(parent), today, "", ""));
 	}
 
 	// Direct to the teacher profile page after authentication
-	public static Result teacherProfileLogin(Long teacherID) {
+	public Result teacherProfileLogin(Long teacherID) {
 		Teacher teacher = Teacher.find.ref(teacherID);
 		return ok(views.html.teacherProfile.render(teacher, createAssignmentsListForTeacher(teacher), createSchoolClassListForTeacher(teacher), today, "", ""));
 	}
 
 	// Direct the request to the student with the ID, parent accounts use this
-	public static Result redirectToStudent(Long studentID, String parentID) {
+	public Result redirectToStudent(Long studentID, String parentID) {
 		Student student = Student.find.ref(Long.valueOf(studentID));
 		Parent parent = Parent.find.ref(Long.valueOf(parentID));
 		List<Student> children = createChildrenList(parent);
@@ -810,7 +811,7 @@ public class Application extends Controller {
 	}
 
 	// Authenticate a request
-	public static Result authenticate() {
+	public Result authenticate() {
 		Form<Login> filledForm = loginForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			return badRequest(login.render(loginForm, "Login error, try again."));

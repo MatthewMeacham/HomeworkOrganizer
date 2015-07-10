@@ -6,7 +6,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceException;
 
 import play.data.validation.Constraints.Required;
-import play.db.ebean.Model;
+import com.avaje.ebean.Model;
 
 @Entity
 public class Assignment extends Model {
@@ -34,7 +34,7 @@ public class Assignment extends Model {
 
 	public long foreignID;
 
-	public static Finder<Long, Assignment> find = new Finder<Long, Assignment>(Long.class, Assignment.class);
+	public static Finder<Long, Assignment> find = new Finder<Long, Assignment>(Assignment.class);
 
 	public Assignment(String dueDate, SchoolClass schoolClass, String kindOfAssignment, String description, Long foreignID, int month, int day, int year) {
 		this.dueDate = dueDate;
