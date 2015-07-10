@@ -1,4 +1,8 @@
 language: scala # to trigger the build on JVM worker ('language: java' works the same)
+scala:
+  - 2.11.6
+jdk:
+  - oraclejdk8
 sudo: false
 env:
   - ACTIVATOR_VERSION=1.3.5
