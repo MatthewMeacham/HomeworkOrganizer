@@ -52,7 +52,7 @@
 					<div class="animated bounceIn topLinks">
 						<a href="@routes.Application.index"> Home </a> |
 						<a href="@routes.Application.FAQ"> FAQ </a> |
-						<a href="@routes.Application.signup">Sign Up!</a> | 
+						<a href="@routes.Signups.signup">Sign Up!</a> | 
 						<a href="@routes.Application.login">Sign In!</a>
 					</div>
 				</div>
@@ -73,7 +73,7 @@
 			</div>
 			
 			<!-- BEGIN REGISTER FORM -->
-			@form(action = routes.Application.newTeacher()) {
+			@form(action = routes.Signups.newTeacher()) {
 				<div id="formContainer" class="center">
 					<form>
 						<h1 style="padding-top: 10px;">Teacher Sign Up</h1>

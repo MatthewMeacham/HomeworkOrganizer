@@ -27,7 +27,7 @@ libraryDependencies ++= Seq(
 // Forces compile before Eclipse file generation when running "activator eclipse"
 EclipseKeys.preTasks := Seq(compile in Compile)
 
-// Builds Eclipse project with library sources to include javadoc, etc.
+// Builds Eclipse project with library sources (includes library javadocs, etc.)
 EclipseKeys.withSource := true
 
 // Play provides two styles of routers, one expects its actions to be injected, the

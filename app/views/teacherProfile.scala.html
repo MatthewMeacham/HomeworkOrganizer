@@ -108,13 +108,13 @@
 											@assignment.spanner
 										</span>
 										<div class="contentInside" >
-											@form(action = routes.Application.deleteAssignmentForTeacher(String.valueOf(assignment.id), String.valueOf(assignment.schoolClass.teacherID)), 'id -> ("assignmentDeleteForm" + String.valueOf(assignment.id))) {
+											@form(action = routes.Assignments.deleteAssignmentForTeacher(String.valueOf(assignment.id), String.valueOf(assignment.schoolClass.teacherID)), 'id -> ("assignmentDeleteForm" + String.valueOf(assignment.id))) {
 												<a href="#" onclick="submitAssignmentDeleteForm(@assignment.id); return false;">
 													<i data-toggle="tooltip" data-placement="top" title="Delete" class="fa fa-trash myIcon"></i>
 												</a>
 											}
 		
-											@form(action = routes.Application.editPageAssignmentForTeacher(String.valueOf(assignment.id), String.valueOf(assignment.schoolClass.teacherID)), 'id -> ("assignmentEditForm" + String.valueOf(assignment.id))) {
+											@form(action = routes.Assignments.editPageAssignmentForTeacher(String.valueOf(assignment.id), String.valueOf(assignment.schoolClass.teacherID)), 'id -> ("assignmentEditForm" + String.valueOf(assignment.id))) {
 												<a href="#"  onclick="submitAssignmentEditForm(@assignment.id); return false;">
 													<i data-toggle="tooltip" data-placement="top" title="Edit" class="fa fa-pencil myIcon"></i>
 												</a>
@@ -159,9 +159,9 @@
 													@schoolClass.subject - ID: @schoolClass.id - Password: @schoolClass.password
 													<i id="delete" data-toggle="tooltip" data-placement="right" title="Delete" class="fa fa-trash delete" onclick="submitSchoolClassDeleteForm(@schoolClass.id); return false;"></i>
 													<i id="edit" data-toggle="tooltip" data-placement="right" title="Edit" class="fa fa-pencil edit" onclick="submitSchoolClassEditForm(@schoolClass.id); return false;"></i>													
-													@form(action = routes.Application.deleteSchoolClassForTeacher(String.valueOf(schoolClass.id), String.valueOf(schoolClass.teacherID)), 'id -> ("schoolClassDeleteForm" + String.valueOf(schoolClass.id))) {
+													@form(action = routes.Classes.deleteSchoolClassForTeacher(String.valueOf(schoolClass.id), String.valueOf(schoolClass.teacherID)), 'id -> ("schoolClassDeleteForm" + String.valueOf(schoolClass.id))) {
 													}
-													@form(action = routes.Application.schoolClassEditPageForTeacher(String.valueOf(schoolClass.id), String.valueOf(schoolClass.teacherID)), 'id -> ("schoolClassEditForm" + String.valueOf(schoolClass.id))) {
+													@form(action = routes.Classes.schoolClassEditPageForTeacher(String.valueOf(schoolClass.id), String.valueOf(schoolClass.teacherID)), 'id -> ("schoolClassEditForm" + String.valueOf(schoolClass.id))) {
 													}
 												</p>
 											</div>
@@ -169,7 +169,7 @@
 									}
 								</div>
 							}
-							@form(action = routes.Application.newSchoolClassForTeacher(String.valueOf(teacher.id))) {
+							@form(action = routes.Classes.newSchoolClassForTeacher(String.valueOf(teacher.id))) {
 								<input type="hidden" name="teacherId" value="teacher.id">
 								<input type="hidden" id="color" name="color" value="#c34444">
 								<h2 id="subjectError" style="color:red;"></h2>
@@ -223,7 +223,7 @@
 					<div class="container center">
 						<div class="inner">
 							<div class="Header"><h2>Add Assignment</h2></div>
-							@form(action = routes.Application.newAssignmentForTeacher(String.valueOf(teacher.id)), 'onsubmit -> "combine('assignmentDueDate', 'assignment')") {
+							@form(action = routes.Assignments.newAssignmentForTeacher(String.valueOf(teacher.id)), 'onsubmit -> "combine('assignmentDueDate', 'assignment')") {
 								@if(schoolClasses.length <= 0) {
 									<div class="notEnContainer">
 										<span class="alert">!</span>
@@ -320,7 +320,7 @@
 					<div class="area center" style="text-align: center;"> 
 						<h2 style="text-algin: center;"> Account Settings</h2>
 				 		
-				 		@form(action = routes.Application.changeTeacherAccountSettings(String.valueOf(teacher.id)), 'id -> "accountSettingsForm") {
+				 		@form(action = routes.Teachers.changeTeacherAccountSettings(String.valueOf(teacher.id)), 'id -> "accountSettingsForm") {
 							<div style="display: block;" id="accountSettings">
 								<div class="changeSettings section group">
 									<div class="col span_1_of_3">

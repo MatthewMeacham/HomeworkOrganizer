@@ -426,10 +426,10 @@
 				
 				<!-- BEGIN ACCOUNT SETTINGS -->
 				<div id="accountSettings" style=@if(startingBlock == "accountSettings") {"display: block;"} else {"display: none"}>
-					@if(!Application.childAccount(String.valueOf(student.id))) {
+					@if(!Parents.childAccount(String.valueOf(student.id))) {
 						<div class="area center">
 							<h1 style="text-align: center;"> Account Settings </h1>
-							@form(action = routes.Application.changeAccountSettings(String.valueOf(student.id))) {
+							@form(action = routes.Students.changeAccountSettings(String.valueOf(student.id))) {
 									<div class="changeSettings section group">
 										<div class="col span_1_of_4">
 											<label class="email">Change Email</label> <br>

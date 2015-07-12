@@ -2,54 +2,62 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Home page
-GET     /                          			controllers.Application.index()
-GET		/profile/							controllers.Application.profileLogin(studentID: String)
-GET		/parentprofile/						controllers.Application.parentProfileLogin(parentID: String)
-GET		/teacherprofile/					controllers.Application.teacherProfileLogin(teacherID: Long)
-GET		/signup/							controllers.Application.signup()
-GET		/studentsignup/						controllers.Application.studentSignup()
-GET		/parentsignup/						controllers.Application.parentSignup()
-GET		/teachersignup/						controllers.Application.teacherSignup()
-GET     /login/          					controllers.Application.login()
-GET     /logout/                    		controllers.Application.logout()
-GET		/assignment/editPage/:assignmentID/:studentID/				controllers.Application.editPageAssignment(assignmentID: String, studentID: String)
-GET		/teacher/assignment/editPage/:assignmentID/:teacherID/		controllers.Application.editPageAssignmentForTeacher(assignmentID: String, teacherID: String)
-GET		/redirectToProfile/					controllers.Application.redirectToStudent(studentID: Long, parentID: String)
-GET		/FAQ/								controllers.Application.FAQ()
-GET 	/schoolClass/editPage/:schoolClassID/:studentID				controllers.Application.schoolClassEditPage(schoolClassID: String, studentID: String)
-GET		/teacher/schoolClass/editPage/:schoolClassID/:teacherID		controllers.Application.schoolClassEditPageForTeacher(schoolClassID: String, teacherID: String)
-GET		/contactUs/							controllers.Application.contactUsPage()
-GET		/refresh/							controllers.Application.refresh(studentID: Long)
-POST	/submitContactForm/					controllers.Application.contactUs()
-POST	/newStudent/						controllers.Application.newStudent()
-POST	/addChild/							controllers.Application.addChild(parentID: String)
-POST	/newParent/							controllers.Application.newParent()
-POST	/newTeacher/						controllers.Application.newTeacher()
-POST	/authenticate/						controllers.Application.authenticate()
-POST	/profileAssignmentChanged/			controllers.Application.newAssignment(studentID: String)
-POST	/profileAssignmentChangedTeacher/	controllers.Application.newAssignmentForTeacher(teacherID: String)
-POST	/profileClassChanged/				controllers.Application.newSchoolClass(studentID: String)
-POST	/newSchoolClass/					controllers.Application.newSchoolClassForTeacher(teacherID: String)
-POST	/newSchoolClassFromTeacher/			controllers.Application.newSchoolClassFromTeacher(studentID: String)
-POST	/assignment/delete/					controllers.Application.deleteAssignment(assignmentID: String, studentID: String)
-POST	/teacher/assignment/delete/			controllers.Application.deleteAssignmentForTeacher(assignmentID: String, teacherID: String)
-POST	/finishedAssignment/				controllers.Application.finishedAssignment(assignmentID: String, studentID: String)
-POST	/assignment/edit/					controllers.Application.editAssignment(assignmentID: String, studentID: String)
-POST	/teacher/assignment/edit/			controllers.Application.editAssignmentForTeacher(assignmentID: String, teacherID: String)
-POST	/schoolClass/edit/					controllers.Application.editSchoolClass(schoolClassID: String, studentID: String)
-POST	/teacher/schoolClass/edit/			controllers.Application.editSchoolClassForTeacher(schoolClassID: String, teacherID: String)
-POST	/profileSettingsChanged/			controllers.Application.changeAccountSettings(studentID: String)
-POST	/parentProfileSettingsChanged/		controllers.Application.changeParentAccountSettings(parentID: String, studentID: String)
-POST	/teacher/accountSettings/changed/	controllers.Application.changeTeacherAccountSettings(teacherID: String)
-POST	/schoolClass/delete/				controllers.Application.deleteSchoolClass(schoolClassID: String, studentID: String)
-POST	/teacher/schoolClass/delete/		controllers.Application.deleteSchoolClassForTeacher(schoolClassID: String, teacherID: String)
+# Application
+GET    /                                                         controllers.Application.index()
+GET    /login                                                    controllers.Application.login()
+GET    /logout                                                   controllers.Application.logout()
+POST   /authenticate/                                            controllers.Application.authenticate()
+GET    /faq                                                      controllers.Application.FAQ()
+GET    /contact                                                  controllers.Application.contactUsPage()
+POST   /contact                                                  controllers.Application.contactUs()
+GET    /refresh                                                  controllers.Application.refresh(studentID: Long)
+
+# Assignments
+GET    /assn/edit/:assnID/:studentID/                            controllers.Assignments.editPageAssignment(assnID: String, studentID: String)
+POST   /assn/edit/                                               controllers.Assignments.editAssignment(assnID: String, studentID: String)
+GET    /teacher/assn/edit/:assnID/:teacherID/                    controllers.Assignments.editPageAssignmentForTeacher(assnID: String, teacherID: String)
+POST   /teacher/assn/edit/                                       controllers.Assignments.editAssignmentForTeacher(assnID: String, teacherID: String)
+POST   /profileAssnChanged/                                      controllers.Assignments.newAssignment(studentID: String)
+POST   /profileAssnChangedTeacher/                               controllers.Assignments.newAssignmentForTeacher(teacherID: String)
+POST   /assn/delete/                                             controllers.Assignments.deleteAssignment(assnID: String, studentID: String)
+POST   /teacher/assn/delete/                                     controllers.Assignments.deleteAssignmentForTeacher(assnID: String, teacherID: String)
+POST   /finishedAssn/                                            controllers.Assignments.finishedAssignment(assnID: String, studentID: String)
+
+
+
+# Classes
+GET    /schoolClass/editPage/:schoolClassID/:studentID           controllers.Classes.schoolClassEditPage(schoolClassID: String, studentID: String)
+POST   /schoolClass/edit/                                        controllers.Classes.editSchoolClass(schoolClassID: String, studentID: String)
+GET    /teacher/schoolClass/editPage/:schoolClassID/:teacherID   controllers.Classes.schoolClassEditPageForTeacher(schoolClassID: String, teacherID: String)
+POST   /teacher/schoolClass/edit/                                controllers.Classes.editSchoolClassForTeacher(schoolClassID: String, teacherID: String)
+POST   /profileClassChanged/                                     controllers.Classes.newSchoolClass(studentID: String)
+POST   /newSchoolClass/                                          controllers.Classes.newSchoolClassForTeacher(teacherID: String)
+POST   /newSchoolClassFromTeacher/                               controllers.Classes.newSchoolClassFromTeacher(studentID: String)
+POST   /schoolClass/delete/                                      controllers.Classes.deleteSchoolClass(schoolClassID: String, studentID: String)
+POST   /teacher/schoolClass/delete/                              controllers.Classes.deleteSchoolClassForTeacher(schoolClassID: String, teacherID: String)
+
+# Parents
+GET    /parent/profile                                           controllers.Parents.parentProfileLogin(parentID: String)
+POST   /parent/settings/edit                                     controllers.Parents.changeParentAccountSettings(parentID: String, studentID: String)
+POST   /parent/addchild                                          controllers.Parents.addChild(parentID: String)
+GET    /parent/tochild                                           controllers.Parents.redirectToStudent(studentID: Long, parentID: String)
+
+# Signups
+GET    /signup                                                   controllers.Signups.signup()
+GET    /signup/student                                           controllers.Signups.studentSignup()
+POST   /signup/student                                           controllers.Signups.newStudent()
+GET    /signup/parent                                            controllers.Signups.parentSignup()
+POST   /signup/parent                                            controllers.Signups.newParent()
+GET    /signup/teacher                                           controllers.Signups.teacherSignup()
+POST   /signup/teacher                                           controllers.Signups.newTeacher()
+
+# Students
+GET    /student/profile                                          controllers.Students.profileLogin(studentID: String)
+POST   /student/settings/edit                                    controllers.Students.changeAccountSettings(studentID: String)
+
+# Teachers
+GET    /teacher/profile                                          controllers.Teachers.teacherProfileLogin(teacherID: Long)
+POST   /teacher/settings/edit                                    controllers.Teachers.changeTeacherAccountSettings(teacherID: String)
 
 # Map static resources from the /public folder to the /assets URL path
-# This is the old way of making assets available and shouldn't be used...
-# GET     /assets/*file               controllers.Assets.at(path="/public", file)
-
-
-# Map static resources from the /public folder to the /assets URL path
-# This is the new, better way to make assets available in Play
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+GET    /assets/*file                                             controllers.Assets.versioned(path="/public", file: Asset)
