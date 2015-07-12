@@ -21,7 +21,7 @@
 </head>
 <body>
 <div id="moveDown" class="center" style="text-align: center;">
-		@form(action = routes.Application.editSchoolClassForTeacher(String.valueOf(schoolClass.id), String.valueOf(teacher.id))) {
+		@form(action = routes.Classes.updateForTeacher(String.valueOf(schoolClass.id), String.valueOf(teacher.id))) {
 			<input type="hidden" name="teacherId" value="@teacher.id">
 			<input type="hidden" id="color" name="color" value="@schoolClass.color">
 			<h2 style="color:red;">@errorMessage</h2>

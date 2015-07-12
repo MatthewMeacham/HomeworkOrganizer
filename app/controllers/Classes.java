@@ -15,7 +15,7 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.index;
-import views.html.profile;
+import views.html.studentProfile;
 import views.html.teacherProfile;
 
 public class Classes extends Controller {
@@ -25,28 +25,9 @@ public class Classes extends Controller {
 	private static Form<Login> loginForm = Form.form(Login.class);
 	private static Form<SchoolClassFromCode> schoolClassFromCodeForm = Form
 			.form(SchoolClassFromCode.class);
-	
-	// Direct to the edit school class page
-	public Result schoolClassEditPage(String schoolClassID, String studentID) {
-		SchoolClass schoolClass = SchoolClass.find.ref(Long
-				.valueOf(schoolClassID));
-		Student student = Student.find.ref(Long.valueOf(studentID));
-		return ok(views.html.schoolClassEdit.render(schoolClass, student, ""));
-	}
-	
-	// Direct to the edit school class page for teacher
-	public Result schoolClassEditPageForTeacher(String schoolClassID,
-			String teacherID) {
-		SchoolClass schoolClass = SchoolClass.find.where()
-				.eq("ID", Long.valueOf(schoolClassID)).findUnique();
-		Teacher teacher = Teacher.find.where()
-				.eq("ID", Long.valueOf(teacherID)).findUnique();
-		return ok(views.html.schoolClassEditForTeacher.render(schoolClass,
-				teacher, ""));
-	}
-	
+
 	// Create a new school class from the request
-	public Result newSchoolClass(String studentID) {
+	public Result create(String studentID) {
 		Form<SchoolClass> filledForm = schoolClassForm.bindFromRequest();
 		Student student = Student.find.ref(Long.valueOf(studentID));
 		if (student == null)
@@ -54,7 +35,7 @@ public class Classes extends Controller {
 					+ Parent.find.all().size() + Teacher.find.all().size(),
 					loginForm));
 		if (filledForm.hasErrors())
-			return badRequest(profile.render(student,
+			return badRequest(studentProfile.render(student,
 					Utilities.createSchoolClassesList(student),
 					Utilities.createAssignmentsList(student),
 					Utilities.createFinishedAssignmentsList(student),
@@ -67,7 +48,7 @@ public class Classes extends Controller {
 				.createSchoolClassesList(student);
 		String subject = filledForm.data().get("subject");
 		if (subject.trim().isEmpty() || subject.equals(""))
-			return badRequest(profile.render(student,
+			return badRequest(studentProfile.render(student,
 					Utilities.createSchoolClassesList(student),
 					Utilities.createAssignmentsList(student),
 					Utilities.createFinishedAssignmentsList(student),
@@ -76,7 +57,7 @@ public class Classes extends Controller {
 					Utilities.createNotesList(student), Utilities.today, "schoolClasses",
 					"Class name can not be just spaces."));
 		if (subject.length() >= 250)
-			return badRequest(profile.render(student,
+			return badRequest(studentProfile.render(student,
 					Utilities.createSchoolClassesList(student),
 					Utilities.createAssignmentsList(student),
 					Utilities.createFinishedAssignmentsList(student),
@@ -86,7 +67,7 @@ public class Classes extends Controller {
 					"Class name was too long."));
 		for (SchoolClass schoolClass : schoolClassList) {
 			if (subject.equals(schoolClass.subject))
-				return badRequest(profile.render(student,
+				return badRequest(studentProfile.render(student,
 						Utilities.createSchoolClassesList(student),
 						Utilities.createAssignmentsList(student),
 						Utilities.createFinishedAssignmentsList(student),
@@ -98,7 +79,7 @@ public class Classes extends Controller {
 		}
 		SchoolClass.create(subject, student.email, Long.valueOf(studentID),
 				filledForm.data().get("color"), "");
-		return ok(profile.render(student,
+		return ok(studentProfile.render(student,
 				Utilities.createSchoolClassesList(student),
 				Utilities.createAssignmentsList(student),
 				Utilities.createFinishedAssignmentsList(student),
@@ -108,7 +89,7 @@ public class Classes extends Controller {
 	}
 
 	// Creates a new school class for the teacher from the request
-	public Result newSchoolClassForTeacher(String teacherID) {
+	public Result createForTeacher(String teacherID) {
 		Form<SchoolClass> filledForm = schoolClassForm.bindFromRequest();
 		Teacher teacher = Teacher.find.ref(Long.valueOf(teacherID));
 		if (teacher == null)
@@ -151,7 +132,7 @@ public class Classes extends Controller {
 	}
 	
 	// Create a new school class from a teacher provided id and password
-	public Result newSchoolClassFromTeacher(String studentID) {
+	public Result createFromTeacher(String studentID) {
 		Form<SchoolClassFromCode> filledForm = schoolClassFromCodeForm
 				.bindFromRequest();
 		Student student = Student.find.ref(Long.valueOf(studentID));
@@ -160,7 +141,7 @@ public class Classes extends Controller {
 					+ Parent.find.all().size() + Teacher.find.all().size(),
 					loginForm));
 		if (filledForm.hasErrors())
-			return badRequest(profile.render(student,
+			return badRequest(studentProfile.render(student,
 					Utilities.createSchoolClassesList(student),
 					Utilities.createAssignmentsList(student),
 					Utilities.createFinishedAssignmentsList(student),
@@ -173,7 +154,7 @@ public class Classes extends Controller {
 				.eq("ID", Long.valueOf(filledForm.data().get("schoolClassID")))
 				.findUnique();
 		if (schoolClass == null)
-			return badRequest(profile.render(student,
+			return badRequest(studentProfile.render(student,
 					Utilities.createSchoolClassesList(student),
 					Utilities.createAssignmentsList(student),
 					Utilities.createFinishedAssignmentsList(student),
@@ -182,7 +163,7 @@ public class Classes extends Controller {
 					Utilities.createNotesList(student), Utilities.today, "schoolClasses",
 					"Invalid class ID."));
 		if (!schoolClass.password.equals(filledForm.data().get("password")))
-			return badRequest(profile.render(student,
+			return badRequest(studentProfile.render(student,
 					Utilities.createSchoolClassesList(student),
 					Utilities.createAssignmentsList(student),
 					Utilities.createFinishedAssignmentsList(student),
@@ -194,7 +175,7 @@ public class Classes extends Controller {
 				.createSchoolClassesList(student);
 		for (SchoolClass schoolClassIterated : schoolClasses) {
 			if (schoolClassIterated.subject.equals(schoolClass.subject))
-				return badRequest(profile.render(student,
+				return badRequest(studentProfile.render(student,
 						Utilities.createSchoolClassesList(student),
 						Utilities.createAssignmentsList(student),
 						Utilities.createFinishedAssignmentsList(student),
@@ -207,7 +188,7 @@ public class Classes extends Controller {
 		schoolClass.students.add(Student.find.ref(Long.valueOf(studentID)));
 		schoolClass.save();
 
-		return ok(profile.render(student,
+		return ok(studentProfile.render(student,
 				Utilities.createSchoolClassesList(student),
 				Utilities.createAssignmentsList(student),
 				Utilities.createFinishedAssignmentsList(student),
@@ -216,8 +197,29 @@ public class Classes extends Controller {
 				Utilities.createNotesList(student), Utilities.today, "schoolClasses", ""));
 	}
 	
+	// Direct to the edit school class page
+	public Result read(String schoolClassID, String studentID) {
+		SchoolClass schoolClass = SchoolClass.find.ref(Long
+				.valueOf(schoolClassID));
+		Student student = Student.find.ref(Long.valueOf(studentID));
+		return ok(views.html.schoolClassEdit.render(schoolClass, student, ""));
+	}
+	
+	// Direct to the edit school class page for teacher
+	public Result readForTeacher(String schoolClassID,
+			String teacherID) {
+		SchoolClass schoolClass = SchoolClass.find.where()
+				.eq("ID", Long.valueOf(schoolClassID)).findUnique();
+		Teacher teacher = Teacher.find.where()
+				.eq("ID", Long.valueOf(teacherID)).findUnique();
+		return ok(views.html.schoolClassEditForTeacher.render(schoolClass,
+				teacher, ""));
+	}
+	
+
+	
 	// Edit a schoolClass from a request
-	public Result editSchoolClass(String schoolClassID, String studentID) {
+	public Result update(String schoolClassID, String studentID) {
 		Form<SchoolClass> filledForm = schoolClassForm.bindFromRequest();
 		SchoolClass schoolClass = SchoolClass.find.ref(Long
 				.valueOf(schoolClassID));
@@ -250,7 +252,7 @@ public class Classes extends Controller {
 			String color = filledForm.data().get("color");
 			SchoolClass.edit(Long.valueOf(schoolClassID), subject, color,
 					student.id, "");
-			return ok(profile.render(student,
+			return ok(studentProfile.render(student,
 					Utilities.createSchoolClassesList(student),
 					Utilities.createAssignmentsList(student),
 					Utilities.createFinishedAssignmentsList(student),
@@ -262,7 +264,7 @@ public class Classes extends Controller {
 	}
 
 	// Edit a schoolClass for a teacher from a request
-	public Result editSchoolClassForTeacher(String schoolClassID,
+	public Result updateForTeacher(String schoolClassID,
 			String teacherID) {
 		Form<SchoolClass> filledForm = schoolClassForm.bindFromRequest();
 		SchoolClass schoolClass = SchoolClass.find.where()
@@ -302,13 +304,13 @@ public class Classes extends Controller {
 				"schoolClasses", ""));
 	}
 	
-	public Result deleteSchoolClass(String schoolClassID, String studentID) {
+	public Result delete(String schoolClassID, String studentID) {
 		SchoolClass schoolClass = SchoolClass.find.where()
 				.eq("ID", Long.valueOf(schoolClassID)).findUnique();
 		Student student = Student.find.where()
 				.eq("ID", Long.valueOf(studentID)).findUnique();
 		if (schoolClass == null)
-			return badRequest(profile.render(student,
+			return badRequest(studentProfile.render(student,
 					Utilities.createSchoolClassesList(student),
 					Utilities.createAssignmentsList(student),
 					Utilities.createFinishedAssignmentsList(student),
@@ -332,7 +334,7 @@ public class Classes extends Controller {
 					}
 				}
 			}
-			return ok(profile.render(student,
+			return ok(studentProfile.render(student,
 					Utilities.createSchoolClassesList(student),
 					Utilities.createAssignmentsList(student),
 					Utilities.createFinishedAssignmentsList(student),
@@ -350,7 +352,7 @@ public class Classes extends Controller {
 			try {
 				schoolClass.delete();
 			} catch (PersistenceException e) {
-				return ok(profile.render(student,
+				return ok(studentProfile.render(student,
 						Utilities.createSchoolClassesList(student),
 						Utilities.createAssignmentsList(student),
 						Utilities.createFinishedAssignmentsList(student),
@@ -359,7 +361,7 @@ public class Classes extends Controller {
 						Utilities.createNotesList(student), Utilities.today,
 						"schoolClasses", ""));
 			}
-			return ok(profile.render(student,
+			return ok(studentProfile.render(student,
 					Utilities.createSchoolClassesList(student),
 					Utilities.createAssignmentsList(student),
 					Utilities.createFinishedAssignmentsList(student),
@@ -370,7 +372,7 @@ public class Classes extends Controller {
 		}
 	}
 
-	public Result deleteSchoolClassForTeacher(String schoolClassID,
+	public Result deleteForTeacher(String schoolClassID,
 			String teacherID) {
 		SchoolClass schoolClass = SchoolClass.find.where()
 				.eq("ID", Long.valueOf(schoolClassID)).findUnique();

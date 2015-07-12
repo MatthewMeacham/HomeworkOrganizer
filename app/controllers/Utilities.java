@@ -40,6 +40,10 @@ public class Utilities extends Controller {
 		today = total;
 	}
 
+	// For All of the create_Lists Methods:
+	// Recall that SQL uses underscores, you can't use student.id it becomes
+	// student_id
+	
 	// Creates the school classes list for the given student
 	// TODO FIND BETTER WAY TO DO THIS
 	public static List<SchoolClass> createSchoolClassesList(Student student) {

@@ -13,9 +13,9 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.parentProfile;
 import views.html.parentSignUp;
-import views.html.profile;
+import views.html.studentProfile;
 import views.html.studentSignUp;
-import views.html.signup;
+import views.html.accountTypeSelector;
 
 public class Signups extends Controller {
 
@@ -26,27 +26,27 @@ public class Signups extends Controller {
 	private static final Hasher HASHER = new Hasher();
 
 	// Directs the request to the sign up page
-	public Result signup() {
-		return ok(signup.render(""));
+	public Result accountTypeSelector() {
+		return ok(accountTypeSelector.render(""));
 	}
 
 	// Directs the request to the student sign up
-	public Result studentSignup() {
+	public Result studentForm() {
 		return ok(studentSignUp.render(studentForm, ""));
 	}
 
 	// Directs the request to the parent sign up
-	public Result parentSignup() {
+	public Result parentForm() {
 		return ok(parentSignUp.render(parentForm, ""));
 	}
 
 	// Directs the request to the teacher sign up page
-	public Result teacherSignup() {
+	public Result teacherForm() {
 		return ok(views.html.teacherSignUp.render(teacherForm, ""));
 	}
 
 	// Create a new student from the request
-	public Result newStudent() {
+	public Result createStudent() {
 		Form<Student> filledForm = studentForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			return badRequest(studentSignUp.render(studentForm,
@@ -87,7 +87,7 @@ public class Signups extends Controller {
 				return badRequest(studentSignUp.render(studentForm,
 						"That email is already associated with an account."));
 			}
-			return ok(profile.render(student,
+			return ok(studentProfile.render(student,
 					Utilities.createSchoolClassesList(student),
 					Utilities.createAssignmentsList(student),
 					Utilities.createFinishedAssignmentsList(student),
@@ -99,7 +99,7 @@ public class Signups extends Controller {
 	}
 
 	// Create a new parent from the request
-	public Result newParent() {
+	public Result createParent() {
 		Form<Parent> filledForm = parentForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			return badRequest(parentSignUp.render(parentForm,
@@ -146,7 +146,7 @@ public class Signups extends Controller {
 	}
 
 	// Create a new Teacher account from the request
-	public Result newTeacher() {
+	public Result createTeacher() {
 		Form<Teacher> filledForm = teacherForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			return badRequest(views.html.teacherSignUp.render(teacherForm,

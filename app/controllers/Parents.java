@@ -13,7 +13,7 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.parentProfile;
-import views.html.profile;
+import views.html.studentProfile;
 import controllers.Utilities;
 import controllers.Application.AccountSettings;
 
@@ -29,7 +29,7 @@ public class Parents extends Controller {
 	private final static int MAX_GRADE = 16;
 
 	// Direct to the parent profile page after authentication
-	public Result parentProfileLogin(String parentID) {
+	public Result toProfile(String parentID) {
 		Parent parent = Parent.find.ref(Long.valueOf(parentID));
 		return ok(parentProfile.render(parent,
 				Utilities.createChildrenList(parent),
@@ -44,7 +44,7 @@ public class Parents extends Controller {
 		List<Student> children = Utilities.createChildrenList(parent);
 		for (int i = 0; i < children.size(); i++) {
 			if (children.get(i).email.equals(student.email)) {
-				return ok(profile.render(student,
+				return ok(studentProfile.render(student,
 						Utilities.createSchoolClassesList(student),
 						Utilities.createAssignmentsList(student),
 						Utilities.createFinishedAssignmentsList(student),
@@ -60,7 +60,7 @@ public class Parents extends Controller {
 	}
 
 	// Add a child to a parent
-	public Result addChild(String parentID) {
+	public Result createChild(String parentID) {
 		Form<Student> filledForm = studentForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			Parent parent = Parent.find.ref(Long.valueOf(parentID));
@@ -130,7 +130,7 @@ public class Parents extends Controller {
 	// Changes account settings for a parent account OR account settings for one
 	// of their kids and return
 	// either A) successful or B) Error
-	public Result changeParentAccountSettings(String parentID, String studentID) {
+	public Result updateSettings(String parentID, String studentID) {
 		Form<AccountSettings> filledForm = accountSettingsForm
 				.bindFromRequest();
 		Parent parent = Parent.find.ref(Long.valueOf(parentID));

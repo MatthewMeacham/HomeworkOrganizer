@@ -6,18 +6,12 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
-import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.persistence.PersistenceException;
-
-import models.Assignment;
-import models.Note;
 import models.Parent;
-import models.SchoolClass;
 import models.Student;
 import models.Teacher;
 import play.data.Form;
@@ -25,12 +19,6 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.index;
 import views.html.login;
-import views.html.parentProfile;
-import views.html.parentSignUp;
-import views.html.profile;
-import views.html.signup;
-import views.html.studentSignUp;
-import views.html.teacherProfile;
 
 import com.matthew.hasher.Hasher;
 
@@ -43,17 +31,21 @@ public class Application extends Controller {
 	private static Form<Login> loginForm = Form.form(Login.class);
 	private static Form<ContactUs> contactUsForm = Form.form(ContactUs.class);
 
+	// ########################################################################
+
 	private static final Hasher HASHER = new Hasher();
 
-	// The number of days in today, this is set to year * 366 - (12 - month) *
-	// 31 - (31 - day)
-	private static int today;
+	// ########################################################################
+
 	// who the email is going to
 	private static final String TO = "orgnizerwebapp@gmail.com";
+
 	// Javax.mail stuff to send email
 	private static Properties mailServerProperties;
 	private static Session getMailSession;
 	static MimeMessage generateMailMessage;
+
+	// ########################################################################
 
 	// Directs the request to the index
 	public Result index() {
@@ -74,25 +66,13 @@ public class Application extends Controller {
 	}
 
 	// Directs the user to the FAQ page
-	public Result FAQ() {
+	public Result faq() {
 		return ok(views.html.faq.render());
 	}
 
 	// Directs the user to the contact us page
 	public Result contactUsPage() {
 		return ok(views.html.contact.render(""));
-	}
-
-	// Refreshed the profile page
-	public Result refresh(Long studentID) {
-		System.out.println("CALLED");
-		Student student = Student.find.where().eq("ID", studentID).findUnique();
-		if (student == null)
-			return badRequest(index.render(Student.find.all().size()
-					+ Parent.find.all().size() + Teacher.find.all().size(),
-					loginForm));
-		return redirect(routes.Application.profileLogin(String
-				.valueOf(student.id)));
 	}
 
 	// Performs the email sending operation and then redirects back to the index
@@ -120,83 +100,6 @@ public class Application extends Controller {
 					.render("Message can't be empty."));
 		Application.generateAndSendEmail(name, email, subject, message);
 		return redirect(routes.Application.index());
-	}
-
-	// TODO need to do these
-	public Result addNote(String studentID) {
-		return TODO;
-	}
-
-	// Delete a late assignment
-	public Result deleteLateAssignment(String assignmentID, String studentID) {
-		Assignment lateAssignment = Assignment.find.ref(Long
-				.valueOf(assignmentID));
-		Student student = Student.find.ref(Long.valueOf(studentID));
-		if (lateAssignment == null)
-			return badRequest(profile.render(student,
-					Utilities.createSchoolClassesList(student),
-					Utilities.createAssignmentsList(student),
-					Utilities.createFinishedAssignmentsList(student),
-					Utilities.createLateAssignmentsList(student),
-					Utilities.createTeachersList(student),
-					Utilities.createNotesList(student), today,
-					"lateAssignments", "Error while processing."));
-		try {
-			lateAssignment.delete();
-		} catch (PersistenceException e) {
-			return ok(profile.render(student,
-					Utilities.createSchoolClassesList(student),
-					Utilities.createAssignmentsList(student),
-					Utilities.createFinishedAssignmentsList(student),
-					Utilities.createLateAssignmentsList(student),
-					Utilities.createTeachersList(student),
-					Utilities.createNotesList(student), today,
-					"lateAssignments", ""));
-		}
-		return ok(profile.render(student,
-				Utilities.createSchoolClassesList(student),
-				Utilities.createAssignmentsList(student),
-				Utilities.createFinishedAssignmentsList(student),
-				Utilities.createLateAssignmentsList(student),
-				Utilities.createTeachersList(student),
-				Utilities.createNotesList(student), today, "lateAssignments",
-				""));
-	}
-
-	// Delete a finished assignment
-	public Result deleteFinishedAssignment(String assignmentID, String studentID) {
-		Assignment finishedAssignment = Assignment.find.ref(Long
-				.valueOf(assignmentID));
-		Student student = Student.find.ref(Long.valueOf(studentID));
-		if (finishedAssignment == null)
-			return badRequest(profile.render(student,
-					Utilities.createSchoolClassesList(student),
-					Utilities.createAssignmentsList(student),
-					Utilities.createFinishedAssignmentsList(student),
-					Utilities.createLateAssignmentsList(student),
-					Utilities.createTeachersList(student),
-					Utilities.createNotesList(student), today,
-					"finishedAssignments", "Error while processing."));
-		try {
-			finishedAssignment.delete();
-		} catch (PersistenceException e) {
-			return ok(profile.render(student,
-					Utilities.createSchoolClassesList(student),
-					Utilities.createAssignmentsList(student),
-					Utilities.createFinishedAssignmentsList(student),
-					Utilities.createLateAssignmentsList(student),
-					Utilities.createTeachersList(student),
-					Utilities.createNotesList(student), today,
-					"finishedAssignments", ""));
-		}
-		return ok(profile.render(student,
-				Utilities.createSchoolClassesList(student),
-				Utilities.createAssignmentsList(student),
-				Utilities.createFinishedAssignmentsList(student),
-				Utilities.createLateAssignmentsList(student),
-				Utilities.createTeachersList(student),
-				Utilities.createNotesList(student), today,
-				"finishedAssignments", ""));
 	}
 
 	// Authenticate a request
@@ -237,8 +140,8 @@ public class Application extends Controller {
 						password) != null) {
 					parent = Parent.find.where().eq("email", email)
 							.eq("password", password).findUnique();
-					return redirect(routes.Application
-							.parentProfileLogin(String.valueOf(parent.id)));
+					return redirect(routes.Parents.toProfile(String
+							.valueOf(parent.id)));
 				}
 			}
 
@@ -257,8 +160,8 @@ public class Application extends Controller {
 						password) != null) {
 					teacher = Teacher.find.where().eq("email", email)
 							.eq("password", password).findUnique();
-					return redirect(routes.Application
-							.teacherProfileLogin(teacher.id));
+					return redirect(routes.Teachers
+							.toProfile(teacher.id));
 				}
 			}
 
@@ -299,17 +202,13 @@ public class Application extends Controller {
 						"Invalid email or password."));
 
 			if (Student.authenticate(email, password) != null)
-				return redirect(routes.Application.profileLogin(String
+				return redirect(routes.Students.toProfile(String
 						.valueOf(student.id)));
 
 			return badRequest(login.render(loginForm,
 					"Invalid email or password."));
 		}
 	}
-
-	// For All of the create_Lists Methods:
-	// Recall that SQL uses underscores, you can't use student.id it becomes
-	// student_id
 
 	public static void generateAndSendEmail(String name, String email,
 			String subject, String message) {

@@ -11,8 +11,10 @@ import models.Teacher;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.profile;
+import views.html.index;
+import views.html.studentProfile;
 import controllers.Application.AccountSettings;
+import controllers.Application.Login;
 import controllers.Utilities;
 
 public class Students extends Controller {
@@ -24,11 +26,12 @@ public class Students extends Controller {
 
 	private static Form<AccountSettings> accountSettingsForm = Form
 			.form(AccountSettings.class);
-
+	private static Form<Login> loginForm = Form.form(Login.class);
+	
 	// Direct to the student profile page after authentication
-	public Result profileLogin(String studentID) {
+	public Result toProfile(String studentID) {
 		Student student = Student.find.ref(Long.valueOf(studentID));
-		return ok(profile.render(student,
+		return ok(studentProfile.render(student,
 				Utilities.createSchoolClassesList(student),
 				Utilities.createAssignmentsList(student),
 				Utilities.createFinishedAssignmentsList(student),
@@ -40,12 +43,12 @@ public class Students extends Controller {
 
 	// Changes the account settings for the student with the given studentID and
 	// returns either A) Successful or B) Error
-	public Result changeAccountSettings(String studentID) {
+	public Result updateSettings(String studentID) {
 		Form<AccountSettings> filledForm = accountSettingsForm
 				.bindFromRequest();
 		Student student = Student.find.ref(Long.valueOf(studentID));
 		if (filledForm.hasErrors()) {
-			return badRequest(profile.render(student,
+			return badRequest(studentProfile.render(student,
 					Utilities.createSchoolClassesList(student),
 					Utilities.createAssignmentsList(student),
 					Utilities.createFinishedAssignmentsList(student),
@@ -57,7 +60,7 @@ public class Students extends Controller {
 			String grade = filledForm.data().get("grade");
 			if (Integer.valueOf(grade) <= MIN_GRADE
 					|| Integer.valueOf(grade) > MAX_GRADE)
-				return badRequest(profile.render(student,
+				return badRequest(studentProfile.render(student,
 						Utilities.createSchoolClassesList(student),
 						Utilities.createAssignmentsList(student),
 						Utilities.createFinishedAssignmentsList(student),
@@ -71,7 +74,7 @@ public class Students extends Controller {
 			String name = filledForm.data().get("name");
 			if (!name.equals(student.name)) {
 				if (name.equals("") || name.trim().isEmpty())
-					return badRequest(profile
+					return badRequest(studentProfile
 							.render(student,
 									Utilities.createSchoolClassesList(student),
 									Utilities.createAssignmentsList(student),
@@ -84,7 +87,7 @@ public class Students extends Controller {
 									Utilities.today, "accountSettings",
 									"Invalid name."));
 				if (name.length() >= 250)
-					return badRequest(profile.render(student,
+					return badRequest(studentProfile.render(student,
 							Utilities.createSchoolClassesList(student),
 							Utilities.createAssignmentsList(student),
 							Utilities.createFinishedAssignmentsList(student),
@@ -102,7 +105,7 @@ public class Students extends Controller {
 				if (email.equals("") || email.trim().isEmpty()
 						|| !email.contains("@")
 						|| !filledForm.data().get("email").contains("."))
-					return badRequest(profile.render(student,
+					return badRequest(studentProfile.render(student,
 							Utilities.createSchoolClassesList(student),
 							Utilities.createAssignmentsList(student),
 							Utilities.createFinishedAssignmentsList(student),
@@ -112,7 +115,7 @@ public class Students extends Controller {
 							Utilities.today, "accountSettings",
 							"Invalid email address."));
 				if (email.length() >= 250)
-					return badRequest(profile.render(student,
+					return badRequest(studentProfile.render(student,
 							Utilities.createSchoolClassesList(student),
 							Utilities.createAssignmentsList(student),
 							Utilities.createFinishedAssignmentsList(student),
@@ -123,7 +126,7 @@ public class Students extends Controller {
 							"Email was too long."));
 				if (Parent.exists(email) || Student.exists(email)
 						|| Teacher.exists(email))
-					return badRequest(profile.render(student,
+					return badRequest(studentProfile.render(student,
 							Utilities.createSchoolClassesList(student),
 							Utilities.createAssignmentsList(student),
 							Utilities.createFinishedAssignmentsList(student),
@@ -147,7 +150,7 @@ public class Students extends Controller {
 						|| !newPasswordAgain.equals("")) {
 					if (currentPassword.equals("")
 							|| !currentPassword.equals(student.password))
-						return badRequest(profile.render(student, Utilities
+						return badRequest(studentProfile.render(student, Utilities
 								.createSchoolClassesList(student), Utilities
 								.createAssignmentsList(student), Utilities
 								.createFinishedAssignmentsList(student),
@@ -157,7 +160,7 @@ public class Students extends Controller {
 								Utilities.today, "accountSettings",
 								"Current password was incorrect."));
 					if (newPassword.equals("") || newPasswordAgain.equals(""))
-						return badRequest(profile.render(student, Utilities
+						return badRequest(studentProfile.render(student, Utilities
 								.createSchoolClassesList(student), Utilities
 								.createAssignmentsList(student), Utilities
 								.createFinishedAssignmentsList(student),
@@ -169,7 +172,7 @@ public class Students extends Controller {
 					if (currentPassword.trim().isEmpty()
 							|| newPassword.trim().isEmpty()
 							|| newPasswordAgain.trim().isEmpty())
-						return badRequest(profile.render(student, Utilities
+						return badRequest(studentProfile.render(student, Utilities
 								.createSchoolClassesList(student), Utilities
 								.createAssignmentsList(student), Utilities
 								.createFinishedAssignmentsList(student),
@@ -179,7 +182,7 @@ public class Students extends Controller {
 								Utilities.today, "accountSettings",
 								"Invalid passwords."));
 					if (!newPassword.equals(newPasswordAgain))
-						return badRequest(profile.render(student, Utilities
+						return badRequest(studentProfile.render(student, Utilities
 								.createSchoolClassesList(student), Utilities
 								.createAssignmentsList(student), Utilities
 								.createFinishedAssignmentsList(student),
@@ -193,7 +196,7 @@ public class Students extends Controller {
 				}
 			} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
 				e.printStackTrace();
-				return badRequest(profile.render(student,
+				return badRequest(studentProfile.render(student,
 						Utilities.createSchoolClassesList(student),
 						Utilities.createAssignmentsList(student),
 						Utilities.createFinishedAssignmentsList(student),
@@ -203,7 +206,7 @@ public class Students extends Controller {
 						"accountSettings", "Error while processing."));
 			}
 
-			return ok(profile.render(student,
+			return ok(studentProfile.render(student,
 					Utilities.createSchoolClassesList(student),
 					Utilities.createAssignmentsList(student),
 					Utilities.createFinishedAssignmentsList(student),
@@ -213,5 +216,18 @@ public class Students extends Controller {
 					"overview", "Account changed successfully."));
 		}
 	}
+	
+	// Refreshed the studentProfile page
+	public Result refresh(Long studentID) {
+		System.out.println("CALLED");
+		Student student = Student.find.where().eq("ID", studentID).findUnique();
+		if (student == null)
+			return badRequest(index.render(Student.find.all().size()
+					+ Parent.find.all().size() + Teacher.find.all().size(),
+					loginForm));
+		return redirect(routes.Students
+				.toProfile(String.valueOf(student.id)));
+	}
+	
 
 }

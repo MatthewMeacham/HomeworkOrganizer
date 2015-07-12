@@ -22,7 +22,7 @@ public class Teachers extends Controller {
 			.form(AccountSettings.class);
 
 	// Direct to the teacher profile page after authentication
-	public Result teacherProfileLogin(Long teacherID) {
+	public Result toProfile(Long teacherID) {
 		Teacher teacher = Teacher.find.ref(teacherID);
 		return ok(views.html.teacherProfile.render(teacher,
 				Utilities.createAssignmentsListForTeacher(teacher),
@@ -31,7 +31,7 @@ public class Teachers extends Controller {
 	}
 
 	// Changes account settings for a teacher
-	public Result changeTeacherAccountSettings(String teacherID) {
+	public Result updateSettings(String teacherID) {
 		Form<AccountSettings> filledForm = accountSettingsForm
 				.bindFromRequest();
 		Teacher teacher = Teacher.find.ref(Long.valueOf(teacherID));
