@@ -1,0 +1,1 @@
+setx SBT_OPTS "-Dsbt.jse.engineType=Node"

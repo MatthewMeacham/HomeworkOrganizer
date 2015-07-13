@@ -36,3 +36,8 @@ routesGenerator := InjectedRoutesGenerator
 
 // Sets assets pipeline to run assets through these SBT plugins
 pipelineStages := Seq(rjs, digest, gzip)
+
+// LESS filters for files in app.assets
+includeFilter in (Assets, LessKeys.less) := "*.less"
+
+excludeFilter in (Assets, LessKeys.less) := "_*.less"
