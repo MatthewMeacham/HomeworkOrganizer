@@ -1,28 +1,29 @@
-import static org.fest.assertions.Assertions.assertThat;
-import static play.test.Helpers.HTMLUNIT;
-import static play.test.Helpers.fakeApplication;
-import static play.test.Helpers.inMemoryDatabase;
-import static play.test.Helpers.running;
-import static play.test.Helpers.testServer;
+import org.junit.*;
 
-import org.junit.Test;
+import play.mvc.*;
+import play.test.*;
+import play.libs.F.*;
 
-import play.libs.F.Callback;
-import play.test.TestBrowser;
+import static play.test.Helpers.*;
+import static org.junit.Assert.*;
+
+import static org.fluentlenium.core.filter.FilterConstructor.*;
 
 public class IntegrationTest {
 
-	/**
-	 * add your integration test here in this example we just check if the welcome page is being shown
-	 */
+    /**
+     * add your integration test here
+     * in this example we just check if the welcome page is being shown
+     */
+    /** Commented out because it's generic and doesn't apply to Orgnizer.
 	@Test
-	public void test() {
-//		running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, new Callback<TestBrowser>() {
-//			public void invoke(TestBrowser browser) {
-//				browser.goTo("http://localhost:3333");
-//				assertThat(browser.pageSource()).contains("Orgnizer");
-//			}
-//		});
-	}
-
+    public void test() {
+        running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, new Callback<TestBrowser>() {
+            public void invoke(TestBrowser browser) {
+                browser.goTo("http://localhost:3333");
+                assertTrue(browser.pageSource().contains("Your new application is ready."));
+            }
+        });
+    }
+	**/
 }

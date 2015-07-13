@@ -66,11 +66,6 @@ create table teacher (
   constraint pk_teacher primary key (id))
 ;
 
-create table user (
-  id                        bigint not null,
-  constraint pk_user primary key (id))
-;
-
 
 create table school_class_student (
   school_class_id                bigint not null,
@@ -88,8 +83,6 @@ create sequence school_class_seq;
 create sequence student_seq;
 
 create sequence teacher_seq;
-
-create sequence user_seq;
 
 alter table assignment add constraint fk_assignment_schoolClass_1 foreign key (school_class_id) references school_class (id) on delete restrict on update restrict;
 create index ix_assignment_schoolClass_1 on assignment (school_class_id);
@@ -122,8 +115,6 @@ drop table if exists student;
 
 drop table if exists teacher;
 
-drop table if exists user;
-
 SET REFERENTIAL_INTEGRITY TRUE;
 
 drop sequence if exists assignment_seq;
@@ -137,6 +128,4 @@ drop sequence if exists school_class_seq;
 drop sequence if exists student_seq;
 
 drop sequence if exists teacher_seq;
-
-drop sequence if exists user_seq;
 

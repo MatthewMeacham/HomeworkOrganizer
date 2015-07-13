@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
 import play.data.validation.Constraints.Required;
-import play.db.ebean.Model;
+import com.avaje.ebean.Model;
 
 @Entity
 public class Teacher extends User {
@@ -21,7 +21,7 @@ public class Teacher extends User {
 	@OneToMany
 	public SchoolClass schoolClass;
 
-	public static Model.Finder<Long, Teacher> find = new Model.Finder<Long, Teacher>(Long.class, Teacher.class);
+	public static Model.Finder<Long, Teacher> find = new Model.Finder<Long, Teacher>(Teacher.class);
 
 	public Teacher(String name, String email, String salt, String password) {
 		this.email = email;

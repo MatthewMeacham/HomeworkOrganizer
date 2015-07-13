@@ -12,9 +12,9 @@
 		<title>Orgnizer |  @parent.name's Profile</title>
 		
 		<!-- STYLESHEETS -->
-		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/animate.css")">
-		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/font.css")">
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/profile.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/animate.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/font.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/profile.css")">
 		
 		<!-- DEPENDENCIES -->
 		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
@@ -29,26 +29,26 @@
         <!-- OG TAGS (FOR FACEBOOK | G+ | TWITTER LINKS) -->
         <meta property="og:title" content="Orgnizer" />
         <meta property="og:type"   content="website" />
-        <meta property="og:image" content="@routes.Assets.at("images/og-logo.png")" />
+        <meta property="og:image" content="@routes.Assets.versioned("images/og-logo.png")" />
         <meta property="og:description" content="Welcome to your profile, here you can track your homework and it's progress!" />
         <meta property="og:locale" content="en_US" />
 
 
         <!-- APPLE ICONS (FOR APPLE DEVICES) -->
-        <link rel="apple-touch-icon" href="@routes.Assets.at("images/touch-icon-iphone.png")">
-        <link rel="apple-touch-icon" sizes="76x76" href="@routes.Assets.at("images/touch-icon-ipad.png")">
-        <link rel="apple-touch-icon" sizes="120x120" href="@routes.Assets.at("images/touch-icon-iphone-retina.png")">
-        <link rel="apple-touch-icon" sizes="152x152" href="@routes.Assets.at("images/touch-icon-ipad-retina.png")">
+        <link rel="apple-touch-icon" href="@routes.Assets.versioned("images/touch-icon-iphone.png")">
+        <link rel="apple-touch-icon" sizes="76x76" href="@routes.Assets.versioned("images/touch-icon-ipad.png")">
+        <link rel="apple-touch-icon" sizes="120x120" href="@routes.Assets.versioned("images/touch-icon-iphone-retina.png")">
+        <link rel="apple-touch-icon" sizes="152x152" href="@routes.Assets.versioned("images/touch-icon-ipad-retina.png")">
 
         <!-- BROWSER ICON -->
-        <link rel="icon" type="image/png" href="@routes.Assets.at("images/favicon.png")" sizes="32x32">
+        <link rel="icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")" sizes="32x32">
 
         
 	</head>
 	<body>
 		<div id="topSection">
 			<div class="topImage">
-				<img src=@routes.Assets.at("images/logo.png") alt="Orgnizer">
+				<img src=@routes.Assets.versioned("images/logo.png") alt="Orgnizer">
 				<h3 class="studentName">Logged In As @parent.name </h3>
 			</div>
 			
@@ -57,7 +57,7 @@
 					<ul class="clearfix">
 						<li><a id="overviewAnchor" href="#Overview" onclick="toggle_visibility('overview')"><div id="overviewToggle" style="display: inline-block;">Overview</div></a></li>
 						@for(student <- students) {
-							<li><a href="@routes.Application.redirectToStudent(student.id, String.valueOf(parent.id))" target="_blank"><div style="display: inline-block;">@student.name</div></a></li>
+							<li><a href="@routes.Parents.redirectToStudent(student.id, String.valueOf(parent.id))" target="_blank"><div style="display: inline-block;">@student.name</div></a></li>
 						}
 						<li><a id="addChildAnchor" href="#AddChild" onclick="toggle_visibility('addChild')"><div id="addChildToggle" style="display: inline-block;">Add Child</div></a></li>
 						<li><a id="accountSettingsAnchor" href="#Account" onclick="toggle_visibility('accountSettings')"><div id="accountSettingsToggle" style="display: inline-block;">Account</div></a></li> 
@@ -109,13 +109,13 @@
 											@assignment.spanner
 										</span>
 										<div class="contentInside">  
-											@form(action = routes.Application.deleteAssignment(String.valueOf(assignment.id), String.valueOf(assignment.schoolClass.teacherID)), 'id -> ("assignmentDeleteForm" + String.valueOf(assignment.id))) {
+											@form(action = routes.Assignments.delete(String.valueOf(assignment.id), String.valueOf(assignment.schoolClass.teacherID)), 'id -> ("assignmentDeleteForm" + String.valueOf(assignment.id))) {
 												<a href="#" onclick="submitAssignmentDeleteForm(@assignment.id); return false;">
 													<i data-toggle="tooltip" data-placement="top" title="Delete" class="fa fa-trash myIcon"></i>
 												</a>
 											}
 		
-											@form(action = routes.Application.editPageAssignment(String.valueOf(assignment.id), String.valueOf(assignment.schoolClass.teacherID)), 'id -> ("assignmentEditForm" + String.valueOf(assignment.id))) {
+											@form(action = routes.Assignments.read(String.valueOf(assignment.id), String.valueOf(assignment.schoolClass.teacherID)), 'id -> ("assignmentEditForm" + String.valueOf(assignment.id))) {
 												<a href="#" onclick="submitAssignmentEditForm(@assignment.id); return false;">
 													<i data-toggle="tooltip" data-placement="top" title="Edit" class="fa fa-pencil myIcon"></i>
 												</a>
@@ -142,7 +142,7 @@
 				<div id="addChild" style=@if(startingBlock == "addChild") {"display: block;"} else {"display: none"}>
 					<div class="area center" style=" width: 100%; margin-left: auto; margin-right: auto;">
 						<h2 style="text-align: center;">Add Child</h2>
-							@form(action = routes.Application.addChild(String.valueOf(parent.id))) {
+							@form(action = routes.Parents.createChild(String.valueOf(parent.id))) {
 								<div class="alignContentParent" style="text-align: center; margin-left: auto; margin-right: auto;">
 									<h3> Name Of Child: </h3>
 									<input type="text" name="name" placeholder="Name" required/><br/>
@@ -177,7 +177,7 @@
 				 		</div>
 				 		
 				 		
-				 		@form(action = routes.Application.changeParentAccountSettings(parent.email, "0"), 'id -> "accountSettingsForm0", 'onsubmit -> "return changeRoute();") {
+				 		@form(action = routes.Parents.updateSettings(parent.email, "0"), 'id -> "accountSettingsForm0", 'onsubmit -> "return changeRoute();") {
 							<div style="display: block;" id="accountSettings0">
 								<div class="changeSettings section group">
 									<div class="col span_1_of_3">
@@ -207,7 +207,7 @@
 				 		
 				 		
 				 		@for(child <- students) {
-				 			@form(action = routes.Application.changeParentAccountSettings(parent.email, String.valueOf(child.id)), 'id -> ("accountSettingsform" + child.id)) {
+				 			@form(action = routes.Parents.updateSettings(parent.email, String.valueOf(child.id)), 'id -> ("accountSettingsform" + child.id)) {
 				 				<div style="display: none;" id="accountSettings@child.id">
 				 					<div class="changeSettings section group">
 										
@@ -249,7 +249,7 @@
 	<!-- BEGIN SCRIPTS -->
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
-	<script src="@routes.Assets.at("/javascripts/parentProfile.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.versioned("/javascripts/parentProfile.js")" type="text/javascript"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	
 	<script>

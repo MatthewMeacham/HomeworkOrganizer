@@ -1,20 +1,38 @@
-//import com.github.play2war.plugin._
+// Import for Play2War Plugin
+import com.github.play2war.plugin._
 
-name := "HomeworkOrganizer"
+name := """HomeworkOrganizer"""
 
 version := "1.0-SNAPSHOT"
 
-//Comment the two lines below in when wanting to make war
-//Play2WarPlugin.play2WarSettings
+// Add Play2War settings to project
+Play2WarPlugin.play2WarSettings
 
-//Play2WarKeys.servletVersion := "3.0"
+// Play2War Servlet settings
+Play2WarKeys.servletVersion := "3.0"
+
+lazy val root = (project in file(".")).enablePlugins(PlayJava, PlayEbean, SbtWeb)
+
+scalaVersion := "2.11.6"
 
 libraryDependencies ++= Seq(
-//  "postgresql" % "postgresql" % "9.1-901-1.jdbc4",
+  "javax.mail" % "mail" % "1.4.5",
+  "postgresql" % "postgresql" % "9.1-901-1.jdbc4",
+  evolutions,
   javaJdbc,
-  javaEbean,
   cache,
-  anorm
-)     
+  javaWs
+)
 
-play.Project.playJavaSettings
+// Forces compile before Eclipse file generation when running "activator eclipse"
+EclipseKeys.preTasks := Seq(compile in Compile)
+
+// Builds Eclipse project with library sources (includes library javadocs, etc.)
+EclipseKeys.withSource := true
+
+// Play provides two styles of routers, one expects its actions to be injected, the
+// other, legacy style, accesses its actions statically.
+routesGenerator := InjectedRoutesGenerator
+
+// Sets assets pipeline to run assets through these SBT plugins
+pipelineStages := Seq(rjs, digest, gzip)

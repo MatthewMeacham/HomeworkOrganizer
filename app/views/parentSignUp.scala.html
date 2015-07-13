@@ -11,9 +11,9 @@
 		<title>Orgnizer | Parent Sign Up</title>
 
 		<!-- STYLESHEETS -->
-		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/animate.css")">
-		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/font.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/animate.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/font.css")">
 
         <!-- META TAGS (FOR BROWSER INDEXING) -->
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -25,23 +25,23 @@
         <!-- OG TAGS (FOR FACEBOOK | G+ | TWITTER LINKS) -->
         <meta property="og:title" content="Orgnizer | Sign Up" />
         <meta property="og:type"   content="website" />
-        <meta property="og:image" content="@routes.Assets.at("images/og-logo.png")" />
+        <meta property="og:image" content="@routes.Assets.versioned("images/og-logo.png")" />
         <meta property="og:description" content="Sign up to Orgnizer to experience stress free homework!" />
         <meta property="og:locale" content="en_US" />
 
 
         <!-- APPLE ICONS (FOR APPLE DEVICES) -->
-        <link rel="apple-touch-icon" href="@routes.Assets.at("images/touch-icon-iphone.png")">
-        <link rel="apple-touch-icon" sizes="76x76" href="@routes.Assets.at("images/touch-icon-ipad.png")">
-        <link rel="apple-touch-icon" sizes="120x120" href="@routes.Assets.at("images/touch-icon-iphone-retina.png")">
-        <link rel="apple-touch-icon" sizes="152x152" href="@routes.Assets.at("images/touch-icon-ipad-retina.png")">
+        <link rel="apple-touch-icon" href="@routes.Assets.versioned("images/touch-icon-iphone.png")">
+        <link rel="apple-touch-icon" sizes="76x76" href="@routes.Assets.versioned("images/touch-icon-ipad.png")">
+        <link rel="apple-touch-icon" sizes="120x120" href="@routes.Assets.versioned("images/touch-icon-iphone-retina.png")">
+        <link rel="apple-touch-icon" sizes="152x152" href="@routes.Assets.versioned("images/touch-icon-ipad-retina.png")">
 
         <!-- BROWSER ICON -->
-        <link rel="icon" type="image/png" href="@routes.Assets.at("images/favicon.png")" sizes="32x32">
+        <link rel="icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")" sizes="32x32">
 
         <!-- SCRIPTS -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
-       	<script src="@routes.Assets.at("javascripts/parentSignUpScripts.js")" type="text/javascript"></script>
+       	<script src="@routes.Assets.versioned("javascripts/parentSignUpScripts.js")" type="text/javascript"></script>
         
 	</head>
 	<body>
@@ -51,8 +51,8 @@
 				<div class="topNavInner">
 					<div class="animated bounceIn topLinks">
 						<a href="@routes.Application.index"> Home </a> |
-						<a href="@routes.Application.FAQ"> FAQ </a> |
-						<a href="@routes.Application.signup">Sign Up!</a> | 
+						<a href="@routes.Application.faq"> FAQ </a> |
+						<a href="@routes.Signups.accountTypeSelector">Sign Up!</a> | 
 						<a href="@routes.Application.login">Sign In!</a>
 					</div>
 				</div>
@@ -62,7 +62,7 @@
 			<!-- START MAIN TITLE -->
 
 			<div class="topText">
-				<img src=@routes.Assets.at("images/logo.png") alt="Orgnizer" style="max-width: 100%; padding: 10px;">
+				<img src=@routes.Assets.versioned("images/logo.png") alt="Orgnizer" style="max-width: 100%; padding: 10px;">
 			</div>
 
 			<!-- END MAIN TITLE -->
@@ -73,7 +73,7 @@
 			</div>
 			
 			<!-- BEGIN REGISTER FORM -->
-			@form(action = routes.Application.newParent()) {
+			@form(action = routes.Signups.createParent()) {
 				<div id="formContainer" class="center">
 					<form>
 						<h1 style="padding-top: 10px;">Parent Sign Up</h1>

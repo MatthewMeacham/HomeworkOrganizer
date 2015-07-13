@@ -1,0 +1,10 @@
+branch-defaults:
+  master:
+    environment: orgnizer-test
+global:
+  application_name: Orgnizer
+  default_ec2_keyname: null
+  default_platform: 64bit Amazon Linux 2015.03 v1.4.4 running Tomcat 8 Java 8
+  default_region: us-west-2
+  profile: eb-cli
+  sc: git

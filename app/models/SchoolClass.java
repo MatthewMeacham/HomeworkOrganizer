@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 import play.data.validation.Constraints.Required;
-import play.db.ebean.Model;
+import com.avaje.ebean.Model;
 
 @Entity
 public class SchoolClass extends Model {
@@ -29,7 +29,7 @@ public class SchoolClass extends Model {
 
 	public String password;
 
-	public static Finder<Long, SchoolClass> find = new Finder<Long, SchoolClass>(Long.class, SchoolClass.class);
+	public static Finder<Long, SchoolClass> find = new Finder<Long, SchoolClass>(SchoolClass.class);
 
 	public SchoolClass(String subject, String email, long foreignID, String color, String password) {
 		this.subject = subject;
