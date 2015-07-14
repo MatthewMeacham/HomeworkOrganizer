@@ -10,6 +10,7 @@ POST   /authenticate                                             controllers.App
 GET    /faq                                                      controllers.Application.faq()
 GET    /contact                                                  controllers.Application.contactUsPage()
 POST   /contact                                                  controllers.Application.contactUs()
+GET	   /privacyPolicy/											 controllers.Application.privacyPolicy()
 
 # Assignments
 GET    /assn/edit/:assnID/:studentID/                            controllers.Assignments.read(assnID: String, studentID: String)

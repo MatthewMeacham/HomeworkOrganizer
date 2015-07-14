@@ -536,19 +536,19 @@ nav a {
 }
 nav li a {
 	outline: none;
-  	-o-transition:.4s ease-in-out;
-	-ms-transition:.4s ease-in-out;
-	-moz-transition:.4s ease-in-out;
-	-webkit-transition:.4s ease-in-out;
+  	-o-transition:.5s ease-in-out;
+	-ms-transition:.5s ease-in-out;
+	-moz-transition:.5s ease-in-out;
+	-webkit-transition:.5s ease-in-out;
 	transition:.5s;
 	color: white;
 }
 nav li a:hover { 
-	-o-transition:.4s ease-in-out;
-	-ms-transition:.4s ease-in-out;
-	-moz-transition:.4s ease-in-out;
-	-webkit-transition:.4s ease-in-out;
-	transition:.4s ease-in-out !important;
+	-o-transition:.25s ease-in-out;
+	-ms-transition:.25s ease-in-out;
+	-moz-transition:.25s ease-in-out;
+	-webkit-transition:.25s ease-in-out;
+	transition:.25s ease-in-out !important;
 	outline: none;
 	text-align: center;
 	color: #56ced6 !important;
@@ -932,6 +932,20 @@ nav a#pull {
 		font-size: 14px;
 		color: black;
 	}
+	.refresh {
+		padding: 10px !important;
+		position: relative;
+		margin: 10px;
+		display: none !important;
+	}
+	#logo {
+		left: 0 !important;
+	}
+	#classColor {
+		position: relative;
+		left: 0px !important;
+	}
+
 }
 	
 @media only screen and (max-width : 425px) {
@@ -1030,7 +1044,14 @@ nav a#pull {
 	.bottomInputFields input {
 		width: 85%;
 	}
-
+	#accountEmail {
+		position: relative;
+		left: 3px !important;
+	}
+	.left {
+		position: relative;
+		right: 50px !important;
+	}
 	
 }
 ::-webkit-scrollbar-track
@@ -1127,11 +1148,11 @@ nav a#pull {
 }
 
 /* BEGIN MEDIA QUERIES */
-@media screen and (max-width: 860px ) {
+
+@media screen and (max-width: 860px) {
 	.col {
-		left: 5px;
+		left: 5px;	
 	}
-	
 }
 /*  GO FULL WIDTH BELOW 480 PIXELS */
 @media only screen and (max-width: 787px) {
@@ -1168,6 +1189,10 @@ nav a#pull {
 		position: relative;
 		left: 2%;
 	}	
+	#accountEmail {
+		position: relative;
+		left: 10px;
+	}
 
 }
 @media only screen and (max-width: 755px) {
@@ -1414,7 +1439,7 @@ nav a#pull {
 	right:0;
 	margin-top:-5px;
 	border-width:5px 0 5px 5px;
-	border-left-color:#000 
+	border-left-color:#000; 
 }
 .tooltip.bottom .tooltip-arrow {
 	top:0;
@@ -1514,7 +1539,6 @@ img {
 	display: inline;
 	float: right;
 	color: white;
-	font-size: 40px;
 	-webkit-transition: 150ms ease-in-out;
 	-moz-transition: 150ms ease-in-out;
 	-o-transition: 150ms ease-in-out;
