@@ -15,7 +15,7 @@ create table assignment (
   day                       integer,
   year                      integer,
   total                     integer,
-  foreign_id                bigint,
+  foreign_id                varchar(40),
   constraint pk_assignment primary key (id))
 ;
 
@@ -24,12 +24,12 @@ create table note (
   title                     varchar(255),
   notes                     varchar(255),
   school_class_id           bigint,
-  foreign_id                bigint,
+  foreign_id                varchar(40),
   constraint pk_note primary key (id))
 ;
 
 create table parent (
-  id                        bigint not null,
+  id                        varchar(40) not null,
   name                      varchar(255),
   email                     varchar(255),
   password                  varchar(255),
@@ -41,24 +41,24 @@ create table school_class (
   id                        bigint not null,
   subject                   varchar(255),
   color                     varchar(255),
-  teacher_id                bigint,
+  teacher_id                varchar(40),
   password                  varchar(255),
   constraint pk_school_class primary key (id))
 ;
 
 create table student (
-  id                        bigint not null,
+  id                        varchar(40) not null,
   name                      varchar(255),
   email                     varchar(255),
   password                  varchar(255),
   salt                      varchar(255),
   grade                     varchar(255),
-  parent_id                 bigint,
+  parent_id                 varchar(40),
   constraint pk_student primary key (id))
 ;
 
 create table teacher (
-  id                        bigint not null,
+  id                        varchar(40) not null,
   email                     varchar(255),
   password                  varchar(255),
   name                      varchar(255),
@@ -69,20 +69,14 @@ create table teacher (
 
 create table school_class_student (
   school_class_id                bigint not null,
-  student_id                     bigint not null,
+  student_id                     varchar(40) not null,
   constraint pk_school_class_student primary key (school_class_id, student_id))
 ;
 create sequence assignment_seq;
 
 create sequence note_seq;
 
-create sequence parent_seq;
-
 create sequence school_class_seq;
-
-create sequence student_seq;
-
-create sequence teacher_seq;
 
 alter table assignment add constraint fk_assignment_schoolClass_1 foreign key (school_class_id) references school_class (id) on delete restrict on update restrict;
 create index ix_assignment_schoolClass_1 on assignment (school_class_id);
@@ -121,11 +115,5 @@ drop sequence if exists assignment_seq;
 
 drop sequence if exists note_seq;
 
-drop sequence if exists parent_seq;
-
 drop sequence if exists school_class_seq;
-
-drop sequence if exists student_seq;
-
-drop sequence if exists teacher_seq;
 

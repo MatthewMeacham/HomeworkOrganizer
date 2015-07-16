@@ -1,16 +1,18 @@
 package models;
 
+import java.util.UUID;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceException;
 
 import play.data.validation.Constraints.Required;
+
 import com.avaje.ebean.Model;
 
 @Entity
 public class Assignment extends Model {
-	private static final long serialVersionUID = 1L;
 
 	@Id
 	public Long id;
@@ -32,11 +34,11 @@ public class Assignment extends Model {
 	// this is set to year * 366 - (12 - month) * 31 - (31 - day)
 	public int total;
 
-	public long foreignID;
+	public UUID foreignID;
 
 	public static Finder<Long, Assignment> find = new Finder<Long, Assignment>(Assignment.class);
 
-	public Assignment(String dueDate, SchoolClass schoolClass, String kindOfAssignment, String description, Long foreignID, int month, int day, int year) {
+	public Assignment(String dueDate, SchoolClass schoolClass, String kindOfAssignment, String description, UUID foreignID, int month, int day, int year) {
 		this.dueDate = dueDate;
 		this.schoolClass = schoolClass;
 		this.kindOfAssignment = kindOfAssignment;
@@ -113,16 +115,16 @@ public class Assignment extends Model {
 			e.printStackTrace();
 		}
 		if (description.length() > 250) description = description.substring(0, 250);
-		Assignment assignment = new Assignment(date, SchoolClass.find.ref(schoolId), kindOfAssignment, description, Long.valueOf(foreignID), monthInt, dayInt, yearInt);
+		Assignment assignment = new Assignment(date, SchoolClass.find.ref(schoolId), kindOfAssignment, description, UUID.fromString(foreignID), monthInt, dayInt, yearInt);
 		assignment.save();
 		return assignment;
 	}
 
-	public static Assignment create(Assignment assignment, Long foreignID) {
+	public static Assignment create(Assignment assignment, UUID foreignID) {
 		String dueDate = assignment.year + "-";
 		dueDate += (assignment.month <= 9) ? '0' + String.valueOf(assignment.month) + "-" : String.valueOf(assignment.month) + "-";
 		dueDate += (assignment.day <= 9) ? '0' + String.valueOf(assignment.day) : String.valueOf(assignment.day);
-		Assignment returnAssignment = Assignment.create(dueDate, String.valueOf(assignment.schoolClass.id), assignment.kindOfAssignment, assignment.description, String.valueOf(foreignID));
+		Assignment returnAssignment = Assignment.create(dueDate, String.valueOf(assignment.schoolClass.id), assignment.kindOfAssignment, assignment.description, foreignID.toString());
 		return returnAssignment;
 	}
 

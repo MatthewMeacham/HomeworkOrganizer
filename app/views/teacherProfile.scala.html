@@ -29,19 +29,19 @@
     <!-- OG TAGS (FOR FACEBOOK | G+ | TWITTER LINKS) -->
     <meta property="og:title" content="Orgnizer" />
     <meta property="og:type"   content="website" />
-    <meta property="og:image" content="@routes.Assets.versioned("images/og-logo.png")" />
+    <meta property="og:image" content="@routes.Assets.versioned("images/og-logo.jpg")" />
     <meta property="og:description" content="Welcome to your profile, here you can track your homework and it's progress!" />
     <meta property="og:locale" content="en_US" />
 
 
     <!-- APPLE ICONS (FOR APPLE DEVICES) -->
-    <link rel="apple-touch-icon" href="@routes.Assets.versioned("images/touch-icon-iphone.png")">
-    <link rel="apple-touch-icon" sizes="76x76" href="@routes.Assets.versioned("images/touch-icon-ipad.png")">
-    <link rel="apple-touch-icon" sizes="120x120" href="@routes.Assets.versioned("images/touch-icon-iphone-retina.png")">
-    <link rel="apple-touch-icon" sizes="152x152" href="@routes.Assets.versioned("images/touch-icon-ipad-retina.png")">
+    <link rel="apple-touch-icon" href="@routes.Assets.versioned("images/touch-icon-iphone.jpg")">
+    <link rel="apple-touch-icon" sizes="76x76" href="@routes.Assets.versioned("images/touch-icon-ipad.jpg")">
+    <link rel="apple-touch-icon" sizes="120x120" href="@routes.Assets.versioned("images/touch-icon-iphone-retina.jpg")">
+    <link rel="apple-touch-icon" sizes="152x152" href="@routes.Assets.versioned("images/touch-icon-ipad-retina.jpg")">
 
     <!-- BROWSER ICON -->
-    <link rel="icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")" sizes="32x32">
+    <link rel="icon" type="image/jpg" href="@routes.Assets.versioned("images/favicon.png")" sizes="32x32">
 </head>
 <body>			
 	<div id="topSection">
@@ -108,13 +108,13 @@
 											@assignment.spanner
 										</span>
 										<div class="contentInside" >
-											@form(action = routes.Assignments.deleteForTeacher(String.valueOf(assignment.id), String.valueOf(assignment.schoolClass.teacherID)), 'id -> ("assignmentDeleteForm" + String.valueOf(assignment.id))) {
+											@form(action = routes.Assignments.deleteForTeacher(String.valueOf(assignment.id), assignment.schoolClass.teacherID.toString()), 'id -> ("assignmentDeleteForm" + String.valueOf(assignment.id))) {
 												<a href="#" onclick="submitAssignmentDeleteForm(@assignment.id); return false;">
 													<i data-toggle="tooltip" data-placement="top" title="Delete" class="fa fa-trash myIcon"></i>
 												</a>
 											}
 		
-											@form(action = routes.Assignments.readForTeacher(String.valueOf(assignment.id), String.valueOf(assignment.schoolClass.teacherID)), 'id -> ("assignmentEditForm" + String.valueOf(assignment.id))) {
+											@form(action = routes.Assignments.readForTeacher(String.valueOf(assignment.id), assignment.schoolClass.teacherID.toString()), 'id -> ("assignmentEditForm" + String.valueOf(assignment.id))) {
 												<a href="#"  onclick="submitAssignmentEditForm(@assignment.id); return false;">
 													<i data-toggle="tooltip" data-placement="top" title="Edit" class="fa fa-pencil myIcon"></i>
 												</a>
@@ -159,9 +159,9 @@
 													@schoolClass.subject - ID: @schoolClass.id - Password: @schoolClass.password
 													<i id="delete" data-toggle="tooltip" data-placement="right" title="Delete" class="fa fa-trash delete" onclick="submitSchoolClassDeleteForm(@schoolClass.id); return false;"></i>
 													<i id="edit" data-toggle="tooltip" data-placement="right" title="Edit" class="fa fa-pencil edit" onclick="submitSchoolClassEditForm(@schoolClass.id); return false;"></i>													
-													@form(action = routes.Classes.deleteForTeacher(String.valueOf(schoolClass.id), String.valueOf(schoolClass.teacherID)), 'id -> ("schoolClassDeleteForm" + String.valueOf(schoolClass.id))) {
+													@form(action = routes.Classes.deleteForTeacher(String.valueOf(schoolClass.id), schoolClass.teacherID.toString()), 'id -> ("schoolClassDeleteForm" + String.valueOf(schoolClass.id))) {
 													}
-													@form(action = routes.Classes.readForTeacher(String.valueOf(schoolClass.id), String.valueOf(schoolClass.teacherID)), 'id -> ("schoolClassEditForm" + String.valueOf(schoolClass.id))) {
+													@form(action = routes.Classes.readForTeacher(String.valueOf(schoolClass.id), schoolClass.teacherID.toString()), 'id -> ("schoolClassEditForm" + String.valueOf(schoolClass.id))) {
 													}
 												</p>
 											</div>
@@ -169,7 +169,7 @@
 									}
 								</div>
 							}
-							@form(action = routes.Classes.createForTeacher(String.valueOf(teacher.id))) {
+							@form(action = routes.Classes.createForTeacher(teacher.id.toString())) {
 								<input type="hidden" name="teacherId" value="teacher.id">
 								<input type="hidden" id="color" name="color" value="#c34444">
 								<h2 id="subjectError" style="color:red;"></h2>
@@ -223,7 +223,7 @@
 					<div class="container center">
 						<div class="inner">
 							<div class="Header"><h2>Add Assignment</h2></div>
-							@form(action = routes.Assignments.createForTeacher(String.valueOf(teacher.id)), 'onsubmit -> "combine('assignmentDueDate', 'assignment')") {
+							@form(action = routes.Assignments.createForTeacher(teacher.id.toString()), 'onsubmit -> "combine('assignmentDueDate', 'assignment')") {
 								@if(schoolClasses.length <= 0) {
 									<div class="notEnContainer">
 										<span class="alert">!</span>
@@ -320,7 +320,7 @@
 					<div class="area center" style="text-align: center;"> 
 						<h2 style="text-algin: center;"> Account Settings</h2>
 				 		
-				 		@form(action = routes.Teachers.updateSettings(String.valueOf(teacher.id)), 'id -> "accountSettingsForm") {
+				 		@form(action = routes.Teachers.updateSettings(teacher.id.toString()), 'id -> "accountSettingsForm") {
 							<div style="display: block;" id="accountSettings">
 								<div class="changeSettings section group">
 									<div class="col span_1_of_3">

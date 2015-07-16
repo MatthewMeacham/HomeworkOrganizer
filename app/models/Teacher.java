@@ -1,14 +1,19 @@
 package models;
 
+import java.util.UUID;
+
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
 import play.data.validation.Constraints.Required;
+
 import com.avaje.ebean.Model;
 
 @Entity
-public class Teacher extends User {
-	private static final long serialVersionUID = 1L;
+public class Teacher extends AUser {
+
+	// @Id
+	// public Long id;
 
 	@Required
 	public String email;
@@ -21,7 +26,7 @@ public class Teacher extends User {
 	@OneToMany
 	public SchoolClass schoolClass;
 
-	public static Model.Finder<Long, Teacher> find = new Model.Finder<Long, Teacher>(Teacher.class);
+	public static Model.Finder<UUID, Teacher> find = new Model.Finder<UUID, Teacher>(Teacher.class);
 
 	public Teacher(String name, String email, String salt, String password) {
 		this.email = email;

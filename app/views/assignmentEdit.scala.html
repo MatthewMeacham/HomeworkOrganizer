@@ -26,7 +26,7 @@
 			<h1 style="color:red;"> @message </h1>
 			<div class="assignmentInner">
 				<div class="Header center2" ><h2>Edit Assignment</h2></div>
-				@form(action = routes.Assignments.update(String.valueOf(assignment.id), String.valueOf(student.id))) {
+				@form(action = routes.Assignments.update(String.valueOf(assignment.id), student.id.toString())) {
 					<div class="center2 Header"><h2>Due Date:</h2></div>
 					<div class="center2">
 						<select id="monthassignment">

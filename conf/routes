@@ -10,6 +10,7 @@ POST   /authenticate                                             controllers.App
 GET    /faq                                                      controllers.Application.faq()
 GET    /contact                                                  controllers.Application.contactUsPage()
 POST   /contact                                                  controllers.Application.contactUs()
+GET	   /privacyPolicy/											 controllers.Application.privacyPolicy()
 
 # Assignments
 GET    /assn/edit/:assnID/:studentID/                            controllers.Assignments.read(assnID: String, studentID: String)
@@ -37,7 +38,7 @@ POST   /teacher/schoolClass/delete/                              controllers.Cla
 GET    /parent/profile                                           controllers.Parents.toProfile(parentID: String)
 POST   /parent/settings/edit                                     controllers.Parents.updateSettings(parentID: String, studentID: String)
 POST   /parent/addchild                                          controllers.Parents.createChild(parentID: String)
-GET    /parent/tochild                                           controllers.Parents.redirectToStudent(studentID: Long, parentID: String)
+GET    /parent/tochild                                           controllers.Parents.redirectToStudent(studentID: java.util.UUID, parentID: String)
 
 # Signups
 GET    /signup                                                   controllers.Signups.accountTypeSelector()
@@ -51,10 +52,10 @@ POST   /signup/teacher                                           controllers.Sig
 # Students
 GET    /student/profile                                          controllers.Students.toProfile(studentID: String)
 POST   /student/settings/update                                  controllers.Students.updateSettings(studentID: String)
-GET    /student/refresh                                          controllers.Students.refresh(studentID: Long)
+GET    /student/refresh                                          controllers.Students.refresh(studentID: java.util.UUID)
 
 # Teachers
-GET    /teacher/profile                                          controllers.Teachers.toProfile(teacherID: Long)
+GET    /teacher/profile                                          controllers.Teachers.toProfile(teacherID: java.util.UUID)
 POST   /teacher/settings/edit                                    controllers.Teachers.updateSettings(teacherID: String)
 
 # Map static resources from the /public folder to the /assets URL path

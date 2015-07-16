@@ -1,0 +1,1 @@
+Alter Table assignment Add Constraint CK_assignment_id Check ( id >= 10 )

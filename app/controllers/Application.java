@@ -25,8 +25,7 @@ import com.matthew.hasher.Hasher;
 //The controller, it controls all data flow and handles/processes requests and returns the correct information
 public class Application extends Controller {
 
-	public final static String[] OPTIONS = { "Homework", "Project", "Test",
-			"Final", "Presentation", "Other" };
+	public final static String[] OPTIONS = { "Homework", "Project", "Test", "Final", "Presentation", "Other" };
 
 	private static Form<Login> loginForm = Form.form(Login.class);
 	private static Form<ContactUs> contactUsForm = Form.form(ContactUs.class);
@@ -49,9 +48,7 @@ public class Application extends Controller {
 
 	// Directs the request to the index
 	public Result index() {
-		return ok(index.render(Student.find.all().size()
-				+ Parent.find.all().size() + Teacher.find.all().size(),
-				loginForm));
+		return ok(index.render(Student.find.all().size() + Parent.find.all().size() + Teacher.find.all().size(), loginForm));
 	}
 
 	// Directs the request to the login page
@@ -75,29 +72,25 @@ public class Application extends Controller {
 		return ok(views.html.contact.render(""));
 	}
 
+	// Directs the user to the privacy policy page
+	public Result privacyPolicy() {
+		return ok(views.html.privacyPolicy.render());
+	}
+
 	// Performs the email sending operation and then redirects back to the index
 	public Result contactUs() {
 		Form<ContactUs> filledForm = contactUsForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
-			return badRequest(views.html.contact
-					.render("Error while processing."));
+			return badRequest(views.html.contact.render("Error while processing."));
 		}
 		String name = filledForm.data().get("name");
 		String email = filledForm.data().get("email");
 		String message = filledForm.data().get("message");
 		String subject = filledForm.data().get("subject");
-		if (name.isEmpty() || name.trim().isEmpty())
-			return badRequest(views.html.contact
-					.render("Message can't be empty."));
-		if (email.isEmpty() || email.trim().isEmpty())
-			return badRequest(views.html.contact
-					.render("Message can't be empty."));
-		if (subject.isEmpty() || subject.trim().isEmpty())
-			return badRequest(views.html.contact
-					.render("Subject can't be empty."));
-		if (message.isEmpty() || message.trim().isEmpty())
-			return badRequest(views.html.contact
-					.render("Message can't be empty."));
+		if (name.isEmpty() || name.trim().isEmpty()) return badRequest(views.html.contact.render("Message can't be empty."));
+		if (email.isEmpty() || email.trim().isEmpty()) return badRequest(views.html.contact.render("Message can't be empty."));
+		if (subject.isEmpty() || subject.trim().isEmpty()) return badRequest(views.html.contact.render("Subject can't be empty."));
+		if (message.isEmpty() || message.trim().isEmpty()) return badRequest(views.html.contact.render("Message can't be empty."));
 		Application.generateAndSendEmail(name, email, subject, message);
 		return redirect(routes.Application.index());
 	}
@@ -106,8 +99,7 @@ public class Application extends Controller {
 	public Result authenticate() {
 		Form<Login> filledForm = loginForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
-			return badRequest(login
-					.render(loginForm, "Login error, try again."));
+			return badRequest(login.render(loginForm, "Login error, try again."));
 		} else {
 			// if
 			// (Parent.authenticate(filledForm.data().get("email").toLowerCase(),
@@ -120,28 +112,22 @@ public class Application extends Controller {
 
 			String email = filledForm.data().get("email").toLowerCase();
 			Parent parent = Parent.find.where().eq("email", email).findUnique();
-			Teacher teacher = Teacher.find.where().eq("email", email)
-					.findUnique();
-			List<Student> students = Student.find.where().eq("email", email)
-					.findList();
+			Teacher teacher = Teacher.find.where().eq("email", email).findUnique();
+			List<Student> students = Student.find.where().eq("email", email).findList();
 
 			// Try parent login first
 			if (parent != null) {
 				String password = null;
 				try {
-					password = HASHER.hashWithSaltSHA256(
-							filledForm.data().get("password"), parent.salt);
+					password = HASHER.hashWithSaltSHA256(filledForm.data().get("password"), parent.salt);
 				} catch (NoSuchAlgorithmException e) {
 					e.printStackTrace();
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
-				if (Parent.authenticate(filledForm.data().get("email"),
-						password) != null) {
-					parent = Parent.find.where().eq("email", email)
-							.eq("password", password).findUnique();
-					return redirect(routes.Parents.toProfile(String
-							.valueOf(parent.id)));
+				if (Parent.authenticate(filledForm.data().get("email"), password) != null) {
+					parent = Parent.find.where().eq("email", email).eq("password", password).findUnique();
+					return redirect(routes.Parents.toProfile(parent.id.toString()));
 				}
 			}
 
@@ -149,69 +135,51 @@ public class Application extends Controller {
 			if (teacher != null) {
 				String password = null;
 				try {
-					password = HASHER.hashWithSaltSHA256(
-							filledForm.data().get("password"), teacher.salt);
+					password = HASHER.hashWithSaltSHA256(filledForm.data().get("password"), teacher.salt);
 				} catch (NoSuchAlgorithmException e) {
 					e.printStackTrace();
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
-				if (Teacher.authenticate(filledForm.data().get("email"),
-						password) != null) {
-					teacher = Teacher.find.where().eq("email", email)
-							.eq("password", password).findUnique();
-					return redirect(routes.Teachers
-							.toProfile(teacher.id));
+				if (Teacher.authenticate(filledForm.data().get("email"), password) != null) {
+					teacher = Teacher.find.where().eq("email", email).eq("password", password).findUnique();
+					return redirect(routes.Teachers.toProfile(teacher.id));
 				}
 			}
 
 			// Else do student login
 			String password = null;
 			Student student = null;
-			if (students.size() <= 0)
-				return badRequest(login.render(loginForm,
-						"Invalid email or password."));
+			if (students.size() <= 0) return badRequest(login.render(loginForm, "Invalid email or password."));
 			if (students.size() > 1 && Parent.exists(email)) {
 				try {
-					password = HASHER.hashWithSaltSHA256(
-							filledForm.data().get("password"),
-							students.get(0).parent.salt);
+					password = HASHER.hashWithSaltSHA256(filledForm.data().get("password"), students.get(0).parent.salt);
 				} catch (NoSuchAlgorithmException e) {
 					e.printStackTrace();
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
-				student = Student.find.where().eq("email", email)
-						.eq("password", password).findUnique();
+				student = Student.find.where().eq("email", email).eq("password", password).findUnique();
 			} else {
 				try {
-					password = HASHER.hashWithSaltSHA256(
-							filledForm.data().get("password"),
-							students.get(0).salt);
+					password = HASHER.hashWithSaltSHA256(filledForm.data().get("password"), students.get(0).salt);
 				} catch (NoSuchAlgorithmException e) {
 					e.printStackTrace();
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
-				student = Student.find.where().eq("email", email)
-						.eq("password", password).findUnique();
+				student = Student.find.where().eq("email", email).eq("password", password).findUnique();
 
 			}
-			if (password == null || student == null)
-				return badRequest(login.render(loginForm,
-						"Invalid email or password."));
+			if (password == null || student == null) return badRequest(login.render(loginForm, "Invalid email or password."));
 
-			if (Student.authenticate(email, password) != null)
-				return redirect(routes.Students.toProfile(String
-						.valueOf(student.id)));
+			if (Student.authenticate(email, password) != null) return redirect(routes.Students.toProfile(student.id.toString()));
 
-			return badRequest(login.render(loginForm,
-					"Invalid email or password."));
+			return badRequest(login.render(loginForm, "Invalid email or password."));
 		}
 	}
 
-	public static void generateAndSendEmail(String name, String email,
-			String subject, String message) {
+	public static void generateAndSendEmail(String name, String email, String subject, String message) {
 		// Set properties for the smtp server we are sending to
 		mailServerProperties = System.getProperties();
 		mailServerProperties.put("mail.smtp.port", "587");
@@ -222,28 +190,18 @@ public class Application extends Controller {
 		generateMailMessage = new MimeMessage(getMailSession);
 		try {
 			// Add properties to the email
-			generateMailMessage.addRecipient(Message.RecipientType.TO,
-					new InternetAddress(TO));
+			generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(TO));
 			generateMailMessage.setFrom(new InternetAddress(email));
 			generateMailMessage.setSender(new InternetAddress(email));
 			generateMailMessage.setSubject(subject);
 
-			generateMailMessage
-					.setContent(
-							"From: "
-									+ name
-									+ " | "
-									+ email
-									+ "<br><br><pre><p style=\"font-size:14px; font-family: 'Arial'; \">"
-									+ message + "</p></pre>", "text/html");
+			generateMailMessage.setContent("From: " + name + " | " + email + "<br><br><pre><p style=\"font-size:14px; font-family: 'Arial'; \">" + message + "</p></pre>", "text/html");
 
 			Transport transport = getMailSession.getTransport("smtp");
 
 			// send it by the orgnizerwebapp email
-			transport.connect("smtp.gmail.com", "orgnizerwebapp",
-					"GETHIP@Gallup!");
-			transport.sendMessage(generateMailMessage,
-					generateMailMessage.getAllRecipients());
+			transport.connect("smtp.gmail.com", "orgnizerwebapp", "GETHIP@Gallup!");
+			transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
 			transport.close();
 		} catch (MessagingException e) {
 			e.printStackTrace();

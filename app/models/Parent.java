@@ -1,13 +1,15 @@
 package models;
 
+import java.util.UUID;
+
 import javax.persistence.Entity;
 
 import play.data.validation.Constraints.Required;
+
 import com.avaje.ebean.Model;
 
 @Entity
-public class Parent extends User {
-	private static final long serialVersionUID = 1L;
+public class Parent extends AUser {
 
 	@Required
 	public String name;
@@ -17,7 +19,7 @@ public class Parent extends User {
 	public String password;
 	public String salt;
 
-	public static Model.Finder<Long, Parent> find = new Model.Finder<Long, Parent>(Parent.class);
+	public static Model.Finder<UUID, Parent> find = new Model.Finder<UUID, Parent>(Parent.class);
 
 	public Parent(String name, String email, String salt, String password) {
 		this.email = email;
