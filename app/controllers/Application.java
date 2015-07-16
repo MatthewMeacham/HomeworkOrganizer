@@ -76,7 +76,7 @@ public class Application extends Controller {
 	public Result privacyPolicy() {
 		return ok(views.html.privacyPolicy.render());
 	}
-	
+
 	//Directs the user to the terms and conditions page
 	public Result termsAndConditions() {
 		return ok(views.html.termsAndConditions.render());
