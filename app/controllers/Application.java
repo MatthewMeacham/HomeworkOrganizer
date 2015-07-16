@@ -77,11 +77,6 @@ public class Application extends Controller {
 		return ok(views.html.privacyPolicy.render());
 	}
 
-	// Directs the user to the privacy policy page
-	public Result privacyPolicy() {
-		return ok(views.html.privacyPolicy.render());
-	}
-
 	// Performs the email sending operation and then redirects back to the index
 	public Result contactUs() {
 		Form<ContactUs> filledForm = contactUsForm.bindFromRequest();
