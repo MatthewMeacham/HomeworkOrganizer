@@ -85,9 +85,8 @@ public class Students extends Controller {
 		}
 	}
 
-	// Refreshed the studentProfile page
+	// Refresh the studentProfile page
 	public Result refresh(UUID studentID) {
-		System.out.println("CALLED");
 		Student student = Student.find.where().eq("ID", studentID).findUnique();
 		if (student == null) return badRequest(index.render(Student.find.all().size() + Parent.find.all().size() + Teacher.find.all().size(), loginForm));
 		return redirect(routes.Students.toProfile(student.id.toString()));

@@ -11,6 +11,7 @@ GET    /faq                                                      controllers.App
 GET    /contact                                                  controllers.Application.contactUsPage()
 POST   /contact                                                  controllers.Application.contactUs()
 GET	   /privacyPolicy/											 controllers.Application.privacyPolicy()
+GET	   /termsAndConditions/										 controllers.Application.termsAndConditions()
 
 # Assignments
 GET    /assn/edit/:assnID/:studentID/                            controllers.Assignments.read(assnID: String, studentID: String)
@@ -39,6 +40,7 @@ GET    /parent/profile                                           controllers.Par
 POST   /parent/settings/edit                                     controllers.Parents.updateSettings(parentID: String, studentID: String)
 POST   /parent/addchild                                          controllers.Parents.createChild(parentID: String)
 GET    /parent/tochild                                           controllers.Parents.redirectToStudent(studentID: java.util.UUID, parentID: String)
+GET    /parent/refresh/											 controllers.Parents.refresh(parentID: java.util.UUID)
 
 # Signups
 GET    /signup                                                   controllers.Signups.accountTypeSelector()
@@ -57,6 +59,7 @@ GET    /student/refresh                                          controllers.Stu
 # Teachers
 GET    /teacher/profile                                          controllers.Teachers.toProfile(teacherID: java.util.UUID)
 POST   /teacher/settings/edit                                    controllers.Teachers.updateSettings(teacherID: String)
+GET    /teacher/refresh/										 controllers.Teachers.refresh(teacherID: java.util.UUID)
 
 # Map static resources from the /public folder to the /assets URL path
 GET    /assets/*file                                             controllers.Assets.versioned(path="/public", file: Asset)

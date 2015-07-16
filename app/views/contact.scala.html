@@ -30,20 +30,31 @@
 	<script src="@routes.Assets.versioned("scripts/main.js")"></script>
 </head>
 <body>
-<div class=" animated bounceInDown contactForm">
-	<h1 style="color:black;">Contact Us</h1>
-	<h2 style="color:red; text-align: center;">@errorMessage</h2>
-	@form(action = routes.Application.contactUs) {
-		<label> Name </label>
-		<input type="text" name="name" required />
-		<label> Email </label>
-		<input type="email" name="email" required /> 
-		<label> Subject </label>
-		<input type="text" name="subject" required />
-		<label> Message </label>
-		<textarea class="message" name="message" required></textarea>
-		<button class="animated fadeInUp" type="submit">Submit</button>
-	}
-	</div>
+<!-- NAVIGATION -->
+			<div class="topNav">
+				<div class="topNavInner">
+					<div class="animated bounceIn topLinks">
+						<a href="@routes.Application.index"> Home </a> |
+						<a href="@routes.Signups.accountTypeSelector">Sign Up!</a> | 
+						<a href="@routes.Application.login">Sign In!</a>
+					</div>
+				</div>
+			</div>
+			<!-- END NAVIGATION -->
+			<div class=" animated bounceInDown contactForm">
+				<h1 style="color:black;">Contact Us</h1>
+				<h2 style="color:red; text-align: center;">@errorMessage</h2>
+				@form(action = routes.Application.contactUs) {
+					<label> Name </label>
+					<input type="text" name="name" required />
+					<label> Email </label>
+					<input type="email" name="email" required /> 
+					<label> Subject </label>
+					<input type="text" name="subject" required />
+					<label> Message </label>
+					<textarea class="message" name="message" required></textarea>
+					<button class="animated fadeInUp" type="submit">Submit</button>
+				}
+				</div>
 </body>
 </html>

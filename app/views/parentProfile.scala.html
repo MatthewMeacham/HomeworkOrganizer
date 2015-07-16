@@ -48,6 +48,10 @@
 	<body>
 		<div id="topSection">
 			<div class="topImage">
+				<a href="@routes.Parents.refresh(parent.id)">
+					<i class="fa fa-refresh refresh fa-2x"></i>
+				</a>
+				
 				<img src=@routes.Assets.versioned("images/logo.png") alt="Orgnizer">
 				<h3 class="studentName">Logged In As @parent.name </h3>
 			</div>

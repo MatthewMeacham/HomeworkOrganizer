@@ -17,6 +17,7 @@ import views.html.parentProfile;
 import views.html.studentProfile;
 import controllers.Utilities;
 import controllers.Application.AccountSettings;
+import controllers.Application.Login;
 
 public class Parents extends Controller {
 
@@ -24,6 +25,7 @@ public class Parents extends Controller {
 
 	private static Form<Student> studentForm = Form.form(Student.class);
 	private static Form<AccountSettings> accountSettingsForm = Form.form(AccountSettings.class);
+	private static Form<Login> loginForm = Form.form(Login.class);
 
 	private final static int MIN_GRADE = 1;
 	private final static int MAX_GRADE = 16;
@@ -177,4 +179,12 @@ public class Parents extends Controller {
 			return ok(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "overview", "Account changed successfully."));
 		}
 	}
+	
+	// Refresh the parentProfile page
+	public Result refresh(UUID parentID) {
+		Parent parent = Parent.find.where().eq("ID", parentID).findUnique();
+		if (parent == null) return badRequest(views.html.index.render(Student.find.all().size() + Parent.find.all().size() + Teacher.find.all().size(), loginForm));
+		return redirect(routes.Parents.toProfile(parent.id.toString()));
+	}
+	
 }

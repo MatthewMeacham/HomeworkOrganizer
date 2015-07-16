@@ -14,12 +14,14 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.teacherProfile;
 import controllers.Application.AccountSettings;
+import controllers.Application.Login;
 
 public class Teachers extends Controller {
 
 	private static final Hasher HASHER = new Hasher();
 
 	private static Form<AccountSettings> accountSettingsForm = Form.form(AccountSettings.class);
+	private static Form<Login> loginForm = Form.form(Login.class);
 
 	// Direct to the teacher profile page after authentication
 	public Result toProfile(UUID teacherID) {
@@ -70,6 +72,13 @@ public class Teachers extends Controller {
 
 			return badRequest(teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "overview", "Account changed successfully."));
 		}
+	}
+	
+	// Refresh the teacherProfile page
+	public Result refresh(UUID teacherID) {
+		Teacher teacher = Teacher.find.where().eq("ID", teacherID).findUnique();
+		if (teacher == null) return badRequest(views.html.index.render(Student.find.all().size() + Parent.find.all().size() + Teacher.find.all().size(), loginForm));
+		return redirect(routes.Teachers.toProfile(teacher.id));
 	}
 
 }

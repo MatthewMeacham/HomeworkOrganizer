@@ -12,7 +12,8 @@
 		<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
 		<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/animate.css")">
 		<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/font.css")">
-
+		<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/TermsAndConditions.css")">
+		
         <!-- META TAGS (FOR BROWSER INDEXING) -->
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -84,6 +85,7 @@
 						<input type="number" placeholder="Grade" name="grade" min="1" max="16" required>
 						<button type="submit" value="Sign Up">Sign Up</button>
 					</form>
+						<div class="legalInfo"><p> By clicking "Sign Up" you agree to Orgnizer's <a href="@routes.Application.privacyPolicy"> Privacy Policy</a> and <a href="@routes.Application.termsAndConditions"> Terms and Conditions</a></p></div>
 				</div>
 			}
 

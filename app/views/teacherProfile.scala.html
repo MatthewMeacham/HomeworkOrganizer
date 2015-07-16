@@ -16,6 +16,7 @@
     <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/profile.css")">
 	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/colors.css")">
 	
+	
 	<!-- DEPENDENCIES -->
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
@@ -47,6 +48,10 @@
 <body>			
 	<div id="topSection">
 		<div class="topImage">
+				<a href="@routes.Teachers.refresh(teacher.id)">
+					<i class="fa fa-refresh refresh fa-2x"></i>
+				</a>
+				
 			<img src=@routes.Assets.versioned("images/logo.png") alt="Orgnizer">
 			<h3 class="teacherName">Logged In As @teacher.name </h3>
 		</div>
