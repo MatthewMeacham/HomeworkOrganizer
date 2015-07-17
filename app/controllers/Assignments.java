@@ -76,7 +76,7 @@ public class Assignments extends Controller {
 		} else {
 			String description = filledForm.data().get("description");
 			if (description.length() >= 250) return badRequest(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "overview", "Description was too long."));
-			Assignment.edit(Long.parseLong(assignmentID), SchoolClass.find.where().eq("ID", Long.parseLong(filledForm.data().get("schoolClassID")));, filledForm.data().get("dueDate"), filledForm.data().get("kindOfAssignment"), filledForm.data().get("description"));
+			Assignment.edit(Long.parseLong(assignmentID), SchoolClass.find.where().eq("ID", Long.parseLong(filledForm.data().get("schoolClassID"))), filledForm.data().get("dueDate"), filledForm.data().get("kindOfAssignment"), filledForm.data().get("description"));
 			return ok(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "overview", ""));
 		}
 	}
