@@ -23,7 +23,7 @@ public class Utilities extends Controller {
 	// account meaning it was parent created
 	public static boolean childAccount(String studentID) {
 		List<Parent> parents = Parent.find.all();
-		Student student = Student.find.ref(UUID.fromString(studentID));
+		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		for (Parent parent : parents) {
 			if (student.email.equals(parent.email)) return true;
 		}

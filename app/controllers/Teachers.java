@@ -25,14 +25,14 @@ public class Teachers extends Controller {
 
 	// Direct to the teacher profile page after authentication
 	public Result toProfile(UUID teacherID) {
-		Teacher teacher = Teacher.find.ref(teacherID);
+		Teacher teacher = Teacher.find.where().eq("ID", teacherID).findUnique();
 		return ok(views.html.teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "", ""));
 	}
 
 	// Changes account settings for a teacher
 	public Result updateSettings(String teacherID) {
 		Form<AccountSettings> filledForm = accountSettingsForm.bindFromRequest();
-		Teacher teacher = Teacher.find.ref(UUID.fromString(teacherID));
+		Teacher teacher = Teacher.find.where().eq("ID", UUID.fromString(teacherID)).findUnique();
 		if (filledForm.hasErrors()) {
 			return badRequest(teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "accountSettings", "Error while processing."));
 		} else {

@@ -28,7 +28,7 @@ public class Classes extends Controller {
 	// Create a new school class from the request
 	public Result create(String studentID) {
 		Form<SchoolClass> filledForm = schoolClassForm.bindFromRequest();
-		Student student = Student.find.ref(UUID.fromString(studentID));
+		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		if (student == null) return badRequest(index.render(Student.find.all().size() + Parent.find.all().size() + Teacher.find.all().size(), loginForm));
 		if (filledForm.hasErrors()) return badRequest(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "schoolClasses", "Error while processing."));
 
@@ -46,7 +46,7 @@ public class Classes extends Controller {
 	// Creates a new school class for the teacher from the request
 	public Result createForTeacher(String teacherID) {
 		Form<SchoolClass> filledForm = schoolClassForm.bindFromRequest();
-		Teacher teacher = Teacher.find.ref(UUID.fromString(teacherID));
+		Teacher teacher = Teacher.find.where().eq("ID", UUID.fromString(teacherID)).findUnique();
 		if (teacher == null) return badRequest(index.render(Student.find.all().size() + Parent.find.all().size() + Teacher.find.all().size(), loginForm));
 		if (filledForm.hasErrors()) return badRequest(views.html.teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "schoolClasses", "Error while processing."));
 		List<SchoolClass> schoolClassList = Utilities.createSchoolClassListForTeacher(teacher);
@@ -63,7 +63,7 @@ public class Classes extends Controller {
 	// Create a new school class from a teacher provided id and password
 	public Result createFromTeacher(String studentID) {
 		Form<SchoolClassFromCode> filledForm = schoolClassFromCodeForm.bindFromRequest();
-		Student student = Student.find.ref(UUID.fromString(studentID));
+		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		if (student == null) return badRequest(index.render(Student.find.all().size() + Parent.find.all().size() + Teacher.find.all().size(), loginForm));
 		if (filledForm.hasErrors()) return badRequest(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "schoolClasses", "Error while processing."));
 
@@ -74,7 +74,7 @@ public class Classes extends Controller {
 		for (SchoolClass schoolClassIterated : schoolClasses) {
 			if (schoolClassIterated.subject.equals(schoolClass.subject)) return badRequest(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "schoolClasses", "Can't have two classes with the same name."));
 		}
-		schoolClass.students.add(Student.find.ref(UUID.fromString(studentID)));
+		schoolClass.students.add(Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique());
 		schoolClass.save();
 
 		return ok(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "schoolClasses", ""));
@@ -82,8 +82,8 @@ public class Classes extends Controller {
 
 	// Direct to the edit school class page
 	public Result read(String schoolClassID, String studentID) {
-		SchoolClass schoolClass = SchoolClass.find.ref(Long.valueOf(schoolClassID));
-		Student student = Student.find.ref(UUID.fromString(studentID));
+		SchoolClass schoolClass = SchoolClass.find.where().eq("ID", Long.valueOf("schoolClassID")).findUnique();
+		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		return ok(views.html.schoolClassEdit.render(schoolClass, student, ""));
 	}
 
@@ -97,8 +97,8 @@ public class Classes extends Controller {
 	// Edit a schoolClass from a request
 	public Result update(String schoolClassID, String studentID) {
 		Form<SchoolClass> filledForm = schoolClassForm.bindFromRequest();
-		SchoolClass schoolClass = SchoolClass.find.ref(Long.valueOf(schoolClassID));
-		Student student = Student.find.ref(UUID.fromString(studentID));
+		SchoolClass schoolClass = SchoolClass.find.where().eq("ID", Long.valueOf("schoolClassID")).findUnique();
+		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		if (student == null) return badRequest(index.render(Student.find.all().size() + Parent.find.all().size() + Teacher.find.all().size(), loginForm));
 		if (filledForm.hasErrors()) {
 			return badRequest(views.html.schoolClassEdit.render(schoolClass, student, "Error while processing."));

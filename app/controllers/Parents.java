@@ -32,14 +32,14 @@ public class Parents extends Controller {
 
 	// Direct to the parent profile page after authentication
 	public Result toProfile(String parentID) {
-		Parent parent = Parent.find.ref(UUID.fromString(parentID));
+		Parent parent = Parent.find.where().eq("ID", UUID.fromString(parentID)).findUnique();
 		return ok(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "", ""));
 	}
 
 	// Direct the request to the student with the ID, parent accounts use this
 	public Result redirectToStudent(UUID studentID, String parentID) {
-		Student student = Student.find.ref(studentID);
-		Parent parent = Parent.find.ref(UUID.fromString(parentID));
+		Student student = Student.find.where().eq("ID", studentID).findUnique();
+		Parent parent = Parent.find.where().eq("ID", UUID.fromString(parentID)).findUnique();
 		List<Student> children = Utilities.createChildrenList(parent);
 		for (int i = 0; i < children.size(); i++) {
 			if (children.get(i).email.equals(student.email)) {
@@ -53,10 +53,10 @@ public class Parents extends Controller {
 	public Result createChild(String parentID) {
 		Form<Student> filledForm = studentForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
-			Parent parent = Parent.find.ref(UUID.fromString(parentID));
+			Parent parent = Parent.find.where().eq("ID", UUID.fromString(parentID)).findUnique();
 			return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "addChild", "Error while processing."));
 		} else {
-			Parent parent = Parent.find.ref(UUID.fromString(parentID));
+			Parent parent = Parent.find.where().eq("ID", UUID.fromString(parentID)).findUnique();
 
 			String name = filledForm.data().get("name");
 			String password = filledForm.data().get("password");
@@ -90,7 +90,7 @@ public class Parents extends Controller {
 	// either A) successful or B) Error
 	public Result updateSettings(String parentID, String studentID) {
 		Form<AccountSettings> filledForm = accountSettingsForm.bindFromRequest();
-		Parent parent = Parent.find.ref(UUID.fromString(parentID));
+		Parent parent = Parent.find.where().eq("ID", UUID.fromString(parentID)).findUnique();
 		List<Student> children = Utilities.createChildrenList(parent);
 		if (filledForm.hasErrors()) return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "Error while processing."));
 
@@ -147,7 +147,7 @@ public class Parents extends Controller {
 			return ok(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "overview", "Account changed successfully."));
 		} else {
 			// parent request to change student
-			Student student = Student.find.ref(UUID.fromString(studentID));
+			Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 
 			String grade = filledForm.data().get("grade");
 			if (Integer.valueOf(grade) <= MIN_GRADE || Integer.valueOf(grade) > MAX_GRADE) return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "Invalid grade level."));

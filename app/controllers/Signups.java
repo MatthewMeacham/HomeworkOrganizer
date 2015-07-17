@@ -17,6 +17,8 @@ import views.html.studentProfile;
 import views.html.studentSignUp;
 import views.html.accountTypeSelector;
 
+import views.html.*;
+
 public class Signups extends Controller {
 
 	private static Form<Student> studentForm = Form.form(Student.class);

@@ -30,7 +30,7 @@ public class Students extends Controller {
 
 	// Direct to the student profile page after authentication
 	public Result toProfile(String studentID) {
-		Student student = Student.find.ref(UUID.fromString(studentID));
+		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		return ok(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "overview", ""));
 	}
 
@@ -38,7 +38,7 @@ public class Students extends Controller {
 	// returns either A) Successful or B) Error
 	public Result updateSettings(String studentID) {
 		Form<AccountSettings> filledForm = accountSettingsForm.bindFromRequest();
-		Student student = Student.find.ref(UUID.fromString(studentID));
+		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		if (filledForm.hasErrors()) {
 			return badRequest(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "accountSettings", "Error occurred while processing."));
 		} else {
