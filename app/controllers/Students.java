@@ -65,10 +65,13 @@ public class Students extends Controller {
 			}
 
 			try {
-				String currentPassword = HASHER.hashWithSaltSHA256(filledForm.data().get("currentPassword"), student.salt);
-				String newPassword = HASHER.hashWithSaltSHA256(filledForm.data().get("newPassword"), student.salt);
-				String newPasswordAgain = HASHER.hashWithSaltSHA256(filledForm.data().get("newPasswordAgain"), student.salt);
+				String currentPassword = filledForm.data().get("currentPassword");
+				String newPassword = filledForm.data().get("newPassword");
+				String newPasswordAgain = filledForm.data().get("newPasswordAgain");
 				if (!currentPassword.equals("") && !newPassword.equals("") && !newPasswordAgain.equals("")) {
+					currentPassword = HASHER.hashWithSaltSHA256(currentPassword, student.salt);
+					newPassword = HASHER.hashWithSaltSHA256(newPassword, student.salt);
+					newPasswordAgain = HASHER.hashWithSaltSHA256(newPasswordAgain, student.salt);
 					if (currentPassword.equals("") || !currentPassword.equals(student.password)) return badRequest(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "accountSettings", "Current password was incorrect."));
 					if (newPassword.equals("") || newPasswordAgain.equals("")) return badRequest(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "accountSettings", "Invalid new password."));
 					if (currentPassword.trim().isEmpty() || newPassword.trim().isEmpty() || newPasswordAgain.trim().isEmpty()) return badRequest(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "accountSettings", "Invalid passwords."));

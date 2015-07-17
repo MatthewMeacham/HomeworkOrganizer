@@ -174,7 +174,7 @@
 													<span class="thisColorhere" style="background-color: @schoolClass.color "></span> 
 													@schoolClass.subject @if(schoolClass.teacherID != null){- @Teacher.find.ref(schoolClass.teacherID).name}
 													<i id="delete" data-toggle="tooltip" data-placement="right" title="Delete" class="fa fa-trash delete" onclick="submitSchoolClassDeleteForm(@schoolClass.id); return false;"></i>
-													<i id="edit" data-toggle="tooltip" data-placement="right" title="Edit" class="fa fa-pencil edit" onclick="submitSchoolClassEditForm(@schoolClass.id); return false;"></i>													
+													@if(schoolClass.teacherID == null){<i id="edit" data-toggle="tooltip" data-placement="right" title="Edit" class="fa fa-pencil edit" onclick="submitSchoolClassEditForm(@schoolClass.id); return false;"></i>	}												
 													@form(action = routes.Classes.read(String.valueOf(schoolClass.id), student.id.toString()), 'id -> ("schoolClassEditForm" + String.valueOf(schoolClass.id))) {
 													}
 													@form(action = routes.Classes.delete(String.valueOf(schoolClass.id), student.id.toString()), 'id -> ("schoolClassDeleteForm" + String.valueOf(schoolClass.id))) {

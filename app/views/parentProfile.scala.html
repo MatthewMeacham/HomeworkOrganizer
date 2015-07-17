@@ -124,7 +124,7 @@
 													<i data-toggle="tooltip" data-placement="top" title="Edit" class="fa fa-pencil myIcon"></i>
 												</a>
 											}
-											<p class="itemHeaderBig">@assignment.schoolClass.subject - @Student.find.ref(assignment.foreignID)</p>
+											<p class="itemHeaderBig">@assignment.schoolClass.subject - @Student.find.where().eq("ID", assignment.foreignID).findUnique().name</p>
 											<p class="itemDueDateBig"> @assignment.dueDate</p>
 											<p class="itemDescBig"> @assignment.description </p>
 										</div>
@@ -181,7 +181,7 @@
 				 		</div>
 				 		
 				 		
-				 		@form(action = routes.Parents.updateSettings(parent.email, "0"), 'id -> "accountSettingsForm0", 'onsubmit -> "return changeRoute();") {
+				 		@form(action = routes.Parents.updateSettings(parent.id.toString(), "0"), 'id -> "accountSettingsForm0", 'onsubmit -> "return changeRoute();") {
 							<div style="display: block;" id="accountSettings0">
 								<div class="changeSettings section group">
 									<div class="col span_1_of_3">
@@ -211,7 +211,7 @@
 				 		
 				 		
 				 		@for(child <- students) {
-				 			@form(action = routes.Parents.updateSettings(parent.email, child.id.toString()), 'id -> ("accountSettingsform" + child.id)) {
+				 			@form(action = routes.Parents.updateSettings(parent.id.toString(), child.id.toString()), 'id -> ("accountSettingsform" + child.id)) {
 				 				<div style="display: none;" id="accountSettings@child.id">
 				 					<div class="changeSettings section group">
 										
@@ -292,7 +292,7 @@
 				var selectedIndex = dropDown.selectedIndex;
 				document.getElementById('accountSettings0').style.display = 'none';
 				@for(child <- students) {
-					document.getElementById('accountSettings' + @child.id).style.display = 'none';
+					document.getElementById('accountSettings@child.id').style.display = 'none';
 				}
 				document.getElementById('accountSettings' + dropDown.options[selectedIndex].value).style.display = 'block';
 				document.getElementById('errorMessageText').innerHTML = "";

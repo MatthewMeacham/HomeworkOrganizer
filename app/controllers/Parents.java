@@ -95,16 +95,6 @@ public class Parents extends Controller {
 		if (filledForm.hasErrors()) return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "Error while processing."));
 
 		String name = filledForm.data().get("name");
-		String currentPassword = null;
-		String newPassword = null;
-		String newPasswordAgain = null;
-		try {
-			currentPassword = HASHER.hashWithSaltSHA256(filledForm.data().get("currentPassword"), parent.salt);
-			newPassword = HASHER.hashWithSaltSHA256(filledForm.data().get("newPassword"), parent.salt);
-			newPasswordAgain = HASHER.hashWithSaltSHA256(filledForm.data().get("newPasswordAgain"), parent.salt);
-		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
 
 		// parent request to change themselves
 		if (studentID.equals("0")) {
@@ -131,8 +121,17 @@ public class Parents extends Controller {
 				parent.email = email;
 				parent.save();
 			}
-
+			String currentPassword = filledForm.data().get("currentPassword");
+			String newPassword = filledForm.data().get("newPassword");
+			String newPasswordAgain = filledForm.data().get("newPasswordAgain");
 			if (!currentPassword.equals("") && !newPassword.equals("") && !newPasswordAgain.equals("")) {
+				try {
+					currentPassword = HASHER.hashWithSaltSHA256(currentPassword, parent.salt);
+					newPassword = HASHER.hashWithSaltSHA256(newPassword, parent.salt);
+					newPasswordAgain = HASHER.hashWithSaltSHA256(newPasswordAgain, parent.salt);
+				} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
 				if (currentPassword.equals("") || !currentPassword.equals(parent.password)) return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "Current password was incorrect."));
 				if (newPassword.equals("") || newPasswordAgain.equals("")) return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "Invalid new password."));
 				if (currentPassword.trim().isEmpty() || newPassword.trim().isEmpty() || newPasswordAgain.trim().isEmpty()) return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "Invalid passwords."));
@@ -160,8 +159,17 @@ public class Parents extends Controller {
 				student.name = name;
 				student.save();
 			}
-
+			String currentPassword = filledForm.data().get("currentPassword");
+			String newPassword = filledForm.data().get("newPassword");
+			String newPasswordAgain = filledForm.data().get("newPasswordAgain");
 			if (!currentPassword.equals("") && !newPassword.equals("") && !newPasswordAgain.equals("")) {
+				try {
+					currentPassword = HASHER.hashWithSaltSHA256(currentPassword, parent.salt);
+					newPassword = HASHER.hashWithSaltSHA256(newPassword, parent.salt);
+					newPasswordAgain = HASHER.hashWithSaltSHA256(newPasswordAgain, parent.salt);
+				} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
 				if (currentPassword.equals("") || !currentPassword.equals(student.password)) return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "Current password was incorrect."));
 				if (newPassword.equals("") || newPasswordAgain.equals("")) return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "Invalid new password."));
 				if (currentPassword.trim().isEmpty() || newPassword.trim().isEmpty() || newPasswordAgain.trim().isEmpty()) return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "Invalid password."));
@@ -179,12 +187,12 @@ public class Parents extends Controller {
 			return ok(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "overview", "Account changed successfully."));
 		}
 	}
-	
+
 	// Refresh the parentProfile page
 	public Result refresh(UUID parentID) {
 		Parent parent = Parent.find.where().eq("ID", parentID).findUnique();
 		if (parent == null) return badRequest(views.html.index.render(Student.find.all().size() + Parent.find.all().size() + Teacher.find.all().size(), loginForm));
 		return redirect(routes.Parents.toProfile(parent.id.toString()));
 	}
-	
+
 }

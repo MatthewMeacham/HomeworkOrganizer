@@ -54,10 +54,13 @@ public class Teachers extends Controller {
 			}
 
 			try {
-				String currentPassword = HASHER.hashWithSaltSHA256(filledForm.data().get("currentPassword"), teacher.salt);
-				String newPassword = HASHER.hashWithSaltSHA256(filledForm.data().get("newPassword"), teacher.salt);
-				String newPasswordAgain = HASHER.hashWithSaltSHA256(filledForm.data().get("newPasswordAgain"), teacher.salt);
+				String currentPassword = filledForm.data().get("currentPassword");
+				String newPassword = filledForm.data().get("newPassword");
+				String newPasswordAgain = filledForm.data().get("newPasswordAgain");
 				if (!currentPassword.equals("") && !newPassword.equals("") && !newPasswordAgain.equals("")) {
+					currentPassword = HASHER.hashWithSaltSHA256(currentPassword, teacher.salt);
+					newPassword = HASHER.hashWithSaltSHA256(newPassword, teacher.salt);
+					newPasswordAgain = HASHER.hashWithSaltSHA256(newPasswordAgain, teacher.salt);
 					if (currentPassword.equals("") || !currentPassword.equals(teacher.password)) return badRequest(teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "accountSettings", "Current password was incorrect."));
 					if (newPassword.equals("") || newPasswordAgain.equals("")) return badRequest(teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "accountSettings", "Invalid new password."));
 					if (currentPassword.trim().isEmpty() || newPassword.trim().isEmpty() || newPasswordAgain.trim().isEmpty()) return badRequest(teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "accountSettings", "Invalid passwords."));
