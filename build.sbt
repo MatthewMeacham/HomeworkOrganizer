@@ -35,7 +35,7 @@ EclipseKeys.withSource := true
 routesGenerator := InjectedRoutesGenerator
 
 // Sets assets pipeline to run assets through these SBT plugins
-pipelineStages := Seq(rjs, digest, gzip)
+pipelineStages := Seq(digest, gzip)
 
 // LESS filters for files in app.assets
 includeFilter in (Assets, LessKeys.less) := "*.less"
