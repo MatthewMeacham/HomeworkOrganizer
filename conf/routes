@@ -23,6 +23,7 @@ POST   /profileAssnChangedTeacher/                               controllers.Ass
 POST   /assn/delete/                                             controllers.Assignments.delete(assnID: String, studentID: String)
 POST   /teacher/assn/delete/                                     controllers.Assignments.deleteForTeacher(assnID: String, teacherID: String)
 POST   /finishedAssn/                                            controllers.Assignments.setFinished(assnID: String, studentID: String)
+GET	   /assn/download/											 controllers.Assignments.createPrintableDocument(studentID: java.util.UUID)
 
 # Classes
 GET    /schoolClass/editPage/:schoolClassID/:studentID           controllers.Classes.read(schoolClassID: String, studentID: String)

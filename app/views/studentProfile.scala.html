@@ -49,9 +49,14 @@
 					
 		<div id="topSection">
 			<div class="topImage">
-				<a href="@routes.Students.refresh(student.id)">
+			
+				<a href="@routes.Assignments.createPrintableDocument(student.id)">
+					<i class="fa fa-download fa-2x download"></i>
+				</a>
+				<a href="@routes.Students.refresh(student.id)"> 
 					<i class="fa fa-refresh refresh fa-2x"></i>
 				</a>
+				
 				
 				<img id="logo" src=@routes.Assets.versioned("images/logo.png") alt="Orgnizer">
 				<h3 class="studentName">Logged In As @student.name </h3>
