@@ -15,6 +15,24 @@ import views.html.studentProfile;
 import views.html.teacherProfile;
 import play.mvc.Controller;
 
+import org.apache.pdfbox.exceptions.COSVisitorException;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.interactive.documentnavigation.outline.PDDocumentOutline;
+import org.apache.pdfbox.pdmodel.interactive.documentnavigation.outline.PDOutlineItem;
+
+import com.google.common.io.Files;
+
+import be.quodlibet.boxable.BaseTable;
+import be.quodlibet.boxable.Cell;
+import be.quodlibet.boxable.Row;
+
+import java.awt.Color;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class Assignments extends Controller {
 
 	private static Form<Assignment> assignmentForm = Form.form(Assignment.class);
@@ -55,7 +73,7 @@ public class Assignments extends Controller {
 	public Result read(String assignmentID, String studentID) {
 		Assignment assignment = Assignment.find.where().eq("ID", Long.valueOf(assignmentID)).findUnique();
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
-		
+
 		return ok(views.html.assignmentEdit.render(student, assignment, Utilities.createSchoolClassesList(student), ""));
 	}
 
@@ -178,6 +196,89 @@ public class Assignments extends Controller {
 			return ok(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "finishedAssignments", ""));
 		}
 		return ok(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "finishedAssignments", ""));
+	}
+
+	private float margin = 10;
+
+	// Create a PDF of the assignments and deliver it to webpage
+	public Result createPrintableDocument(UUID studentID) {
+		Student student = Student.find.where().eq("ID", studentID).findUnique();
+		List<Assignment> assignments = Utilities.createAssignmentsList(student);
+
+		try {
+			PDDocument document = new PDDocument();
+			PDPage page = new PDPage();
+			document.addPage(page);
+			float yStartNewPage = page.findMediaBox().getHeight() - (2 * margin);
+			float tableWidth = page.findMediaBox().getWidth() - (2 * margin);
+			boolean drawContent = true;
+			float yStart = yStartNewPage;
+			float bottomMargin = 70;
+
+			BaseTable table = new BaseTable(yStart, yStartNewPage, bottomMargin, tableWidth, margin, document, page, true, drawContent);
+
+			Row headerRow = table.createRow(15f);
+			Cell cell = headerRow.createCell(100, student.name + "\'s" + " Assignments");
+			cell.setFont(PDType1Font.HELVETICA_BOLD);
+			cell.setFillColor(Color.BLACK);
+			cell.setTextColor(Color.WHITE);
+
+			table.setHeader(headerRow);
+
+			// Create Fact header row
+			Row factHeaderrow = table.createRow(15f);
+
+			cell = factHeaderrow.createCell((100 / 5), "Due Date");
+			cell.setFont(PDType1Font.HELVETICA);
+			cell.setFontSize(6);
+			cell.setFillColor(Color.LIGHT_GRAY);
+
+			cell = factHeaderrow.createCell((100 / 5), "Class");
+			cell.setFont(PDType1Font.HELVETICA);
+			cell.setFontSize(6);
+			cell.setFillColor(Color.LIGHT_GRAY);
+
+			cell = factHeaderrow.createCell((100 / 5), "Kind");
+			cell.setFont(PDType1Font.HELVETICA);
+			cell.setFontSize(6);
+			cell.setFillColor(Color.LIGHT_GRAY);
+
+			cell = factHeaderrow.createCell((100 / 5) * 2, "Description");
+			cell.setFont(PDType1Font.HELVETICA);
+			cell.setFontSize(6);
+			cell.setFillColor(Color.LIGHT_GRAY);
+
+			Row row = table.createRow(15f);
+			for (Assignment assignment : assignments) {
+				row = table.createRow(10f);
+				cell = row.createCell((100 / 5) * 1.0f, assignment.month + "/" + assignment.day + "/" + assignment.year);
+				cell.setFont(PDType1Font.HELVETICA);
+				cell.setFontSize(6);
+
+				cell = row.createCell((100 / 5) * 1.0f, assignment.schoolClass.subject);
+				cell.setFont(PDType1Font.HELVETICA);				
+				cell.setFontSize(6);
+
+				cell = row.createCell((100 / 5 * 1.0f), assignment.kindOfAssignment);
+				cell.setFont(PDType1Font.HELVETICA);
+				cell.setFontSize(6);
+
+				cell = row.createCell((100 / 5) * 2.0f, assignment.description);
+				cell.setFont(PDType1Font.HELVETICA);
+				cell.setFontSize(6);
+			}
+
+			table.draw();
+
+			File file = new File("temp/assignments.pdf");
+			Files.createParentDirs(file);
+			document.save(file);
+			document.close();
+			return ok(file);
+
+		} catch (IOException | COSVisitorException e) {
+			return badRequest();
+		}
 	}
 
 }
