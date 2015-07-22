@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Properties;
+import java.util.ArrayList;
+import java.lang.Thread;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -17,8 +19,14 @@ import models.Teacher;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+
+import views.html.contact;
+import views.html.faq;
 import views.html.index;
 import views.html.login;
+import views.html.privacyPolicy;
+import views.html.termsAndConditions;
+
 
 import com.matthew.hasher.Hasher;
 
@@ -41,8 +49,23 @@ public class Application extends Controller {
 
 	// Javax.mail stuff to send email
 	private static Properties mailServerProperties;
-	private static Session getMailSession;
-	static MimeMessage generateMailMessage;
+	private static Session session;
+	private static MimeMessage mailMessage;
+	
+	private volatile static ArrayList<String[]> emailQueue = new ArrayList<String[]>();
+	
+	private static Thread emailSendingThread = new Thread(new Runnable() {
+		public void run() {			
+			// Set properties for the smtp server we are sending to
+			mailServerProperties = System.getProperties();
+			mailServerProperties.put("mail.smtp.port", "587");
+			mailServerProperties.put("mail.smtp.auth", "true");
+			mailServerProperties.put("mail.smtp.starttls.enable", "true");
+
+			session = Session.getDefaultInstance(mailServerProperties, null);
+			while(true) sendEmails();
+		}
+	});
 
 	// ########################################################################
 
@@ -92,11 +115,18 @@ public class Application extends Controller {
 		String email = filledForm.data().get("email");
 		String message = filledForm.data().get("message");
 		String subject = filledForm.data().get("subject");
-		if (name.isEmpty() || name.trim().isEmpty()) return badRequest(views.html.contact.render("Message can't be empty."));
-		if (email.isEmpty() || email.trim().isEmpty()) return badRequest(views.html.contact.render("Message can't be empty."));
+		if (name.isEmpty() || name.trim().isEmpty()) return badRequest(views.html.contact.render("Name can't be empty."));
+		if (email.isEmpty() || email.trim().isEmpty()) return badRequest(views.html.contact.render("Email can't be empty."));
 		if (subject.isEmpty() || subject.trim().isEmpty()) return badRequest(views.html.contact.render("Subject can't be empty."));
 		if (message.isEmpty() || message.trim().isEmpty()) return badRequest(views.html.contact.render("Message can't be empty."));
-		Application.generateAndSendEmail(name, email, subject, message);
+		String[] strings = {name, email, subject, message};
+		emailQueue.add(strings);
+		try {
+			if(!emailSendingThread.isAlive()) emailSendingThread.start();
+		} catch (IllegalStateException e) {
+			//Ignore this exception, this is thrown when the emailSendingThread hasn't been started before and therefore has no state
+			//meaning it has a null state, which means we can't perform boolean operators on it, so it will throw this exception to tell us that
+		}
 		return redirect(routes.Application.index());
 	}
 
@@ -184,35 +214,67 @@ public class Application extends Controller {
 		}
 	}
 
-	public static void generateAndSendEmail(String name, String email, String subject, String message) {
-		// Set properties for the smtp server we are sending to
-		mailServerProperties = System.getProperties();
-		mailServerProperties.put("mail.smtp.port", "587");
-		mailServerProperties.put("mail.smtp.auth", "true");
-		mailServerProperties.put("mail.smtp.starttls.enable", "true");
-
-		getMailSession = Session.getDefaultInstance(mailServerProperties, null);
-		generateMailMessage = new MimeMessage(getMailSession);
+	//This method will generate and send the email
+	private static void generateAndSendEmail(String name, String email, String subject, String message) {
+		mailMessage = new MimeMessage(session);
 		try {
 			// Add properties to the email
-			generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(TO));
-			generateMailMessage.setFrom(new InternetAddress(email));
-			generateMailMessage.setSender(new InternetAddress(email));
-			generateMailMessage.setSubject(subject);
+			mailMessage.setFrom(new InternetAddress(email));
+			mailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(TO));
+			mailMessage.setSubject(subject);
 
-			generateMailMessage.setContent("From: " + name + " | " + email + "<br><br><pre><p style=\"font-size:14px; font-family: 'Arial'; \">" + message + "</p></pre>", "text/html");
+			mailMessage.setContent("From: " + name + " | " + email + "<br><br><pre><p style=\"font-size:14px; font-family: 'Arial'; \">" + message + "</p></pre>", "text/html");
 
-			Transport transport = getMailSession.getTransport("smtp");
+			Transport transport = session.getTransport("smtp");
 
 			// send it by the orgnizerwebapp email
-			transport.connect("smtp.gmail.com", "orgnizerwebapp", "GETHIP@Gallup!");
-			transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
+			transport.connect("smtp.gmail.com", System.getenv("OrgnizerEmailUsername"), System.getenv("OrgnizerEmailPassword"));
+			transport.sendMessage(mailMessage, mailMessage.getAllRecipients());
 			transport.close();
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	@SuppressWarnings("static-access")
+	//This method is used by the emailSendingThread, this thread here will scan through all the emails in the emailQueue
+	//and if there are any duplicates (which is possible if a user hits the send button multiple times), this will filter those out
+	//Then it will send all the good emails, and sleep for a minute total to keep processing usage down
+	public static void sendEmails() {
+		//Sleep first for 10 seconds to make sure that all the requests from the user hitting the send button multiple times have been processed
+		try {
+			emailSendingThread.sleep(10 * 1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		for(int i = 0; i < emailQueue.size(); i++) {
+			for(int j = emailQueue.size() - 1; j >= 0; j--) {
+				if(i == j) continue;
+				if(compareEmail(emailQueue.get(i), emailQueue.get(j))){
+					emailQueue.remove(j);
+					if(i > j) i--;
+				}
+			}
+		}
+		for(int i = emailQueue.size() - 1; i >= 0; i--) {
+			String[] strings = emailQueue.get(i);
+			generateAndSendEmail(strings[0], strings[1], strings[2], strings[3]);
+			emailQueue.remove(i);
+		}
+		//Finish out sleeping for a minute to keep the processing usage down
+		try {
+			emailSendingThread.sleep(50 * 1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 
+	//This method compares two emails and returns if they are the same
+	public static boolean compareEmail(String[] first, String[] second) {
+		if(first[0].equals(second[0]) && first[1].equals(second[1]) && first[2].equals(second[2]) && first[3].equals(second[3])) return true;
+		return false;
+	}
+	
 	// Login class that the loginForm forms to for logging in
 	public static class Login {
 		public String email;
