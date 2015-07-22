@@ -4,13 +4,13 @@
 # --- !Ups
 
 create table assignment (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   due_date                  varchar(255),
   school_class_id           bigint,
   kind_of_assignment        varchar(255),
   spanner                   varchar(255),
   description               varchar(255),
-  finished                  boolean,
+  finished                  tinyint(1) default 0,
   month                     integer,
   day                       integer,
   year                      integer,
@@ -20,7 +20,7 @@ create table assignment (
 ;
 
 create table note (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   title                     varchar(255),
   notes                     varchar(255),
   school_class_id           bigint,
@@ -38,7 +38,7 @@ create table parent (
 ;
 
 create table school_class (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   subject                   varchar(255),
   color                     varchar(255),
   teacher_id                varchar(40),
@@ -72,12 +72,6 @@ create table school_class_student (
   student_id                     varchar(40) not null,
   constraint pk_school_class_student primary key (school_class_id, student_id))
 ;
-create sequence assignment_seq;
-
-create sequence note_seq;
-
-create sequence school_class_seq;
-
 alter table assignment add constraint fk_assignment_schoolClass_1 foreign key (school_class_id) references school_class (id) on delete restrict on update restrict;
 create index ix_assignment_schoolClass_1 on assignment (school_class_id);
 alter table note add constraint fk_note_schoolClass_2 foreign key (school_class_id) references school_class (id) on delete restrict on update restrict;
@@ -87,33 +81,27 @@ create index ix_student_parent_3 on student (parent_id);
 
 
 
-alter table school_class_student add constraint fk_school_class_student_schoo_01 foreign key (school_class_id) references school_class (id) on delete restrict on update restrict;
+alter table school_class_student add constraint fk_school_class_student_school_class_01 foreign key (school_class_id) references school_class (id) on delete restrict on update restrict;
 
-alter table school_class_student add constraint fk_school_class_student_stude_02 foreign key (student_id) references student (id) on delete restrict on update restrict;
+alter table school_class_student add constraint fk_school_class_student_student_02 foreign key (student_id) references student (id) on delete restrict on update restrict;
 
 # --- !Downs
 
-SET REFERENTIAL_INTEGRITY FALSE;
+SET FOREIGN_KEY_CHECKS=0;
 
-drop table if exists assignment;
+drop table assignment;
 
-drop table if exists note;
+drop table note;
 
-drop table if exists parent;
+drop table parent;
 
-drop table if exists school_class;
+drop table school_class;
 
-drop table if exists school_class_student;
+drop table school_class_student;
 
-drop table if exists student;
+drop table student;
 
-drop table if exists teacher;
+drop table teacher;
 
-SET REFERENTIAL_INTEGRITY TRUE;
-
-drop sequence if exists assignment_seq;
-
-drop sequence if exists note_seq;
-
-drop sequence if exists school_class_seq;
+SET FOREIGN_KEY_CHECKS=1;
 

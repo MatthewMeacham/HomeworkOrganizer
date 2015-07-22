@@ -1,7 +1,7 @@
 // Import for Play2War Plugin
 import com.github.play2war.plugin._
 
-name := """HomeworkOrganizer"""
+name := """Org"""
 
 version := "1.0-SNAPSHOT"
 
@@ -17,7 +17,7 @@ scalaVersion := "2.11.6"
 
 libraryDependencies ++= Seq(
   "javax.mail" % "mail" % "1.4.5",
-  "postgresql" % "postgresql" % "9.1-901-1.jdbc4",
+  "mysql" % "mysql-connector-java" % "5.1.18",
   evolutions,
   javaJdbc,
   cache,
