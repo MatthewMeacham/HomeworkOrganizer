@@ -1,7 +1,7 @@
 // Import for Play2War Plugin
 import com.github.play2war.plugin._
 
-name := """Org"""
+name := """HomeworkOrganizer"""
 
 version := "1.0-SNAPSHOT"
 
