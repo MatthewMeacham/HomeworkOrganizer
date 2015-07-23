@@ -16,3 +16,4 @@ target
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+conf/prod.conf
