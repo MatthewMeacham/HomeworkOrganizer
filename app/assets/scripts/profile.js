@@ -160,6 +160,12 @@ function submitFinishedAssignmentForm(id) {
 	document.getElementById('assignmentFinishedForm' + id).submit();
 }
 
+function submitUnfinishedAssignmentForm(id) {
+	if (submitted)
+		return;
+	document.getElementById('assignmentUnfinishedForm' + id).submit();
+}
+
 function submitSchoolClassDeleteForm(id) {
 	if (submitted)
 		return;

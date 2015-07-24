@@ -140,6 +140,7 @@
 													<i data-toggle="tooltip" data-placement="top" title="Finished" class="fa fa-check myIcon"></i>
 												</a>
 											}
+											
 											<div class="descContent">
 											<p class="itemHeaderBig">@assignment.schoolClass.subject</p>
 											<p class="itemDueDateBig"> @assignment.dueDate</p>
@@ -412,6 +413,11 @@
 												@finishedAssignment.spanner
 											</span>
 											<div class="contentInside">
+											@form(action = routes.Assignments.setUnfinished(String.valueOf(finishedAssignment.id), student.id.toString()), 'id -> ("assignmentUnfinishedForm" + String.valueOf(finishedAssignment.id))) {
+													<a href="#" onclick="submitUnfinishedAssignmentForm(@finishedAssignment.id); return false">
+														<i class="fa fa-undo myIcon" data-toggle="tooltip" title="Unfinished"></i>
+													</a>
+												}
 												<h2 class="itemHeaderBig">@finishedAssignment.schoolClass.subject</h2>
 												<h3 class="itemDueDateBig"> @finishedAssignment.dueDate</h3>
 												<p class="itemDescBig"> @finishedAssignment.description </p>
