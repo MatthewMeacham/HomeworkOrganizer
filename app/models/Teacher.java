@@ -4,24 +4,12 @@ import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-
-import play.data.validation.Constraints.Required;
+import javax.persistence.PersistenceException;
 
 import com.avaje.ebean.Model;
 
 @Entity
 public class Teacher extends AUser {
-
-	// @Id
-	// public Long id;
-
-	@Required
-	public String email;
-	@Required
-	public String password;
-	@Required
-	public String name;
-	public String salt;
 
 	@OneToMany
 	public SchoolClass schoolClass;
@@ -35,7 +23,7 @@ public class Teacher extends AUser {
 		this.salt = salt;
 	}
 
-	public static Teacher create(String name, String email, String salt, String password) {
+	public static Teacher create(String name, String email, String salt, String password) throws PersistenceException{
 		if (find.where().eq("email", email.toLowerCase()).eq("password", password).findUnique() == null && Parent.find.where().eq("email", email.toLowerCase()).findUnique() == null && Student.find.where().eq("email", email.toLowerCase()).findUnique() == null) {
 			Teacher teacher = new Teacher(name, email, salt, password);
 			teacher.save();

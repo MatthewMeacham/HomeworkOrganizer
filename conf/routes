@@ -16,14 +16,19 @@ GET	   /termsAndConditions/										 controllers.Application.termsAndConditions
 # Assignments
 GET    /assn/edit/:assnID/:studentID/                            controllers.Assignments.read(assnID: String, studentID: String)
 POST   /assn/edit/                                               controllers.Assignments.update(assnID: String, studentID: String)
+GET    /parent/assn/edit/:assnID/:parentID/:studentID/			 controllers.Assignments.readForParent(assnID: Long, parentID: java.util.UUID, studentID: java.util.UUID)
+POST   /parent/assn/edit/										 controllers.Assignments.updateForParent(assnID: Long, parentID: java.util.UUID, studentID: java.util.UUID)
 GET    /teacher/assn/edit/:assnID/:teacherID/                    controllers.Assignments.readForTeacher(assnID: String, teacherID: String)
 POST   /teacher/assn/edit/                                       controllers.Assignments.updateForTeacher(assnID: String, teacherID: String)
 POST   /profileAssnChanged/                                      controllers.Assignments.create(studentID: String)
 POST   /profileAssnChangedTeacher/                               controllers.Assignments.createForTeacher(teacherID: String)
 POST   /assn/delete/                                             controllers.Assignments.delete(assnID: String, studentID: String)
+POST   /parent/assn/delete/										 controllers.Assignments.deleteForParent(assnID: Long, parentID: java.util.UUID, studentID: java.util.UUID)
 POST   /teacher/assn/delete/                                     controllers.Assignments.deleteForTeacher(assnID: String, teacherID: String)
 POST   /finishedAssn/                                            controllers.Assignments.setFinished(assnID: String, studentID: String)
 GET	   /assn/download/											 controllers.Assignments.createPrintableDocument(studentID: java.util.UUID)
+GET    /parent/assn/download/									 controllers.Assignments.createPrintableDocumentForParent(parentID: java.util.UUID)
+GET    /teacher/assn/download/									 controllers.Assignments.createPrintableDocumentForTeacher(teacherID: java.util.UUID)
 
 # Classes
 GET    /schoolClass/editPage/:schoolClassID/:studentID           controllers.Classes.read(schoolClassID: String, studentID: String)

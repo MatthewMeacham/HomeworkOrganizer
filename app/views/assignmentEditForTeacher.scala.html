@@ -155,7 +155,7 @@
 					</script>
 					<div class="center2 Header"><h2>Class:</h2></div>
 					<div class="center2">
-						<select name="schoolClassId" required>
+						<select name="schoolClassID" required>
 						@for(schoolClass <- schoolClasses) {
 							<option value=@Long.toString(schoolClass.id) @if(Long.toString(schoolClass.id) == Long.toString(assignment.schoolClass.id)){selected}> @schoolClass.subject </option>
 						}

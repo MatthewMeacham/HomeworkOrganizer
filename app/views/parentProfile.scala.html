@@ -48,6 +48,9 @@
 	<body>
 		<div id="topSection">
 			<div class="topImage">
+				<a href="@routes.Assignments.createPrintableDocumentForParent(parent.id)">
+					<i class="fa fa-download fa-2x download"></i>
+				</a>
 				<a href="@routes.Parents.refresh(parent.id)">
 					<i class="fa fa-refresh refresh fa-2x"></i>
 				</a>
@@ -113,16 +116,18 @@
 											@assignment.spanner
 										</span>
 										<div class="contentInside">  
-											@form(action = routes.Assignments.delete(String.valueOf(assignment.id), assignment.schoolClass.teacherID.toString()), 'id -> ("assignmentDeleteForm" + String.valueOf(assignment.id))) {
-												<a href="#" onclick="submitAssignmentDeleteForm(@assignment.id); return false;">
-													<i data-toggle="tooltip" data-placement="top" title="Delete" class="fa fa-trash myIcon"></i>
-												</a>
-											}
-		
-											@form(action = routes.Assignments.read(String.valueOf(assignment.id), assignment.schoolClass.teacherID.toString()), 'id -> ("assignmentEditForm" + String.valueOf(assignment.id))) {
-												<a href="#" onclick="submitAssignmentEditForm(@assignment.id); return false;">
-													<i data-toggle="tooltip" data-placement="top" title="Edit" class="fa fa-pencil myIcon"></i>
-												</a>
+											@if(assignment.schoolClass.teacherID == null) {
+												@form(action = routes.Assignments.deleteForParent(assignment.id, parent.id, assignment.foreignID), 'id -> ("assignmentDeleteForm" + String.valueOf(assignment.id))) {
+													<a href="#" onclick="submitAssignmentDeleteForm(@assignment.id); return false;">
+														<i data-toggle="tooltip" data-placement="top" title="Delete" class="fa fa-trash myIcon"></i>
+													</a>
+												}
+			
+												@form(action = routes.Assignments.readForParent(assignment.id, parent.id, assignment.foreignID), 'id -> ("assignmentEditForm" + String.valueOf(assignment.id))) {
+													<a href="#" onclick="submitAssignmentEditForm(@assignment.id); return false;">
+														<i data-toggle="tooltip" data-placement="top" title="Edit" class="fa fa-pencil myIcon"></i>
+													</a>
+												}
 											}
 											<p class="itemHeaderBig">@assignment.schoolClass.subject - @Student.find.where().eq("ID", assignment.foreignID).findUnique().name</p>
 											<p class="itemDueDateBig"> @assignment.dueDate</p>

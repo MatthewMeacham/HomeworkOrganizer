@@ -3,21 +3,12 @@ package models;
 import java.util.UUID;
 
 import javax.persistence.Entity;
-
-import play.data.validation.Constraints.Required;
+import javax.persistence.PersistenceException;
 
 import com.avaje.ebean.Model;
 
 @Entity
 public class Parent extends AUser {
-
-	@Required
-	public String name;
-	@Required
-	public String email;
-	@Required
-	public String password;
-	public String salt;
 
 	public static Model.Finder<UUID, Parent> find = new Model.Finder<UUID, Parent>(Parent.class);
 
@@ -28,7 +19,7 @@ public class Parent extends AUser {
 		this.name = name;
 	}
 
-	public static Parent create(String name, String email, String salt, String password) {
+	public static Parent create(String name, String email, String salt, String password) throws PersistenceException{
 		if (find.where().eq("email", email.toLowerCase()).findUnique() == null && Student.find.where().eq("email", email).findUnique() == null && Teacher.find.where().eq("email", email).findUnique() == null) {
 			Parent parent = new Parent(name, email, salt, password);
 			parent.save();

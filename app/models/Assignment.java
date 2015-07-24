@@ -51,7 +51,7 @@ public class Assignment extends Model {
 		this.foreignID = foreignID;
 	}
 
-	public static Assignment create(String dueDate, String schoolClassId, String kindOfAssignment, String description, String foreignID) {
+	public static Assignment create(String dueDate, String schoolClassId, String kindOfAssignment, String description, String foreignID) throws PersistenceException {
 		String month = "";
 		String day = "";
 		String year = "";
@@ -120,7 +120,7 @@ public class Assignment extends Model {
 		return assignment;
 	}
 
-	public static Assignment create(Assignment assignment, UUID foreignID) {
+	public static Assignment create(Assignment assignment, UUID foreignID) throws PersistenceException {
 		String dueDate = assignment.year + "-";
 		dueDate += (assignment.month <= 9) ? '0' + String.valueOf(assignment.month) + "-" : String.valueOf(assignment.month) + "-";
 		dueDate += (assignment.day <= 9) ? '0' + String.valueOf(assignment.day) : String.valueOf(assignment.day);
@@ -128,7 +128,7 @@ public class Assignment extends Model {
 		return returnAssignment;
 	}
 
-	public static void edit(Long id, SchoolClass schoolClass, String date, String kindOfAssignment, String description) {
+	public static void edit(Long id, SchoolClass schoolClass, String date, String kindOfAssignment, String description) throws PersistenceException {
 		Assignment assignment = find.ref(id);
 		assignment.schoolClass = schoolClass;
 		String[] array = parseDate(date);
@@ -143,11 +143,7 @@ public class Assignment extends Model {
 		assignment.spanner = kindOfAssignment.substring(0, 1);
 		assignment.description = description;
 		assignment.total = (year * 366) - ((12 - month) * 31) - (31 - day);
-		try {
-			assignment.save();
-		} catch (PersistenceException e) {
-			System.err.println("Unable to save an assignment after editing. ID: " + id);
-		}
+		assignment.save();
 	}
 
 	public static String[] parseDate(String dueDate) {
@@ -215,7 +211,7 @@ public class Assignment extends Model {
 	}
 
 	public static boolean same(Assignment assignment1, Assignment assignment2) {
-		return assignment1.dueDate.equals(assignment2.dueDate) && assignment1.description.equals(assignment2.description) && assignment1.day == assignment2.day && assignment1.month == assignment2.month && assignment1.year == assignment2.year && assignment1.kindOfAssignment.equals(assignment2.kindOfAssignment);
+		return assignment1.schoolClass.id == assignment2.schoolClass.id && assignment1.description.equals(assignment2.description) && assignment1.day == assignment2.day && assignment1.month == assignment2.month && assignment1.year == assignment2.year && assignment1.kindOfAssignment.equals(assignment2.kindOfAssignment);
 	}
 
 }

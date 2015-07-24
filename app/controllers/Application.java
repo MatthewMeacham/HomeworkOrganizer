@@ -13,12 +13,14 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import models.Parent;
-import models.Student;
-import models.Teacher;
+
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+
+import models.Parent;
+import models.Student;
+import models.Teacher;
 
 import views.html.contact;
 import views.html.faq;
@@ -26,7 +28,6 @@ import views.html.index;
 import views.html.login;
 import views.html.privacyPolicy;
 import views.html.termsAndConditions;
-
 
 import com.matthew.hasher.Hasher;
 
@@ -53,6 +54,9 @@ public class Application extends Controller {
 	private static MimeMessage mailMessage;
 	
 	private volatile static ArrayList<String[]> emailQueue = new ArrayList<String[]>();
+	
+	//This is how long in Minutes that the email thread should wait before performing operations again
+	private static final int WAIT_TIME = 5;
 	
 	private static Thread emailSendingThread = new Thread(new Runnable() {
 		public void run() {			
@@ -87,45 +91,44 @@ public class Application extends Controller {
 
 	// Directs the user to the FAQ page
 	public Result faq() {
-		return ok(views.html.faq.render());
+		return ok(faq.render());
 	}
 
 	// Directs the user to the contact us page
 	public Result contactUsPage() {
-		return ok(views.html.contact.render(""));
+		return ok(contact.render(""));
 	}
 	
 	//Directs the user to the privacy policy page
 	public Result privacyPolicy() {
-		return ok(views.html.privacyPolicy.render());
+		return ok(privacyPolicy.render());
 	}
 	
 	//Directs the user to the terms and conditions page
 	public Result termsAndConditions() {
-		return ok(views.html.termsAndConditions.render());
+		return ok(termsAndConditions.render());
 	}
 
 	// Performs the email sending operation and then redirects back to the index
 	public Result contactUs() {
 		Form<ContactUs> filledForm = contactUsForm.bindFromRequest();
-		if (filledForm.hasErrors()) {
-			return badRequest(views.html.contact.render("Error while processing."));
-		}
+		if (filledForm.hasErrors()) return badRequest(contact.render("Error while processing."));
 		String name = filledForm.data().get("name");
 		String email = filledForm.data().get("email");
 		String message = filledForm.data().get("message");
 		String subject = filledForm.data().get("subject");
-		if (name.isEmpty() || name.trim().isEmpty()) return badRequest(views.html.contact.render("Name can't be empty."));
-		if (email.isEmpty() || email.trim().isEmpty()) return badRequest(views.html.contact.render("Email can't be empty."));
-		if (subject.isEmpty() || subject.trim().isEmpty()) return badRequest(views.html.contact.render("Subject can't be empty."));
-		if (message.isEmpty() || message.trim().isEmpty()) return badRequest(views.html.contact.render("Message can't be empty."));
+		if (name.isEmpty() || name.trim().isEmpty()) return badRequest(contact.render("Name can't be empty."));
+		if (email.isEmpty() || email.trim().isEmpty()) return badRequest(contact.render("Email can't be empty."));
+		if (!email.contains("@")) return badRequest(contact.render("Invalid email address."));
+		if (subject.isEmpty() || subject.trim().isEmpty()) return badRequest(contact.render("Subject can't be empty."));
+		if (message.isEmpty() || message.trim().isEmpty()) return badRequest(contact.render("Message can't be empty."));
 		String[] strings = {name, email, subject, message};
 		emailQueue.add(strings);
 		try {
 			if(!emailSendingThread.isAlive()) emailSendingThread.start();
 		} catch (IllegalStateException e) {
 			//Ignore this exception, this is thrown when the emailSendingThread hasn't been started before and therefore has no state
-			//meaning it has a null state, which means we can't perform boolean operators on it, so it will throw this exception to tell us that
+			//(a null state), which means we can't perform boolean operators on it, so it will throw this exception to tell us that
 		}
 		return redirect(routes.Application.index());
 	}
@@ -188,13 +191,12 @@ public class Application extends Controller {
 			if (students.size() <= 0) return badRequest(login.render(loginForm, "Invalid email or password."));
 			if (students.size() > 1 && Parent.exists(email)) {
 				try {
-					password = HASHER.hashWithSaltSHA256(filledForm.data().get("password"), students.get(0).parent.salt);
+					password = HASHER.hashWithSaltSHA256(filledForm.data().get("password"), parent.salt);
 				} catch (NoSuchAlgorithmException e) {
 					e.printStackTrace();
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
-				student = Student.find.where().eq("email", email).eq("password", password).findUnique();
 			} else {
 				try {
 					password = HASHER.hashWithSaltSHA256(filledForm.data().get("password"), students.get(0).salt);
@@ -203,11 +205,11 @@ public class Application extends Controller {
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
-				student = Student.find.where().eq("email", email).eq("password", password).findUnique();
-
 			}
-			if (password == null || student == null) return badRequest(login.render(loginForm, "Invalid email or password."));
+			student = Student.find.where().eq("email", email).eq("password", password).findUnique();
 
+			if (password == null || student == null) return badRequest(login.render(loginForm, "Invalid email or password."));
+			
 			if (Student.authenticate(email, password) != null) return redirect(routes.Students.toProfile(student.id.toString()));
 
 			return badRequest(login.render(loginForm, "Invalid email or password."));
@@ -215,7 +217,7 @@ public class Application extends Controller {
 	}
 
 	//This method will generate and send the email
-	private static void generateAndSendEmail(String name, String email, String subject, String message) {
+	private static boolean generateAndSendEmail(String name, String email, String subject, String message) {
 		mailMessage = new MimeMessage(session);
 		try {
 			// Add properties to the email
@@ -231,15 +233,17 @@ public class Application extends Controller {
 			transport.connect("smtp.gmail.com", System.getenv("OrgnizerEmailUsername"), System.getenv("OrgnizerEmailPassword"));
 			transport.sendMessage(mailMessage, mailMessage.getAllRecipients());
 			transport.close();
+			return true;
 		} catch (MessagingException e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 	
 	@SuppressWarnings("static-access")
 	//This method is used by the emailSendingThread, this thread here will scan through all the emails in the emailQueue
 	//and if there are any duplicates (which is possible if a user hits the send button multiple times), this will filter those out
-	//Then it will send all the good emails, and sleep for a minute total to keep processing usage down
+	//Then it will send all the good emails, and sleep for a WAIT_TIME minutes total to keep processing usage down
 	public static void sendEmails() {
 		//Sleep first for 10 seconds to make sure that all the requests from the user hitting the send button multiple times have been processed
 		try {
@@ -258,12 +262,11 @@ public class Application extends Controller {
 		}
 		for(int i = emailQueue.size() - 1; i >= 0; i--) {
 			String[] strings = emailQueue.get(i);
-			generateAndSendEmail(strings[0], strings[1], strings[2], strings[3]);
-			emailQueue.remove(i);
+			if(generateAndSendEmail(strings[0], strings[1], strings[2], strings[3])) emailQueue.remove(i);
 		}
-		//Finish out sleeping for a minute to keep the processing usage down
+		//Finish out sleeping for WAIT_TIME minutes to keep the processing usage down
 		try {
-			emailSendingThread.sleep(50 * 1000);
+			emailSendingThread.sleep((WAIT_TIME * 60 - 10) * 1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

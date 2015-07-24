@@ -9,7 +9,7 @@
 <html>
 	<head>
 		<title>Homework Organizer |  Homework Edit </title>
-		<link rel="icon" href="@routes.Assets.versioned("images/favicon.jpg")" sizes="32x32">
+		<link rel="icon" href="@routes.Assets.versioned("images/favicon.png")" sizes="32x32">
 		<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/animate.css")">
 		<!-- NEED TO MAKE THIS STYLESHEET
 			<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/edit.css")">
@@ -154,7 +154,7 @@
 					</script>
 					<div class="center2 Header"><h2>Class:</h2></div>
 					<div class="center2">
-						<select name="schoolClassId" required>
+						<select name="schoolClassID" required>
 						@for(schoolClass <- schoolClasses) {
 							<option value=@Long.toString(schoolClass.id) @if(Long.toString(schoolClass.id) == Long.toString(assignment.schoolClass.id)){selected}> @schoolClass.subject </option>
 						}
@@ -163,7 +163,7 @@
 					<div class="center2 Header"> <h2>Type: </h2> </div>
 					<div class="center2"> 
 						<select name="kindOfAssignment" required>
-							@for(anOption  <- Application.OPTIONS) {
+							@for(anOption <- Application.OPTIONS) {
 								<option value=@anOption  @if(anOption.equals(assignment.kindOfAssignment)){selected}> @anOption</option>
 							}
 						</select>
