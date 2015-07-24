@@ -136,84 +136,73 @@ public class Application extends Controller {
 	// Authenticate a request
 	public Result authenticate() {
 		Form<Login> filledForm = loginForm.bindFromRequest();
-		if (filledForm.hasErrors()) {
-			return badRequest(login.render(loginForm, "Login error, try again."));
-		} else {
-			// if
-			// (Parent.authenticate(filledForm.data().get("email").toLowerCase(),
-			// filledForm.data().get("password")) == null &&
-			// Student.authenticate(filledForm.data().get("email").toLowerCase(),
-			// filledForm.data().get("password")) == null) {
-			// return badRequest(login.render(loginForm,
-			// "Invalid email or password."));
-			// }
+		if (filledForm.hasErrors()) return badRequest(login.render(loginForm, "Login error, try again."));
+		
+		String email = filledForm.data().get("email").toLowerCase();
+		Parent parent = Parent.find.where().eq("email", email).findUnique();
+		Teacher teacher = Teacher.find.where().eq("email", email).findUnique();
+		List<Student> students = Student.find.where().eq("email", email).findList();
 
-			String email = filledForm.data().get("email").toLowerCase();
-			Parent parent = Parent.find.where().eq("email", email).findUnique();
-			Teacher teacher = Teacher.find.where().eq("email", email).findUnique();
-			List<Student> students = Student.find.where().eq("email", email).findList();
-
-			// Try parent login first
-			if (parent != null) {
-				String password = null;
-				try {
-					password = HASHER.hashWithSaltSHA256(filledForm.data().get("password"), parent.salt);
-				} catch (NoSuchAlgorithmException e) {
-					e.printStackTrace();
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				}
-				if (Parent.authenticate(filledForm.data().get("email"), password) != null) {
-					parent = Parent.find.where().eq("email", email).eq("password", password).findUnique();
-					return redirect(routes.Parents.toProfile(parent.id.toString()));
-				}
-			}
-
-			// Else try teacher login
-			if (teacher != null) {
-				String password = null;
-				try {
-					password = HASHER.hashWithSaltSHA256(filledForm.data().get("password"), teacher.salt);
-				} catch (NoSuchAlgorithmException e) {
-					e.printStackTrace();
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				}
-				if (Teacher.authenticate(filledForm.data().get("email"), password) != null) {
-					teacher = Teacher.find.where().eq("email", email).eq("password", password).findUnique();
-					return redirect(routes.Teachers.toProfile(teacher.id));
-				}
-			}
-
-			// Else do student login
+		// Try parent login first
+		if (parent != null) {
 			String password = null;
-			Student student = null;
-			if (students.size() <= 0) return badRequest(login.render(loginForm, "Invalid email or password."));
-			if (students.size() > 1 && Parent.exists(email)) {
-				try {
-					password = HASHER.hashWithSaltSHA256(filledForm.data().get("password"), parent.salt);
-				} catch (NoSuchAlgorithmException e) {
-					e.printStackTrace();
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				}
-			} else {
-				try {
-					password = HASHER.hashWithSaltSHA256(filledForm.data().get("password"), students.get(0).salt);
-				} catch (NoSuchAlgorithmException e) {
-					e.printStackTrace();
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				}
+			try {
+				password = HASHER.hashWithSaltSHA256(filledForm.data().get("password"), parent.salt);
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
 			}
-			student = Student.find.where().eq("email", email).eq("password", password).findUnique();
-
-			if (password == null || student == null) return badRequest(login.render(loginForm, "Invalid email or password."));
-			
-			if (Student.authenticate(email, password) != null) return redirect(routes.Students.toProfile(student.id.toString()));
-
-			return badRequest(login.render(loginForm, "Invalid email or password."));
+			if (Parent.authenticate(filledForm.data().get("email"), password) != null) {
+				parent = Parent.find.where().eq("email", email).eq("password", password).findUnique();
+				return redirect(routes.Parents.toProfile(parent.id.toString()));
+			}
 		}
+
+		// Else try teacher login
+		if (teacher != null) {
+			String password = null;
+			try {
+				password = HASHER.hashWithSaltSHA256(filledForm.data().get("password"), teacher.salt);
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			if (Teacher.authenticate(filledForm.data().get("email"), password) != null) {
+				teacher = Teacher.find.where().eq("email", email).eq("password", password).findUnique();
+				return redirect(routes.Teachers.toProfile(teacher.id));
+			}
+		}
+
+		// Else do student login
+		String password = null;
+		Student student = null;
+		if (students.size() <= 0) return badRequest(login.render(loginForm, "Invalid email or password."));
+		if (students.size() > 1 && Parent.exists(email)) {
+			try {
+				password = HASHER.hashWithSaltSHA256(filledForm.data().get("password"), parent.salt);
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				password = HASHER.hashWithSaltSHA256(filledForm.data().get("password"), students.get(0).salt);
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+		student = Student.find.where().eq("email", email).eq("password", password).findUnique();
+
+		if (password == null || student == null) return badRequest(login.render(loginForm, "Invalid email or password."));
+		
+		if (Student.authenticate(email, password) != null) return redirect(routes.Students.toProfile(student.id.toString()));
+
+		return badRequest(login.render(loginForm, "Invalid email or password."));
 	}
 
 	//This method will generate and send the email

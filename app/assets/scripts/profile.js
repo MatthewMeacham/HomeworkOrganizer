@@ -145,30 +145,42 @@ var submitted = false;
 function submitAssignmentDeleteForm(id) {
 	if (submitted)
 		return;
+	submitted = true;
 	document.getElementById('assignmentDeleteForm' + id).submit();
 }
 
 function submitAssignmentEditForm(id) {
 	if (submitted)
 		return;
+	submitted = true;
 	document.getElementById('assignmentEditForm' + id).submit();
 }
 
 function submitFinishedAssignmentForm(id) {
 	if (submitted)
 		return;
+	submitted = true;
 	document.getElementById('assignmentFinishedForm' + id).submit();
+}
+
+function submitUnfinishedAssignmentForm(id) {
+	if (submitted)
+		return;
+	submitted = true;
+	document.getElementById('assignmentUnfinishedForm' + id).submit();
 }
 
 function submitSchoolClassDeleteForm(id) {
 	if (submitted)
 		return;
+	submitted = true;
 	document.getElementById('schoolClassDeleteForm' + id).submit();
 }
 
 function submitSchoolClassEditForm(id) {
 	if (submitted)
 		return;
+	submitted = true;
 	document.getElementById('schoolClassEditForm' + id).submit();
 }
 
@@ -222,3 +234,20 @@ $(".pull").bind('click', function() {
 	$('#toggle').toggleClass("on");
 	return false;
 });
+
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1;
+var yyyy = today.getFullYear();
+
+if (dd<10) {
+	dd = '0' + dd;
+}
+if (mm<10) {
+	mm = '0' + mm;
+}
+today = mm+'/'+dd+'/'+yyyy;
+
+document.getElementById("monthassignment").value = mm;
+document.getElementById("daysassignment").value = dd;
+document.getElementById("yearassignment").value = yyyy;

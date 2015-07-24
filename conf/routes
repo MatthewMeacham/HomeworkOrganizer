@@ -26,6 +26,7 @@ POST   /assn/delete/                                             controllers.Ass
 POST   /parent/assn/delete/										 controllers.Assignments.deleteForParent(assnID: Long, parentID: java.util.UUID, studentID: java.util.UUID)
 POST   /teacher/assn/delete/                                     controllers.Assignments.deleteForTeacher(assnID: String, teacherID: String)
 POST   /finishedAssn/                                            controllers.Assignments.setFinished(assnID: String, studentID: String)
+POST   /unFinishedAssn/                                          controllers.Assignments.setUnfinished(assnID: String, studentID: String)
 GET	   /assn/download/											 controllers.Assignments.createPrintableDocument(studentID: java.util.UUID)
 GET    /parent/assn/download/									 controllers.Assignments.createPrintableDocumentForParent(parentID: java.util.UUID)
 GET    /teacher/assn/download/									 controllers.Assignments.createPrintableDocumentForTeacher(teacherID: java.util.UUID)
