@@ -44,51 +44,51 @@
 }
 
 .redForColorChooser {
-  background-color: #ED2828;
+  background-color: #C66761;
   cursor: pointer;
 }
 .orange {
-  background-color: #FA9F20;
+  background-color: #ffb550;
   cursor: pointer;
 }
 .yellowForColorChooser {
-  background-color: #FFE629;
+  background-color: #FDE74C;
   cursor: pointer;
 }
 .greenForColorChooser {
-  background-color: #61FA85;
+  background-color: #74cd79;
   cursor: pointer;
 }
 .blue {
-  background-color: #7CD7E6;
+  background-color: #61C0C6;
   cursor: pointer;
 }
 .indigo {
-  background-color: #0060FA;
+  background-color: #3a9aa1;
   cursor: pointer;
 }
 .purple {
-  background-color: #941FCF;
+  background-color: #c661c0;
   cursor: pointer;
 }
 .pink {
-  background-color: #FF61E7;
+  background-color: #ff7ceb;
   cursor: pointer;
 }
 .whiteForColorChooser {
-  background-color: #EDEDED;
+  background-color: #FFF;
   cursor: pointer;
 }
 .black {
-  background-color: #1F1F1F;
+  background-color: #454545;
   cursor: pointer;
 }
 .grey {
-  background-color: #737373;
+  background-color: #bfbfbf;
   cursor: pointer;
 }
 .brown {
-  background-color: #8F5E3B;
+  background-color: #c69a61;
   cursor: pointer;
 }
 .reset {
@@ -112,7 +112,7 @@
 }
 .reset:hover {
 	transition: none;
-	
+
 }
 table {
   width: 100%;
@@ -144,4 +144,3 @@ table td:hover {
 	position: relative;
 	top: 50px;
 }
-

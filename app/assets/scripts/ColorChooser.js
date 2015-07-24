@@ -16,9 +16,9 @@ $(document).ready(
 					'.yellowForColorChooser', '.greenForColorChooser', '.blue',
 					'.indigo', '.purple', '.pink', '.whiteForColorChooser',
 					'.black', '.grey', '.brown', '.reset' ];
-			var colors = [ '#ED2828', '#FA9F20', '#FFE629', '#61FA85',
-					'#7CD7E6', '#0060FA', '#941FCF', '#FF61E7', '#FFF',
-					'#1F1F1F', '#737373', '#8F5E3B', ' #c4413b' ];
+			var colors = [ '#C66761', '#FFB550', '#FDE74C', '#74CD79',
+					'#61C0C6', '#3A9AA1', '#C661C0', '#FF7CEB', '#FFF',
+					'#454545', '#BFBFBF', '#C69A61', '#C54340' ];
 
 			/*
 			 * LOOP THROUGH THE COLORS IN THE ARRAYS AND SUCCESSFULLY PLACE
@@ -37,9 +37,9 @@ $(document).ready(
 		});
 
 function changeColorField(color) {
-	var colors = [ '#ED2828', '#FA9F20', '#FFE629', '#61FA85', '#7CD7E6',
-			'#0060FA', '#941FCF', '#FF61E7', '#1F1F1F', '#737373', '#FFF',
-			'#8F5E3B', ' #c4413b' ];
+	var colors = [ '#C66761', ' #FFB550', '#FDE74C', '#74CD79', '#61C0C6',
+			'#3A9AA1', '#C661C0', '#FF7CEB', '#454545', '#BFBFBF', '#FFF',
+			'#C69A61', ' #C54340' ];
 	var e = document.getElementById('color');
 
 	switch (color) {
