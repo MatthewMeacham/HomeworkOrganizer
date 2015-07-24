@@ -938,19 +938,23 @@ nav a#pull {
 		margin: 10px;
 		display: none !important;
 	}
-	.download {
-		padding: 10px !important;
-		position: relative;
-		margin: 10px;
-		display: none !important;
-	}
-	#logo {
-		left: 0 !important;
-	}
-	#classColor {
-		position: relative;
-		left: 0px !important;
-	}
+  .download {
+    padding: 10px !important;
+    position: relative;
+    margin: 10px;
+    display: none !important;
+  }
+  #logo {
+    left: 0 !important;
+  }
+  #classColor {
+    position: relative;
+    left: 0px !important;
+  }
+  #studentDeleteAcct {
+        position: relative;
+        right: 40px;
+  }
 
 }
 
@@ -1567,10 +1571,14 @@ img {
 }
 .download {
 	padding: 0px;
+	right: 25px;
+	margin-bottom: -15px;
+	margin-top: -15px;
+	position: relative;
 	cursor: pointer;
 	display: inline;
 	float: right;
-	color: white;
+	color: black;
 	-webkit-transition: 150ms ease-in-out;
 	-moz-transition: 150ms ease-in-out;
 	-o-transition: 150ms ease-in-out;
@@ -1585,4 +1593,15 @@ img {
 .studentName {
 	position: relative;
 	left: 5px;
+}
+.deleteAccountPrompt {
+    margin: 0 auto;
+    text-align: center;
+    padding: 25px;
+    position: relative;
+    top: 10px;
+    left: 8px;
+}
+#deleteLink {
+    color: #56ced6;
 }
