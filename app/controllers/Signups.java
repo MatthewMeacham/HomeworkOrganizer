@@ -69,7 +69,7 @@ public class Signups extends Controller {
 			hashed = HASHER.hashSHA256(password);
 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
 			e.printStackTrace();
-			return badRequest(studentSignUp.render(studentForm, "Error while processing, try again."));
+			return badRequest(studentSignUp.render(studentForm, "Error while processing."));
 		}
 		Student student = null;
 		try {

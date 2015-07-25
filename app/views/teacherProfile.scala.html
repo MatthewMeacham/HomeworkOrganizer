@@ -107,12 +107,12 @@
 								<div class="itemBigContainer">
 
 									@if(assignment.total > today + 5) {
-										<div class="green" style="border-left: 40px solid @if(!assignment.schoolClass.color.equals("#c34444")) {@assignment.schoolClass.color;}else{#2ecc71;}">
+										<div class="green" style="border-left: 40px solid @if(!assignment.schoolClass.color.equals("#C54340")) {@assignment.schoolClass.color;}else{#4FBF8D;}">
 									} else {
 										@if(assignment.total <= today + 5 && assignment.total > today + 1){
-										<div class="yellow" style="border-left: 40px solid  @if(!assignment.schoolClass.color.equals("#c34444")) {@assignment.schoolClass.color;}else{#f1c40f;}">
+										<div class="yellow" style="border-left: 40px solid  @if(!assignment.schoolClass.color.equals("#C54340")) {@assignment.schoolClass.color;}else{#F2CA27;}">
 										} else {
-										<div class="red" style="border-left: 40px solid  @if(!assignment.schoolClass.color.equals("#c34444")) {@assignment.schoolClass.color;}else{#E02F2F;}">
+										<div class="red" style="border-left: 40px solid  @if(!assignment.schoolClass.color.equals("#C54340")) {@assignment.schoolClass.color;}else{#C54340;}">
 										}
 									}
 										<span class="alertBig">

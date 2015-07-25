@@ -49,9 +49,7 @@ public class Student extends AUser {
 	}
 
 	public static boolean exists(String email) {
-		Student student = find.where().eq("email", email.toLowerCase()).findUnique();
-		if (student == null) return false;
-		return true;
+		return find.where().eq("email", email.toLowerCase()).findList().size() > 0;
 	}
 
 }

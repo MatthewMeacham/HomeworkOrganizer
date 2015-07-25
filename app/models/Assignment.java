@@ -1,6 +1,10 @@
 package models;
 
 import java.util.UUID;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -31,10 +35,12 @@ public class Assignment extends Model {
 	public int month;
 	public int day;
 	public int year;
-	// this is set to year * 366 - (12 - month) * 31 - (31 - day)
+	// The total number of days in the date
 	public int total;
 
 	public UUID foreignID;
+	
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MM yyyy");
 
 	public static Finder<Long, Assignment> find = new Finder<Long, Assignment>(Assignment.class);
 
@@ -47,7 +53,9 @@ public class Assignment extends Model {
 		this.month = month;
 		this.day = day;
 		this.year = year;
-		total = (year * 366) - ((12 - month) * 31) - (31 - day);
+		total = calculateTotal(day, month, year);
+		//In case the above mehtod fails, we use our old method
+		if(total == 0) total = (year * 366) - ((12 - month) * 31) - (31 - day);
 		this.foreignID = foreignID;
 	}
 
@@ -56,12 +64,10 @@ public class Assignment extends Model {
 		String day = "";
 		String year = "";
 
-		for (int i = 0; i < dueDate.length(); i++) {
-			if (dueDate.charAt(i) == ('-')) continue;
-			if (i < 4) year = year + (String.valueOf(dueDate.charAt(i)));
-			if (i > 4 && i < 7) month = month + (String.valueOf(dueDate.charAt(i)));
-			if (i > 7 && i < dueDate.length()) day = day + (String.valueOf(dueDate.charAt(i)));
-		}
+		String[] split = dueDate.split("-");
+		year = split[0];
+		month = split[1];
+		day = split[2];
 
 		int monthInt = Integer.parseInt(month);
 		int dayInt = Integer.parseInt(day);
@@ -129,7 +135,8 @@ public class Assignment extends Model {
 	}
 
 	public static void edit(Long id, SchoolClass schoolClass, String date, String kindOfAssignment, String description) throws PersistenceException {
-		Assignment assignment = find.ref(id);
+		Assignment assignment = find.where().eq("ID", id).findUnique();
+		if(assignment == null) throw new PersistenceException("Unable to find assignment with that ID.");
 		assignment.schoolClass = schoolClass;
 		String[] array = parseDate(date);
 		String dueDate = array[0];
@@ -208,6 +215,27 @@ public class Assignment extends Model {
 		returningArray[2] = String.valueOf(monthInt);
 		returningArray[3] = String.valueOf(dayInt);
 		return returningArray;
+	}
+	
+	public String getMonthString(int month) {
+		if(month < 10) return "0" + month;
+		return "" + month;
+	}
+	
+	public String getDayString(int day) {
+		if(day < 10) return "0" + day;
+		return "" + day;
+	}
+	
+	public int calculateTotal(int day, int month, int year) {
+		String dateString = getDayString(day) + " " + getMonthString(month) + " " + year;
+		try {
+			Date date = dateFormat.parse(dateString);
+			long time = date.getTime();
+			return (int) TimeUnit.DAYS.convert(time, TimeUnit.MILLISECONDS);
+		} catch (ParseException e) {
+			return 0;
+		}
 	}
 
 	public static boolean same(Assignment assignment1, Assignment assignment2) {
