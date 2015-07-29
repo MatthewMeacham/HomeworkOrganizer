@@ -21,7 +21,7 @@ public class Utilities extends Controller {
 
 	// The number of days in today
 	public static int today;
-	
+
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MM yyyy");
 
 	// Checks to see if the student account with the given studentID is a child
@@ -44,17 +44,15 @@ public class Utilities extends Controller {
 		int total = calculateTotal(day, month, year);
 		today = total;
 	}
-	
+
 	public static String getMonthString(int month) {
-		if(month < 10) return "0" + month;
-		return "" + month;
+		return month < 10 ? "0" + month : "" + month;
 	}
-	
+
 	public static String getDayString(int day) {
-		if(day < 10) return "0" + day;
-		return "" + day;
+		return day < 10 ? "0" + day : "" + day;
 	}
-	
+
 	public static int calculateTotal(int day, int month, int year) {
 		String dateString = getDayString(day) + " " + getMonthString(month) + " " + year;
 		try {
@@ -62,10 +60,10 @@ public class Utilities extends Controller {
 			long time = date.getTime();
 			return (int) TimeUnit.DAYS.convert(time, TimeUnit.MILLISECONDS);
 		} catch (ParseException e) {
-			return 0;
+			// Just in case the above errors, we resort to the old method
+			return (year * 366) - ((12 - month) * 31) - (31 - day);
 		}
 	}
-
 
 	// For All of the create_Lists Methods:
 	// Recall that SQL uses underscores, you can't use student.id it becomes
@@ -100,23 +98,24 @@ public class Utilities extends Controller {
 		List<SchoolClass> schoolClasses = createSchoolClassesList(student);
 
 		assignments.addAll(Assignment.find.where().eq("FOREIGN_ID", student.id).findList());
-
+		
 		for (int i = 0; i < schoolClasses.size(); i++) {
-			List<Assignment> schoolClassAssignments = Assignment.find.where().eq("SCHOOL_CLASS_ID", schoolClasses.get(i).id).findList();
+			List<Assignment> schoolClassAssignments = schoolClasses.get(i).teacherID == null ? Assignment.find.where().eq("SCHOOL_CLASS_ID", schoolClasses.get(i).id).eq("FOREIGN_ID", schoolClasses.get(i).teacherID).findList() : Assignment.find.where().eq("SCHOOL_CLASS_ID", schoolClasses.get(i).id).findList();
 			for (int j = schoolClassAssignments.size() - 1; j >= 0; j--) {
 				boolean same = false;
+				if (schoolClasses.get(i).teacherID != null && !schoolClassAssignments.get(j).foreignID.equals(schoolClasses.get(i).teacherID)) continue;
 				for (int k = 0; k < assignments.size(); k++) {
 					if (Assignment.same(assignments.get(k), schoolClassAssignments.get(j))) {
 						same = true;
 						break;
 					}
 				}
-				if(!same) assignments.add(Assignment.create(schoolClassAssignments.get(j), student.id));
+				if (!same) assignments.add(Assignment.create(schoolClassAssignments.get(j), student.id));
 			}
 		}
-		
-		for(int i = assignments.size() - 1; i >= 0; i--) {
-			if(assignments.get(i).finished) assignments.remove(i);
+
+		for (int i = assignments.size() - 1; i >= 0; i--) {
+			if (assignments.get(i).finished) assignments.remove(i);
 		}
 
 		return sortList(assignments);
@@ -175,7 +174,7 @@ public class Utilities extends Controller {
 		for (int i = 0; i < children.size(); i++) {
 			assignments.addAll(createAssignmentsList(children.get(i)));
 		}
-		return assignments;
+		return sortList(assignments);
 	}
 
 	// Create the assignment list for the given teacher
@@ -192,47 +191,29 @@ public class Utilities extends Controller {
 	public static List<Assignment> sortList(List<Assignment> assignments) {
 		if (assignments.size() <= 1) return assignments;
 		/*
-		List<Assignment> beginningAssignments = assignments;
-		List<Assignment> returnAssignments = new ArrayList<Assignment>();
-		long startTime1 = System.nanoTime();
-		returnAssignments.add(assignments.remove(0));
+		 * List<Assignment> beginningAssignments = assignments; List<Assignment> returnAssignments = new ArrayList<Assignment>(); long startTime1 = System.nanoTime(); returnAssignments.add(assignments.remove(0));
+		 * 
+		 * for (int i = assignments.size() - 1; i >= 0; i--) { for (int j = returnAssignments.size() - 1; j >= 0; j--) { if (assignments.get(i).total >= returnAssignments.get(j).total) { if (j + 1 >= returnAssignments.size()) { returnAssignments.add(assignments.remove(i)); break; } returnAssignments.add(j + 1, assignments.remove(i)); break; } if (j == 0) returnAssignments.add(0, assignments.remove(i)); } } long endTime1 = System.nanoTime(); System.out.println("TEST 1: " + (double) ((endTime1 - startTime1) / 1000000.0));
+		 */
 
-		for (int i = assignments.size() - 1; i >= 0; i--) {
-			for (int j = returnAssignments.size() - 1; j >= 0; j--) {
-				if (assignments.get(i).total >= returnAssignments.get(j).total) {
-					if (j + 1 >= returnAssignments.size()) {
-						returnAssignments.add(assignments.remove(i));
-						break;
-					}
-					returnAssignments.add(j + 1, assignments.remove(i));
-					break;
-				}
-				if (j == 0) returnAssignments.add(0, assignments.remove(i));
-			}
-		}
-		long endTime1 = System.nanoTime();
-		System.out.println("TEST 1: " + (double) ((endTime1 - startTime1) / 1000000.0));
-		*/
-		
-		//long startTime2 = System.nanoTime();
-		
+		// long startTime2 = System.nanoTime();
+
 		boolean noOperation;
 		do {
 			noOperation = true;
-			for(int i = 0; i < assignments.size() - 1; i++) {
-				if(assignments.get(i).total > assignments.get(i + 1).total) {
+			for (int i = 0; i < assignments.size() - 1; i++) {
+				if (assignments.get(i).total > assignments.get(i + 1).total) {
 					Assignment tempAssignment = assignments.get(i + 1);
 					assignments.set(i + 1, assignments.get(i));
 					assignments.set(i, tempAssignment);
 					noOperation = false;
 				}
 			}
-		}while(!noOperation);
-		
-		//long endTime2 = System.nanoTime();
-		//System.out.println("TEST 2: " + (double) ((endTime2 - startTime2) / 1000000.0));
+		} while (!noOperation);
 
-		
+		// long endTime2 = System.nanoTime();
+		// System.out.println("TEST 2: " + (double) ((endTime2 - startTime2) / 1000000.0));
+
 		return assignments;
 	}
 }
