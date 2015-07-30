@@ -176,6 +176,17 @@ public class Utilities extends Controller {
 		}
 		return sortList(assignments);
 	}
+	
+	//Create finished assignment list for the given parent
+	public static List<Assignment> createFinishedAssignmentsListForParent(Parent parent) {
+		setToday();
+		List<Assignment> finishedAssignments =  new ArrayList<Assignment>();
+		List<Student> children = createChildrenList(parent);
+		for (int i = 0; i < children.size(); i++) {
+			finishedAssignments.addAll(createFinishedAssignmentsList(children.get(i)));
+		}
+		return finishedAssignments;
+	}
 
 	// Create the assignment list for the given teacher
 	public static List<Assignment> createAssignmentsListForTeacher(Teacher teacher) {
