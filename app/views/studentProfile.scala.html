@@ -56,7 +56,7 @@
 
 
 				<img id="logo" src=@routes.Assets.versioned("images/logo.png") alt="Orgnizer">
-				<h3 class="studentName">Logged In As @student.name </h3>
+				<h3 class="studentName">Logged in as @student.name </h3>
 			</div>
 
 			<div class="topNav">
@@ -407,7 +407,7 @@
 					<div class="area center">
 						<h2 style="text-align: center;">Finished Assignments</h2>
 						@if(finishedAssignments.length > 0) {
-							
+
 							<div class="innerContentMain" >
 								@for(finishedAssignment <- finishedAssignments) {
 									<div class="itemBigContainer">
@@ -435,8 +435,8 @@
 								}
 							</div>
 							@form(action = routes.Assignments.deleteAllFinished(student.id.toString()), 'id -> ("deleteAllFinishedAssignments")) {
-													<a href="#" onclick="deleteAllFinishedAssignmentsForm(); return false">
-														<h3>Delete All Finished Assignments</h3>
+													<a class="deleteFinished" href="#" onclick="deleteAllFinishedAssignmentsForm(); return false">
+														<button class="deleteButton">Delete All Finished Assignments</button>
 													</a>
 												}
 						} else {
@@ -485,7 +485,7 @@
 
 									</div>
 									<br><br><br><br><br>
-									
+
 								}
 									<div class="btn btnStudent" style="text-align: center;">
 										<button class="saveChanges"> Save Changes </button>
@@ -520,7 +520,11 @@
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<script>
 
-		    $('[data-toggle="tooltip"]').tooltip();
+		       if($(window).width() > 1024) {
+		          $('[data-toggle="tooltip"]').tooltip();
+		       }
+
+
 
 		</script>
 		<script>
