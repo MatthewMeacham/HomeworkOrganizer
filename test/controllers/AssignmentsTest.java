@@ -5,7 +5,6 @@ import static play.test.Helpers.contentAsString;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.List;
 import java.util.UUID;
 
 import models.Assignment;
@@ -16,7 +15,6 @@ import models.Teacher;
 
 import org.junit.Test;
 
-import play.mvc.Http.RequestBuilder;
 import play.mvc.Result;
 import play.test.Helpers;
 

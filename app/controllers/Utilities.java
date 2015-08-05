@@ -1,13 +1,17 @@
 package controllers;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
 
 import models.Assignment;
 import models.Note;
@@ -15,6 +19,7 @@ import models.Parent;
 import models.SchoolClass;
 import models.Student;
 import models.Teacher;
+import play.db.DB;
 import play.mvc.Controller;
 
 public class Utilities extends Controller {
@@ -70,19 +75,40 @@ public class Utilities extends Controller {
 	// student_id
 
 	// Creates the school classes list for the given student
-	// TODO FIND BETTER WAY TO DO THIS
 	public static List<SchoolClass> createSchoolClassesList(Student student) {
-		List<SchoolClass> schoolClasses = SchoolClass.find.all();
+		//List<SchoolClass> schoolClasses = SchoolClass.find.all();
 		List<SchoolClass> returnSchoolClasses = new ArrayList<SchoolClass>();
 
-		for (int i = 0; i < schoolClasses.size(); i++) {
-			if (schoolClasses.get(i).students == null || schoolClasses.get(i).students.size() <= 0) continue;
-			for (int j = 0; j < schoolClasses.get(i).students.size(); j++) {
-				if (schoolClasses.get(i).students.get(j).id.equals(student.id)) {
-					returnSchoolClasses.add(schoolClasses.get(i));
-					break;
-				}
+		// for (int i = 0; i < schoolClasses.size(); i++) {
+		// if (schoolClasses.get(i).students == null || schoolClasses.get(i).students.size() <= 0) continue;
+		// for (int j = 0; j < schoolClasses.get(i).students.size(); j++) {
+		// if (schoolClasses.get(i).students.get(j).id.equals(student.id)) {
+		// returnSchoolClasses.add(schoolClasses.get(i));
+		// break;
+		// }
+		// }
+		// }
+
+		String sql = "SELECT * FROM SCHOOL_CLASS_STUDENT WHERE STUDENT_ID=\'" + student.id + "\'";
+
+		Connection connection = play.db.DB.getConnection();
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+			statement.execute(sql);
+			ResultSet rs = statement.getResultSet();
+			while(rs.next()) {
+				returnSchoolClasses.add(SchoolClass.find.where().eq("ID", rs.getLong("school_class_id")).findUnique());
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			statement.close();
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 
 		return returnSchoolClasses;
@@ -98,7 +124,7 @@ public class Utilities extends Controller {
 		List<SchoolClass> schoolClasses = createSchoolClassesList(student);
 
 		assignments.addAll(Assignment.find.where().eq("FOREIGN_ID", student.id).findList());
-		
+
 		for (int i = 0; i < schoolClasses.size(); i++) {
 			List<Assignment> schoolClassAssignments = schoolClasses.get(i).teacherID == null ? Assignment.find.where().eq("SCHOOL_CLASS_ID", schoolClasses.get(i).id).eq("FOREIGN_ID", schoolClasses.get(i).teacherID).findList() : Assignment.find.where().eq("SCHOOL_CLASS_ID", schoolClasses.get(i).id).findList();
 			for (int j = schoolClassAssignments.size() - 1; j >= 0; j--) {
