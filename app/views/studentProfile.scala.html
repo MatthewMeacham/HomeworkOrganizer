@@ -101,7 +101,7 @@
 				<div id="overview" class="overview" style="@if(startingBlock == "overview" || startingBlock == "") {display: block;} else {display: none}">
 
 					<a href="@routes.Assignments.createPrintableDocument(student.id)">
-						<i data-toggle="tooltip" data-placement="left" title="Downlaod a list of your assignments." class="fa fa-download fa-2x download"></i>
+						<i data-toggle="tooltip" data-placement="left" title="Download a list of your assignments." class="fa fa-download fa-2x download"></i>
 					</a>
 
 					<div class="area center">
@@ -474,14 +474,17 @@
 
 									</div>
 									<br><br><br><br><br>
+									
+								}
 									<div class="btn btnStudent" style="text-align: center;">
 										<button class="saveChanges"> Save Changes </button>
 									</div>
 									<br>
 									<div id="studentDeleteAcct" class="deleteAccountPrompt">
-											<p>Want to delete your account? <a id="deleteLink" href="#"> Click Here </a></p>
+											@form(action = routes.Students.deleteStudentAccount(student.id), 'id -> ("studentDeleteAccount")){
+											<p>Want to delete your account? <a id="deleteLink" href="#" onclick="deleteStudentAccount()"> Click Here </a></p>
+											}
 									</div>
-								}
 						</div>
 					} else {
 						<div class="area center">

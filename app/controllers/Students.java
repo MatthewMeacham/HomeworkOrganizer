@@ -3,7 +3,7 @@ package controllers;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
-
+import java.util.List;
 import javax.persistence.PersistenceException;
 
 import play.data.Form;
@@ -15,9 +15,12 @@ import com.matthew.hasher.Hasher;
 import models.Parent;
 import models.Student;
 import models.Teacher;
+import models.Assignment;
+import models.SchoolClass;
 
 import controllers.Application.AccountSettings;
 import controllers.Application.Login;
+import controllers.Classes;
 import controllers.Utilities;
 
 import views.html.index;
@@ -112,6 +115,41 @@ public class Students extends Controller {
 		Student student = Student.find.where().eq("ID", studentID).findUnique();
 		if (student == null) return redirect(routes.Application.index());
 		return redirect(routes.Students.toProfile(student.id.toString()));
+	}
+	
+	//Deletes the student account and redirects to main page
+	public Result deleteStudentAccount(UUID studentID) {
+		Student student = Student.find.where().eq("ID", studentID).findUnique();
+		if(student == null) return redirect(routes.Application.index());
+		List<Assignment> assignments = Utilities.createAssignmentsList(student);
+		List<Assignment> finishedAssignments = Utilities.createFinishedAssignmentsList(student);
+		for(int i = 0; i < assignments.size(); i++){
+			assignments.get(i).delete();
+		}
+		for(int j = 0; j < finishedAssignments.size(); j++){
+			finishedAssignments.get(j).delete();
+		}
+		String studentid = studentID.toString();
+		List<SchoolClass> classes = Utilities.createSchoolClassesList(student);
+		if(classes == null) return badRequest(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "schoolClasses", "Error while processing."));
+		for(int i = 0; i < classes.size(); i++){
+			if(classes.get(i).teacherID == null){
+			classes.get(i).delete();
+			}
+			else{
+				classes.get(i).students.remove(student);
+				try {
+				classes.get(i).save();
+			} catch (PersistenceException e) {
+				return badRequest(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "schoolClasses", "Error while processing."));
+			}
+			}
+		}
+		student.delete();
+	
+		
+		
+		return redirect(routes.Application.index());
 	}
 
 }

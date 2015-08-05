@@ -16,10 +16,12 @@ import com.matthew.hasher.Hasher;
 import models.Parent;
 import models.Student;
 import models.Teacher;
+import models.Assignment;
 
 import controllers.Utilities;
 import controllers.Application.AccountSettings;
 import controllers.Application.Login;
+import controllers.Students;
 
 import views.html.index;
 import views.html.parentProfile;
@@ -269,6 +271,28 @@ public class Parents extends Controller {
 		Parent parent = Parent.find.where().eq("ID", parentID).findUnique();
 		if (parent == null) return redirect(routes.Application.index());
 		return redirect(routes.Parents.toProfile(parent.id.toString()));
+	}
+	
+	public Result deleteParentAccount(UUID parentID){
+		Parent parent = Parent.find.where().eq("ID", parentID).findUnique();
+		if(parent == null) return redirect(routes.Application.index());
+		List<Assignment> assignments = Utilities.createAssignmentsListForParent(parent);
+		List<Assignment> finishedAssignments = Utilities.createFinishedAssignmentsListForParent(parent);
+		for (int i = 0; i < assignments.size(); i++) {
+			assignments.get(i).delete();
+		}
+		for (int i = 0; i < finishedAssignments.size(); i++) {
+			finishedAssignments.get(i).delete();
+		}
+		List<Student> children = Utilities.createChildrenList(parent);
+		for (int i = 0; i < children.size(); i++) {
+			UUID studentID = children.get(i).id;
+			Students s = new Students();
+			s.deleteStudentAccount(studentID);
+		}
+		
+		parent.delete();
+		return redirect(routes.Application.index());
 	}
 
 }

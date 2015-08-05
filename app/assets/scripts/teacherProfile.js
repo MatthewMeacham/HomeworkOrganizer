@@ -142,6 +142,13 @@ $(function() {
 
 var submitted = false;
 
+function deleteTeacherAccount() {
+	if (submitted)
+		return;
+	submitted = true;
+	document.getElementById('teacherDeleteAccount').submit();
+}
+
 function submitAssignmentDeleteForm(id) {
 	if (submitted)
 		return;

@@ -3,6 +3,7 @@ package controllers;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
+import java.util.List;
 
 import javax.persistence.PersistenceException;
 
@@ -11,11 +12,15 @@ import com.matthew.hasher.Hasher;
 import models.Parent;
 import models.Student;
 import models.Teacher;
+import models.Assignment;
+import models.SchoolClass;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import controllers.Application.AccountSettings;
 import controllers.Application.Login;
+import controllers.Utilities;
+import controllers.Students;
 
 import views.html.index;
 import views.html.teacherProfile;
@@ -96,6 +101,24 @@ public class Teachers extends Controller {
 		Teacher teacher = Teacher.find.where().eq("ID", teacherID).findUnique();
 		if (teacher == null) return redirect(routes.Application.index());
 		return redirect(routes.Teachers.toProfile(teacher.id));
+	}
+	
+	//Deletes the teacher account and everything created by the teacher, redirects to home page
+	public Result deleteTeacherAccount(UUID teacherID) {
+		Teacher teacher = Teacher.find.where().eq("ID", teacherID).findUnique();
+		if (teacher == null) return redirect(routes.Application.index());
+		List<Assignment> assignments = Utilities.createAssignmentsListForTeacher(teacher);
+		List<SchoolClass> classes = Utilities.createSchoolClassListForTeacher(teacher);
+		for (int i = 0; i < assignments.size(); i++) {
+			assignments.get(i).delete();
+		}
+		for(int i = 0; i < classes.size(); i++) {
+			Classes c = new Classes();
+			c.deleteForTeacher(classes.get(i).id.toString(), teacherID.toString());
+		}
+
+		teacher.delete();
+		return redirect(routes.Application.index());
 	}
 
 }

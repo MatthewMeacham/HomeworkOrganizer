@@ -357,12 +357,14 @@
 									<button class="saveChanges"> Save Changes </button>
 								</div>
 								<br>
-								<div id="studentDeleteAcct" class="deleteAccountPrompt">
-										<p>Want to delete your account? <a id="deleteLink" href="#"> Click Here </a></p>
-								</div>
+								
 							</div>
 						}
-					</div>
+									<div id="studentDeleteAcct" class="deleteAccountPrompt">
+											@form(action = routes.Teachers.deleteTeacherAccount(teacher.id), 'id -> ("teacherDeleteAccount")){
+											<p>Want to delete your account? <a id="deleteLink" href="#" onclick="deleteTeacherAccount()"> Click Here </a></p>
+											}
+									</div>			
 				</div>
 
 				<!-- END ACCOUNT SETTINGS -->
