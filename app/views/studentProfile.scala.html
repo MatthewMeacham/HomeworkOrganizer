@@ -407,6 +407,7 @@
 					<div class="area center">
 						<h2 style="text-align: center;">Finished Assignments</h2>
 						@if(finishedAssignments.length > 0) {
+							
 							<div class="innerContentMain" >
 								@for(finishedAssignment <- finishedAssignments) {
 									<div class="itemBigContainer">
@@ -420,6 +421,11 @@
 														<i class="fa fa-undo myIcon" data-toggle="tooltip" title="Unfinished"></i>
 													</a>
 												}
+											@form(action = routes.Assignments.deleteFinished(String.valueOf(finishedAssignment.id), student.id.toString()), 'id -> ("deleteFinishedAssignment" + String.valueOf(finishedAssignment.id))) {
+													<a href="#" onclick="deleteFinishedAssignmentForm(@finishedAssignment.id); return false">
+														<i class="fa fa-trash myIcon" data-toggle="tooltip" title="Delete"></i>
+													</a>
+												}
 												<h2 class="itemHeaderBig">@finishedAssignment.schoolClass.subject</h2>
 												<h3 class="itemDueDateBig"> @finishedAssignment.dueDate</h3>
 												<p class="itemDescBig"> @finishedAssignment.description </p>
@@ -428,6 +434,11 @@
 									</div>
 								}
 							</div>
+							@form(action = routes.Assignments.deleteAllFinished(student.id.toString()), 'id -> ("deleteAllFinishedAssignments")) {
+													<a href="#" onclick="deleteAllFinishedAssignmentsForm(); return false">
+														<h3>Delete All Finished Assignments</h3>
+													</a>
+												}
 						} else {
 							<div align="center" style="text-align: center;">
 								<h3> Once an assignment is finished, it will appear here. </h3>

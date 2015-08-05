@@ -283,6 +283,18 @@ public class Assignments extends Controller {
 		}
 		return ok(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "finishedAssignments", ""));
 	}
+	
+	public Result deleteAllFinished(String studentID) {
+		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
+		if(student == null) return redirect(routes.Application.index());
+		List<Assignment> finishedAssignments = Utilities.createFinishedAssignmentsList(student);
+		for (int i = finishedAssignments.size()-1; i >= 0; i--) {
+			String assignmentID = String.valueOf(finishedAssignments.get(i).id);
+			deleteFinished(assignmentID, studentID);
+		}
+		return ok(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "finishedAssignments", ""));
+ 
+	}
 
 	// Set the finished value of an assignment to true
 	public Result setFinished(String assignmentID, String studentID) {

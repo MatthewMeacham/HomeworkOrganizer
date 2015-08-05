@@ -219,7 +219,7 @@
 							</div>
 						}
 						@if(students.length == 0){
-						<div id="studentDeleteAcct" class="deleteAccountPrompt">
+								<div id="studentDeleteAcct" class="deleteAccountPrompt">
 										@form(action = routes.Parents.deleteParentAccount(parent.id), 'id -> ("parentDeleteAccount")){
 										<p>Want to delete your account? <a id="deleteLink" href="#" onclick="deleteParentAccount()"> Click Here </a></p>
 										}
@@ -254,12 +254,12 @@
 				 				</div>
 				 			}
 							@if(students.length > 0){
-						<div id="studentDeleteAcct" class="deleteAccountPrompt">
+								<div id="studentDeleteAcct" class="deleteAccountPrompt">
 										@form(action = routes.Students.deleteStudentAccount(child.id), 'id -> ("studentDeleteAccount")){
 										<p>Want to delete your account? <a id="deleteLink" href="#" onclick="deleteStudentAccount()"> Click Here </a></p>
 										}
 								</div>
-						}
+							}
 				 		}
 						
 						
