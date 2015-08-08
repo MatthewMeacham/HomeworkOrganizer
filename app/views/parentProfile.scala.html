@@ -263,10 +263,11 @@
 							}
 							-->
 							<div id="studentDeleteAcct" class="deleteAccountPrompt">
-								@form(action = routes.Students.deleteStudentAccount(child.id), 'id -> ("studentDeleteAccount")){
+								@form(action = routes.Parents.deleteChildAccount(child.id), 'id -> ("studentDeleteAccount")){
 									<p>Want to delete this child account? <a id="deleteLink" href="#" onclick="deleteStudentAccount()"> Click Here </a></p>
 								}
 							</div>
+
 				 		}
 						
 						

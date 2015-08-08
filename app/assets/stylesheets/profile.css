@@ -707,7 +707,23 @@ nav a#pull {
 	#browser {
 		display: none;
 	}
+@media screen and (max-width: 1024px) {
+    #delete, #edit {
+		opacity: 1 !important;
+		display: inline-block;
+		cursor: pointer;
+		position: relative;
+	}
+	.edit, .delete {
+		top: -1px !important;
+		position: relative;
+	}
+	#edit {
+		font-size: 14px;
+		color: black;
+	}
 
+}
 @media screen and (max-width: 840px) {
 	nav a {
 		font-size: 14px;
@@ -918,20 +934,7 @@ nav a#pull {
 	#toggle.on .three {
 		transform: rotate(-45deg) translate(7px, -8px);
 	}
-	#delete, #edit {
-		opacity: 1 !important;
-		display: inline-block;
-		cursor: pointer;
-		position: relative;
-	}
-	.edit, .delete {
-		top: -1px !important;
-		position: relative;
-	}
-	#edit {
-		font-size: 14px;
-		color: black;
-	}
+
 	.refresh {
 		padding: 10px !important;
 		position: relative;
@@ -1604,4 +1607,27 @@ img {
 }
 #deleteLink {
     color: #56ced6;
+}
+.deleteFinished {
+    position: relative;
+    top: 15px;
+    padding: 15px;
+    text-align: center;
+    margin: 0 auto;
+    color: #c4413b;
+    text-decoration: none;
+}
+.deleteButton {
+    padding: 10px;
+    margin: 0 auto;
+    width: 320px;
+    text-align: center;
+    display: block;
+    font-size: 18px;
+}
+@media screen and (max-width: 350px) {
+    .deleteButton {
+        width: 90%;
+        font-size: 14px;
+    }
 }

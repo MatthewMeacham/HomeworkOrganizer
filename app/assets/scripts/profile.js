@@ -149,6 +149,20 @@ function deleteStudentAccount(){
 	document.getElementById('studentDeleteAccount').submit();
 }
 
+function deleteFinishedAssignmentForm(id) {
+	if (submitted)
+		return;
+	submitted = true;
+	document.getElementById('deleteFinishedAssignment' + id).submit();
+}
+
+function deleteAllFinishedAssignmentsForm() {
+	if (submitted)
+		return;
+	submitted = true;
+	document.getElementById('deleteAllFinishedAssignments').submit();
+}
+
 function submitAssignmentDeleteForm(id) {
 	if (submitted)
 		return;
