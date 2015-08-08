@@ -76,28 +76,17 @@ public class Utilities extends Controller {
 
 	// Creates the school classes list for the given student
 	public static List<SchoolClass> createSchoolClassesList(Student student) {
-		//List<SchoolClass> schoolClasses = SchoolClass.find.all();
 		List<SchoolClass> returnSchoolClasses = new ArrayList<SchoolClass>();
-
-		// for (int i = 0; i < schoolClasses.size(); i++) {
-		// if (schoolClasses.get(i).students == null || schoolClasses.get(i).students.size() <= 0) continue;
-		// for (int j = 0; j < schoolClasses.get(i).students.size(); j++) {
-		// if (schoolClasses.get(i).students.get(j).id.equals(student.id)) {
-		// returnSchoolClasses.add(schoolClasses.get(i));
-		// break;
-		// }
-		// }
-		// }
 
 		String sql = "SELECT * FROM SCHOOL_CLASS_STUDENT WHERE STUDENT_ID=\'" + student.id + "\'";
 
-		Connection connection = play.db.DB.getConnection();
+		Connection connection = DB.getConnection();
 		Statement statement = null;
 		try {
 			statement = connection.createStatement();
 			statement.execute(sql);
 			ResultSet rs = statement.getResultSet();
-			while(rs.next()) {
+			while (rs.next()) {
 				returnSchoolClasses.add(SchoolClass.find.where().eq("ID", rs.getLong("school_class_id")).findUnique());
 			}
 		} catch (SQLException e) {
@@ -169,10 +158,11 @@ public class Utilities extends Controller {
 	}
 
 	// TODO FIND A BETTER WAY TO DO THIS CREATION
+	// TODO this is mostly obsolete, I don't see a need for it, but we will keep it just in case
 	public static List<Teacher> createTeachersList(Student student) {
 		List<Teacher> teachers = new ArrayList<Teacher>();
 		// teachers = Teacher.find.all();
-		// // teachers = Teacher.find.where().eq("student.id",
+		// // teachers = Teacher.find.where().eq("STUDENT_ID",
 		// // student.id).findList();
 		// for (int i = teachers.size() - 1; i >= 0; i--) {
 		// if (!student.teacher.email.equals(teachers.get(i).email))
@@ -202,11 +192,11 @@ public class Utilities extends Controller {
 		}
 		return sortList(assignments);
 	}
-	
-	//Create finished assignment list for the given parent
+
+	// Create finished assignment list for the given parent
 	public static List<Assignment> createFinishedAssignmentsListForParent(Parent parent) {
 		setToday();
-		List<Assignment> finishedAssignments =  new ArrayList<Assignment>();
+		List<Assignment> finishedAssignments = new ArrayList<Assignment>();
 		List<Student> children = createChildrenList(parent);
 		for (int i = 0; i < children.size(); i++) {
 			finishedAssignments.addAll(createFinishedAssignmentsList(children.get(i)));

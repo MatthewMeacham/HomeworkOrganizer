@@ -219,11 +219,11 @@
 							</div>
 						}
 						@if(students.length == 0){
-						<div id="studentDeleteAcct" class="deleteAccountPrompt">
-										@form(action = routes.Parents.deleteParentAccount(parent.id), 'id -> ("parentDeleteAccount")){
-										<p>Want to delete your account? <a id="deleteLink" href="#" onclick="deleteParentAccount()"> Click Here </a></p>
-										}
-								</div>
+							<div id="studentDeleteAcct" class="deleteAccountPrompt">
+								@form(action = routes.Parents.deleteParentAccount(parent.id), 'id -> ("parentDeleteAccount")){
+									<p>Want to delete your account? <a id="deleteLink" href="#" onclick="deleteParentAccount()"> Click Here </a></p>
+								}
+							</div>
 						}
 
 				 		@for(child <- students) {
@@ -249,17 +249,24 @@
 				 					</div>
 				 					<br><br><br><br><br>
 									<div class="btn">
-										<button class="saveChanges"> Save Changes </button>
+										<button type="submit" class="saveChanges"> Save Changes </button>
 									</div>
 				 				</div>
 				 			}
+				 			<!--
 							@if(students.length > 0){
-						<div id="studentDeleteAcct" class="deleteAccountPrompt">
-										@form(action = routes.Students.deleteStudentAccount(child.id), 'id -> ("studentDeleteAccount")){
+								<div id="studentDeleteAcct" class="deleteAccountPrompt">
+									@form(action = routes.Students.deleteStudentAccount(child.id), 'id -> ("studentDeleteAccount")){
 										<p>Want to delete your account? <a id="deleteLink" href="#" onclick="deleteStudentAccount()"> Click Here </a></p>
-										}
+									}
 								</div>
-						}
+							}
+							-->
+							<div id="studentDeleteAcct" class="deleteAccountPrompt">
+								@form(action = routes.Students.deleteStudentAccount(child.id), 'id -> ("studentDeleteAccount")){
+									<p>Want to delete this child account? <a id="deleteLink" href="#" onclick="deleteStudentAccount()"> Click Here </a></p>
+								}
+							</div>
 				 		}
 						
 						

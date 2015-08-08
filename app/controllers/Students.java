@@ -39,7 +39,7 @@ public class Students extends Controller {
 	// Direct to the student profile page after authentication
 	public Result toProfile(String studentID) {
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
-		if(student == null) return redirect(routes.Application.index());
+		if (student == null) return redirect(routes.Application.index());
 		return ok(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "overview", ""));
 	}
 
@@ -88,6 +88,7 @@ public class Students extends Controller {
 			String currentPassword = filledForm.data().get("currentPassword");
 			String newPassword = filledForm.data().get("newPassword");
 			String newPasswordAgain = filledForm.data().get("newPasswordAgain");
+			if (newPassword.length() < 8 || newPasswordAgain.length() < 8) return badRequest(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "accountSettings", "New password must be at least 8 characters long."));
 			if (!currentPassword.trim().isEmpty() && !newPassword.trim().isEmpty() && !newPasswordAgain.trim().isEmpty()) {
 				currentPassword = HASHER.hashWithSaltSHA256(currentPassword, student.salt);
 				newPassword = HASHER.hashWithSaltSHA256(newPassword, student.salt);
@@ -116,39 +117,42 @@ public class Students extends Controller {
 		if (student == null) return redirect(routes.Application.index());
 		return redirect(routes.Students.toProfile(student.id.toString()));
 	}
-	
-	//Deletes the student account and redirects to main page
+
+	// Deletes the student account and redirects to main page
 	public Result deleteStudentAccount(UUID studentID) {
 		Student student = Student.find.where().eq("ID", studentID).findUnique();
-		if(student == null) return redirect(routes.Application.index());
+		if (student == null) return redirect(routes.Application.index());
 		List<Assignment> assignments = Utilities.createAssignmentsList(student);
 		List<Assignment> finishedAssignments = Utilities.createFinishedAssignmentsList(student);
-		for(int i = 0; i < assignments.size(); i++){
-			assignments.get(i).delete();
-		}
-		for(int j = 0; j < finishedAssignments.size(); j++){
-			finishedAssignments.get(j).delete();
-		}
-		String studentid = studentID.toString();
-		List<SchoolClass> classes = Utilities.createSchoolClassesList(student);
-		if(classes == null) return badRequest(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "schoolClasses", "Error while processing."));
-		for(int i = 0; i < classes.size(); i++){
-			if(classes.get(i).teacherID == null){
-			classes.get(i).delete();
+		for (int i = 0; i < assignments.size(); i++) {
+			try {
+				assignments.get(i).delete();
+			} catch (PersistenceException | NullPointerException e) {
+				//Do nothing
 			}
-			else{
+		}
+		for (int j = 0; j < finishedAssignments.size(); j++) {
+			try {
+				finishedAssignments.get(j).delete();
+			} catch (PersistenceException | NullPointerException e) {
+				//Do nothing
+			}
+		}
+		List<SchoolClass> classes = Utilities.createSchoolClassesList(student);
+		for (int i = 0; i < classes.size(); i++) {	
+			if (classes.get(i).teacherID == null) {
+				classes.get(i).delete();
+			} else {
 				classes.get(i).students.remove(student);
 				try {
-				classes.get(i).save();
-			} catch (PersistenceException e) {
-				return badRequest(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "schoolClasses", "Error while processing."));
-			}
+					classes.get(i).save();
+				} catch (PersistenceException e) {
+					//Do nothing
+				}
 			}
 		}
 		student.delete();
-	
-		
-		
+
 		return redirect(routes.Application.index());
 	}
 

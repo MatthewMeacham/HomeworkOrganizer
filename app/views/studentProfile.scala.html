@@ -442,49 +442,50 @@
 					@if(!Utilities.childAccount(student.id.toString())) {
 						<div class="area center">
 							<h1 style="text-align: center;"> Account Settings </h1>
-							@form(action = routes.Students.updateSettings(student.id.toString())) {
-									<div class="changeSettings section group">
-										<div class="col span_1_of_4">
-											<label class="email">Change Email</label> <br>
-											<h3 id="emailError" style="color: red;"></h3>
-											<input class="email" type="text" name="email" value="@student.email">
-										</div>
-										<div class="col span_1_of_4">
-											<label>Change Password</label> <br>
-											<h3 id="currentPasswordError" style="color: red;"></h3>
-											<input id="currentPassword" type="password" name="currentPassword" placeholder="Enter Current Password">
-											<h3 id="newPasswordError" style="color: red;"></h3>
-											<input id="newPassword" type="password" name="newPassword" placeholder="Enter New Password">
-											<h3 id="newPasswordAgainError" style="color: red;"></h3>
-											<input id="newPasswordAgain" type="password" name="newPasswordAgain" placeholder="Enter New Password Again">
-
-										</div>
-										<div class="col span_1_of_4">
-											<label>Change Name</label> <br>
-											<h3 id="nameError" style="color: red;"></h3>
-											<input id="name" type="text" name="name" value="@student.name">
-										</div>
-										<div class="col span_1_of_4">
-											<label>Change Grade</label> <br>
-											<h3></h3>
-											<input type="number" name="grade" min="1" max="16" value="@student.grade">
-										</div>
-
-
+							@form(action = routes.Students.updateSettings(student.id.toString()), 'id -> ("updateAccountSettings")) {
+								<div class="changeSettings section group">
+									<div class="col span_1_of_4">
+										<label class="email">Change Email</label> <br>
+										<h3 id="emailError" style="color: red;"></h3>
+										<input class="email" type="text" name="email" value="@student.email">
+									</div>
+									<div class="col span_1_of_4">
+										<label>Change Password</label> <br>
+										<h3 id="currentPasswordError" style="color: red;"></h3>
+										<input id="currentPassword" type="password" name="currentPassword" placeholder="Enter Current Password">
+										<h3 id="newPasswordError" style="color: red;"></h3>
+										<input id="newPassword" type="password" name="newPassword" placeholder="Enter New Password">
+										<h3 id="newPasswordAgainError" style="color: red;"></h3>
+										<input id="newPasswordAgain" type="password" name="newPasswordAgain" placeholder="Enter New Password Again">
 
 									</div>
-									<br><br><br><br><br>
+									<div class="col span_1_of_4">
+										<label>Change Name</label> <br>
+										<h3 id="nameError" style="color: red;"></h3>
+										<input id="name" type="text" name="name" value="@student.name">
+									</div>
+									<div class="col span_1_of_4">
+										<label>Change Grade</label> <br>
+										<h3></h3>
+										<input type="number" name="grade" min="1" max="16" value="@student.grade">
+									</div>
+
+
+
+								</div>
+								<br><br><br><br><br>
+								<div class="btn btnStudent" style="text-align: center;">
+									<button type="submit" class="saveChanges"> Save Changes </button>
+								</div>
 									
-								}
-									<div class="btn btnStudent" style="text-align: center;">
-										<button class="saveChanges"> Save Changes </button>
-									</div>
-									<br>
-									<div id="studentDeleteAcct" class="deleteAccountPrompt">
-											@form(action = routes.Students.deleteStudentAccount(student.id), 'id -> ("studentDeleteAccount")){
-											<p>Want to delete your account? <a id="deleteLink" href="#" onclick="deleteStudentAccount()"> Click Here </a></p>
-											}
-									</div>
+							}
+									
+							<br>
+							<div id="studentDeleteAcct" class="deleteAccountPrompt">
+									@form(action = routes.Students.deleteStudentAccount(student.id), 'id -> ("studentDeleteAccount")){
+									<p>Want to delete your account? <a id="deleteLink" href="#" onclick="deleteStudentAccount()"> Click Here </a></p>
+									}
+							</div>
 						</div>
 					} else {
 						<div class="area center">

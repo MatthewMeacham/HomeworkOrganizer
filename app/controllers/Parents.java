@@ -41,16 +41,16 @@ public class Parents extends Controller {
 	// Direct to the parent profile page after authentication
 	public Result toProfile(String parentID) {
 		Parent parent = Parent.find.where().eq("ID", UUID.fromString(parentID)).findUnique();
-		if(parent == null) return redirect(routes.Application.index());
+		if (parent == null) return redirect(routes.Application.index());
 		return ok(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "overview", ""));
 	}
 
 	// Direct the request to the student with the ID, parent accounts use this
 	public Result redirectToStudent(UUID studentID, String parentID) {
 		Parent parent = Parent.find.where().eq("ID", UUID.fromString(parentID)).findUnique();
-		if(parent == null) return redirect(routes.Application.index());
+		if (parent == null) return redirect(routes.Application.index());
 		Student student = Student.find.where().eq("ID", studentID).findUnique();
-		if(student == null) return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "overview", "Error while processing."));
+		if (student == null) return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "overview", "Error while processing."));
 		List<Student> children = Utilities.createChildrenList(parent);
 		for (int i = 0; i < children.size(); i++) {
 			if (children.get(i).email.equals(student.email)) {
@@ -66,22 +66,23 @@ public class Parents extends Controller {
 		Parent parent = Parent.find.where().eq("ID", UUID.fromString(parentID)).findUnique();
 		if (parent == null) return redirect(routes.Application.index());
 		if (filledForm.hasErrors()) return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "addChild", "Error while processing."));
-		
+
 		String name = filledForm.data().get("name");
 		String password = filledForm.data().get("password");
 		String grade = filledForm.data().get("grade");
 
 		if (Integer.valueOf(grade) <= MIN_GRADE || Integer.valueOf(grade) > MAX_GRADE) return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "addChild", "Invalid grade level."));
 
-		List<Student> children =  Utilities.createChildrenList(parent);
-		
+		List<Student> children = Utilities.createChildrenList(parent);
+
 		if (name.trim().isEmpty()) return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "addChild", "Invalid name."));
 		if (name.length() >= 250) return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "addChild", "Name was too long."));
 		for (Student child : children) {
-			if(child.name.equals(name))return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "addChild", "Can't have two children with the same name.")); 
+			if (child.name.equals(name)) return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "addChild", "Can't have two children with the same name."));
 		}
-		
+
 		if (password.trim().isEmpty()) return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "addChild", "Invalid password."));
+		if (password.length() < 8) return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "addChild", "Password must be at least 8 characters long."));
 
 		try {
 			password = HASHER.hashWithSaltSHA256(password, parent.salt);
@@ -90,19 +91,19 @@ public class Parents extends Controller {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		
-		if(password.equals(parent.password)) return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "addChild", "Invalid password."));
+
+		if (password.equals(parent.password)) return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "addChild", "Invalid password."));
 		for (Student child : children) {
-			if(child.password.equals(password)) return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "addChild", "Invalid password."));
+			if (child.password.equals(password)) return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "addChild", "Invalid password."));
 		}
 		Student newStudent = null;
 		try {
 			newStudent = Student.create(name, filledForm.data().get("email").toLowerCase(), parent.salt, password, grade);
 		} catch (PersistenceException e) {
-			 return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "addChild", "Error while processing."));
+			return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "addChild", "Error while processing."));
 		}
 		if (newStudent == null) return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "addChild", "Invalid password."));
-		
+
 		return ok(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "overview", ""));
 	}
 
@@ -112,7 +113,7 @@ public class Parents extends Controller {
 	public Result updateSettings(String parentID, String studentID) {
 		Form<AccountSettings> filledForm = accountSettingsForm.bindFromRequest();
 		Parent parent = Parent.find.where().eq("ID", UUID.fromString(parentID)).findUnique();
-		if(parent == null) return redirect(routes.Application.index());
+		if (parent == null) return redirect(routes.Application.index());
 		List<Student> children = Utilities.createChildrenList(parent);
 		if (filledForm.hasErrors()) return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "Error while processing."));
 
@@ -141,42 +142,42 @@ public class Parents extends Controller {
 				if (email.length() >= 250) return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "Email was too long."));
 				if (Parent.exists(email) || Teacher.exists(email) || Student.exists(email)) return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "That email is already associated with an account."));
 
-				//TODO FIGURE OUT WHAT TO DO HERE
+				// TODO FIGURE OUT WHAT TO DO HERE
 				for (int i = 0; i < children.size(); i++) {
 					children.get(i).email = email;
 					try {
 						children.get(i).save();
 					} catch (PersistenceException e) {
-						//One failed, therefore we need to revert the rest back
+						// One failed, therefore we need to revert the rest back
 						boolean errored = false;
-						for(int j = 0; j < i; j++) {
+						for (int j = 0; j < i; j++) {
 							children.get(j).email = oldEmail;
 							try {
 								children.get(j).save();
 							} catch (PersistenceException e2) {
-								//In this case, try to finish the rest, but set errored equal to true because we just want to stop.
+								// In this case, try to finish the rest, but set errored equal to true because we just want to stop.
 								errored = true;
 							}
 						}
-						if(errored) return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "Error while processing."));
+						if (errored) return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "Error while processing."));
 					}
 				}
 				parent.email = email;
 				try {
 					parent.save();
 				} catch (PersistenceException e) {
-					for(Student child : children) {
+					for (Student child : children) {
 						child.email = oldEmail;
 						try {
 							child.save();
 						} catch (PersistenceException e2) {
-							//have to try again, this is important
+							// have to try again, this is important
 							int tries = 0;
 							do {
 								try {
 									child.save();
 								} catch (PersistenceException e3) {
-									//Do nothing, child was probably deleted on another instance of the account
+									// Do nothing, child was probably deleted on another instance of the account
 								}
 								tries++;
 							} while (tries < 5);
@@ -188,6 +189,7 @@ public class Parents extends Controller {
 			String currentPassword = filledForm.data().get("currentPassword");
 			String newPassword = filledForm.data().get("newPassword");
 			String newPasswordAgain = filledForm.data().get("newPasswordAgain");
+			if (newPassword.length() < 8 || newPasswordAgain.length() < 8) return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "New password must be at least 8 characters long."));
 			if (!currentPassword.trim().isEmpty() && !newPassword.trim().isEmpty() && !newPasswordAgain.trim().isEmpty()) {
 				try {
 					currentPassword = HASHER.hashWithSaltSHA256(currentPassword, parent.salt);
@@ -213,7 +215,7 @@ public class Parents extends Controller {
 		} else {
 			// parent request to change student
 			Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
-			if(student == null) return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "Error while processing."));
+			if (student == null) return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "Error while processing."));
 
 			String grade = filledForm.data().get("grade");
 			if (Integer.valueOf(grade) < MIN_GRADE || Integer.valueOf(grade) > MAX_GRADE) return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "Invalid grade level."));
@@ -237,6 +239,7 @@ public class Parents extends Controller {
 			String currentPassword = filledForm.data().get("currentPassword");
 			String newPassword = filledForm.data().get("newPassword");
 			String newPasswordAgain = filledForm.data().get("newPasswordAgain");
+			if (newPassword.length() < 8 || newPasswordAgain.length() < 8) return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "New password must be at least 8 characters long."));
 			if (!currentPassword.trim().isEmpty() && !newPassword.trim().isEmpty() && !newPasswordAgain.trim().isEmpty()) {
 				try {
 					currentPassword = HASHER.hashWithSaltSHA256(currentPassword, parent.salt);
@@ -272,10 +275,17 @@ public class Parents extends Controller {
 		if (parent == null) return redirect(routes.Application.index());
 		return redirect(routes.Parents.toProfile(parent.id.toString()));
 	}
-	
-	public Result deleteParentAccount(UUID parentID){
+
+	public Result deleteChildAccount(UUID parentID, UUID studentID) {
 		Parent parent = Parent.find.where().eq("ID", parentID).findUnique();
-		if(parent == null) return redirect(routes.Application.index());
+		if (parent == null) return redirect(routes.Application.index());
+		routes.Students.deleteStudentAccount(studentID);
+		return ok(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "overview", "Account changed successfully."));
+	}
+
+	public Result deleteParentAccount(UUID parentID) {
+		Parent parent = Parent.find.where().eq("ID", parentID).findUnique();
+		if (parent == null) return redirect(routes.Application.index());
 		List<Assignment> assignments = Utilities.createAssignmentsListForParent(parent);
 		List<Assignment> finishedAssignments = Utilities.createFinishedAssignmentsListForParent(parent);
 		for (int i = 0; i < assignments.size(); i++) {
@@ -290,7 +300,7 @@ public class Parents extends Controller {
 			Students s = new Students();
 			s.deleteStudentAccount(studentID);
 		}
-		
+
 		parent.delete();
 		return redirect(routes.Application.index());
 	}

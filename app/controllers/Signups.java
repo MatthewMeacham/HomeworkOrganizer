@@ -64,6 +64,7 @@ public class Signups extends Controller {
 		if (name.length() >= 250) return badRequest(studentSignUp.render(studentForm, "Name was too long."));
 		if (name.trim().isEmpty()) return badRequest(studentSignUp.render(studentForm, "Invalid name."));
 		if (password.trim().isEmpty()) return badRequest(studentSignUp.render(studentForm, "Invalid password."));
+		if (password.length() < 8) return badRequest(studentSignUp.render(studentForm, "Password must be at least 8 characters long."));
 		String[] hashed = null;
 		try {
 			hashed = HASHER.hashSHA256(password);
@@ -78,7 +79,7 @@ public class Signups extends Controller {
 			return badRequest(studentSignUp.render(studentForm, "Error while processing."));
 		}
 		if (student == null) return badRequest(studentSignUp.render(studentForm, "That email is already associated with an account."));
-		
+
 		return ok(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "overview", ""));
 	}
 
@@ -95,6 +96,7 @@ public class Signups extends Controller {
 		if (name.length() >= 250) return badRequest(parentSignUp.render(parentForm, "Name was too long."));
 		if (name.trim().isEmpty()) return badRequest(parentSignUp.render(parentForm, "Invalid name."));
 		if (password.trim().isEmpty()) return badRequest(parentSignUp.render(parentForm, "Invalid password."));
+		if (password.length() < 8) return badRequest(parentSignUp.render(parentForm, "Password must be at least 8 characters long."));
 		String[] hashed = null;
 		try {
 			hashed = HASHER.hashSHA256(password);
@@ -106,7 +108,7 @@ public class Signups extends Controller {
 		try {
 			parent = Parent.create(name, email, hashed[0], hashed[1]);
 		} catch (PersistenceException e) {
-			 return badRequest(parentSignUp.render(parentForm, "Error while processing."));
+			return badRequest(parentSignUp.render(parentForm, "Error while processing."));
 		}
 		if (parent == null) return badRequest(parentSignUp.render(parentForm, "That email is already associated with an account."));
 		return ok(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "", ""));
@@ -125,6 +127,7 @@ public class Signups extends Controller {
 		if (name.length() >= 250) return badRequest(teacherSignUp.render(teacherForm, "Name was too long."));
 		if (name.trim().isEmpty()) return badRequest(teacherSignUp.render(teacherForm, "Invalid name."));
 		if (password.trim().isEmpty()) return badRequest(teacherSignUp.render(teacherForm, "Invalid password."));
+		if (password.length() < 8) return badRequest(teacherSignUp.render(teacherForm, "Password must be at least 8 characters long."));
 		String[] hashed = null;
 		try {
 			hashed = HASHER.hashSHA256(password);

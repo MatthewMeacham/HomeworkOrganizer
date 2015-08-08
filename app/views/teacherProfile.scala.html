@@ -354,17 +354,17 @@
 								</div>
 								<br><br><br><br><br>
 								<div class="btn">
-									<button class="saveChanges"> Save Changes </button>
+									<button type="submit" class="saveChanges"> Save Changes </button>
 								</div>
 								<br>
 								
 							</div>
 						}
-									<div id="studentDeleteAcct" class="deleteAccountPrompt">
-											@form(action = routes.Teachers.deleteTeacherAccount(teacher.id), 'id -> ("teacherDeleteAccount")){
-											<p>Want to delete your account? <a id="deleteLink" href="#" onclick="deleteTeacherAccount()"> Click Here </a></p>
-											}
-									</div>			
+						<div id="studentDeleteAcct" class="deleteAccountPrompt">
+								@form(action = routes.Teachers.deleteTeacherAccount(teacher.id), 'id -> ("teacherDeleteAccount")){
+								<p>Want to delete your account? <a id="deleteLink" href="#" onclick="deleteTeacherAccount()"> Click Here </a></p>
+								}
+						</div>			
 				</div>
 
 				<!-- END ACCOUNT SETTINGS -->
