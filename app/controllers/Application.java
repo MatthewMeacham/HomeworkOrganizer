@@ -16,6 +16,7 @@ import javax.mail.internet.MimeMessage;
 
 import play.data.Form;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
 
 import models.Parent;
@@ -86,6 +87,7 @@ public class Application extends Controller {
 
 	// Redirects the request to the index for logging out
 	public Result logout() {
+		session().clear();
 		return redirect(routes.Application.index());
 	}
 
@@ -155,6 +157,7 @@ public class Application extends Controller {
 			}
 			if (Parent.authenticate(filledForm.data().get("email"), password) != null) {
 				parent = Parent.find.where().eq("email", email).eq("password", password).findUnique();
+				session("userID", parent.id.toString());
 				return redirect(routes.Parents.toProfile(parent.id.toString()));
 			}
 		}
@@ -171,6 +174,7 @@ public class Application extends Controller {
 			}
 			if (Teacher.authenticate(filledForm.data().get("email"), password) != null) {
 				teacher = Teacher.find.where().eq("email", email).eq("password", password).findUnique();
+				session("userID", teacher.id.toString());
 				return redirect(routes.Teachers.toProfile(teacher.id));
 			}
 		}
@@ -200,7 +204,10 @@ public class Application extends Controller {
 
 		if (password == null || student == null) return badRequest(login.render(loginForm, "Invalid email or password."));
 		
-		if (Student.authenticate(email, password) != null) return redirect(routes.Students.toProfile(student.id.toString()));
+		if (Student.authenticate(email, password) != null){
+			session("userID", student.id.toString());
+			return redirect(routes.Students.toProfile(student.id.toString()));
+		}
 
 		return badRequest(login.render(loginForm, "Invalid email or password."));
 	}

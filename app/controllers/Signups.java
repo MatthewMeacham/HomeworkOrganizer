@@ -58,6 +58,8 @@ public class Signups extends Controller {
 		String email = filledForm.data().get("email").toLowerCase();
 		String name = filledForm.data().get("name");
 		String password = filledForm.data().get("password");
+		String grade = filledForm.data().get("grade");
+		if (Integer.valueOf(grade) <= 8) return badRequest(studentSignUp.render(studentForm, "Sorry, if you are not in at least ninth grade, a parent must create an account and add you."));
 		if (!email.contains("@") || !email.contains(".") || email.trim().isEmpty()) return badRequest(studentSignUp.render(studentForm, "Invalid email address."));
 		if (Parent.exists(email) || Teacher.exists(email) || Student.exists(email)) return badRequest(studentSignUp.render(studentForm, "That email is already associated with an account."));
 		if (email.length() >= 250) return badRequest(studentSignUp.render(studentForm, "Email was too long."));
@@ -79,6 +81,8 @@ public class Signups extends Controller {
 			return badRequest(studentSignUp.render(studentForm, "Error while processing."));
 		}
 		if (student == null) return badRequest(studentSignUp.render(studentForm, "That email is already associated with an account."));
+
+		session("userID", student.id.toString());
 
 		return ok(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "overview", ""));
 	}
@@ -111,6 +115,9 @@ public class Signups extends Controller {
 			return badRequest(parentSignUp.render(parentForm, "Error while processing."));
 		}
 		if (parent == null) return badRequest(parentSignUp.render(parentForm, "That email is already associated with an account."));
+
+		session("userID", parent.id.toString());
+
 		return ok(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "", ""));
 	}
 
@@ -141,6 +148,9 @@ public class Signups extends Controller {
 			return badRequest(teacherSignUp.render(teacherForm, "Error while processing."));
 		}
 		if (teacher == null) return badRequest(teacherSignUp.render(teacherForm, "That email is already associated with an account."));
+
+		session("userID", teacher.id.toString());
+
 		return ok(teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "", ""));
 	}
 

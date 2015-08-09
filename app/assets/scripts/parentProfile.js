@@ -142,18 +142,20 @@ $(function() {
 
 var submitted = false;
 
-function deleteStudentAccount(){
+function deleteStudentAccount(id){
 	if (submitted)
 		return;
 	submitted = true;
-	document.getElementById('studentDeleteAccount').submit();
+	document.getElementById('accountDeleteForm' + id).submit();
 }
+
+//studentDeleteAccount
 
 function deleteParentAccount(){
 	if (submitted)
 		return;
 	submitted = true;
-	document.getElementById('parentDeleteAccount').submit();
+	document.getElementById('accountDeleteForm0').submit();
 }
 
 function submitAssignmentDeleteForm(id) {

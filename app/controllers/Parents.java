@@ -26,6 +26,7 @@ import controllers.Students;
 import views.html.index;
 import views.html.parentProfile;
 import views.html.studentProfile;
+import views.html.unauthorizedError;
 
 public class Parents extends Controller {
 
@@ -40,6 +41,7 @@ public class Parents extends Controller {
 
 	// Direct to the parent profile page after authentication
 	public Result toProfile(String parentID) {
+		if(session("userID") == null || !session("userID").equals(parentID)) return unauthorized(unauthorizedError.render());
 		Parent parent = Parent.find.where().eq("ID", UUID.fromString(parentID)).findUnique();
 		if (parent == null) return redirect(routes.Application.index());
 		return ok(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "overview", ""));
@@ -47,6 +49,7 @@ public class Parents extends Controller {
 
 	// Direct the request to the student with the ID, parent accounts use this
 	public Result redirectToStudent(UUID studentID, String parentID) {
+		if(session("userID") == null || !session("userID").equals(parentID.toString())) return unauthorized(unauthorizedError.render());
 		Parent parent = Parent.find.where().eq("ID", UUID.fromString(parentID)).findUnique();
 		if (parent == null) return redirect(routes.Application.index());
 		Student student = Student.find.where().eq("ID", studentID).findUnique();
@@ -54,6 +57,7 @@ public class Parents extends Controller {
 		List<Student> children = Utilities.createChildrenList(parent);
 		for (int i = 0; i < children.size(); i++) {
 			if (children.get(i).email.equals(student.email)) {
+				session("userID", children.get(i).id.toString());
 				return ok(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "overview", ""));
 			}
 		}
@@ -62,6 +66,7 @@ public class Parents extends Controller {
 
 	// Add a child to a parent
 	public Result createChild(String parentID) {
+		if(session("userID") == null || !session("userID").equals(parentID)) return unauthorized(unauthorizedError.render());
 		Form<Student> filledForm = studentForm.bindFromRequest();
 		Parent parent = Parent.find.where().eq("ID", UUID.fromString(parentID)).findUnique();
 		if (parent == null) return redirect(routes.Application.index());
@@ -71,7 +76,7 @@ public class Parents extends Controller {
 		String password = filledForm.data().get("password");
 		String grade = filledForm.data().get("grade");
 
-		if (Integer.valueOf(grade) <= MIN_GRADE || Integer.valueOf(grade) > MAX_GRADE) return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "addChild", "Invalid grade level."));
+		if (Integer.valueOf(grade) < MIN_GRADE || Integer.valueOf(grade) > MAX_GRADE) return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "addChild", "Invalid grade level."));
 
 		List<Student> children = Utilities.createChildrenList(parent);
 
@@ -111,6 +116,7 @@ public class Parents extends Controller {
 	// of their kids and return
 	// either A) successful or B) Error
 	public Result updateSettings(String parentID, String studentID) {
+		if(session("userID") == null || !session("userID").equals(parentID)) return unauthorized(unauthorizedError.render());
 		Form<AccountSettings> filledForm = accountSettingsForm.bindFromRequest();
 		Parent parent = Parent.find.where().eq("ID", UUID.fromString(parentID)).findUnique();
 		if (parent == null) return redirect(routes.Application.index());
@@ -189,8 +195,8 @@ public class Parents extends Controller {
 			String currentPassword = filledForm.data().get("currentPassword");
 			String newPassword = filledForm.data().get("newPassword");
 			String newPasswordAgain = filledForm.data().get("newPasswordAgain");
-			if (newPassword.length() < 8 || newPasswordAgain.length() < 8) return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "New password must be at least 8 characters long."));
 			if (!currentPassword.trim().isEmpty() && !newPassword.trim().isEmpty() && !newPasswordAgain.trim().isEmpty()) {
+				if (newPassword.length() < 8 || newPasswordAgain.length() < 8) return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "New password must be at least 8 characters long."));
 				try {
 					currentPassword = HASHER.hashWithSaltSHA256(currentPassword, parent.salt);
 					newPassword = HASHER.hashWithSaltSHA256(newPassword, parent.salt);
@@ -236,11 +242,18 @@ public class Parents extends Controller {
 					return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "Error while processing."));
 				}
 			}
+			
+			try {
+				student.save();
+			} catch (PersistenceException e) {
+				return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "Error while processing."));
+			}
+			
 			String currentPassword = filledForm.data().get("currentPassword");
 			String newPassword = filledForm.data().get("newPassword");
 			String newPasswordAgain = filledForm.data().get("newPasswordAgain");
-			if (newPassword.length() < 8 || newPasswordAgain.length() < 8) return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "New password must be at least 8 characters long."));
 			if (!currentPassword.trim().isEmpty() && !newPassword.trim().isEmpty() && !newPasswordAgain.trim().isEmpty()) {
+				if (newPassword.length() < 8 || newPasswordAgain.length() < 8) return badRequest(parentProfile.render(parent, children, Utilities.createAssignmentsListForParent(parent), Utilities.today, "accountSettings", "New password must be at least 8 characters long."));
 				try {
 					currentPassword = HASHER.hashWithSaltSHA256(currentPassword, parent.salt);
 					newPassword = HASHER.hashWithSaltSHA256(newPassword, parent.salt);
@@ -271,12 +284,14 @@ public class Parents extends Controller {
 
 	// Refresh the parentProfile page
 	public Result refresh(UUID parentID) {
+		if(session("userID") == null || !session("userID").equals(parentID.toString())) return unauthorized(unauthorizedError.render());
 		Parent parent = Parent.find.where().eq("ID", parentID).findUnique();
 		if (parent == null) return redirect(routes.Application.index());
 		return redirect(routes.Parents.toProfile(parent.id.toString()));
 	}
 
 	public Result deleteChildAccount(UUID parentID, UUID studentID) {
+		if(session("userID") == null || !session("userID").equals(parentID.toString())) return unauthorized(unauthorizedError.render());
 		Parent parent = Parent.find.where().eq("ID", parentID).findUnique();
 		if (parent == null) return redirect(routes.Application.index());
 		routes.Students.deleteStudentAccount(studentID);
@@ -284,24 +299,18 @@ public class Parents extends Controller {
 	}
 
 	public Result deleteParentAccount(UUID parentID) {
+		if(session("userID") == null || !session("userID").equals(parentID.toString())) return unauthorized(unauthorizedError.render());
 		Parent parent = Parent.find.where().eq("ID", parentID).findUnique();
 		if (parent == null) return redirect(routes.Application.index());
-		List<Assignment> assignments = Utilities.createAssignmentsListForParent(parent);
-		List<Assignment> finishedAssignments = Utilities.createFinishedAssignmentsListForParent(parent);
-		for (int i = 0; i < assignments.size(); i++) {
-			assignments.get(i).delete();
-		}
-		for (int i = 0; i < finishedAssignments.size(); i++) {
-			finishedAssignments.get(i).delete();
-		}
 		List<Student> children = Utilities.createChildrenList(parent);
 		for (int i = 0; i < children.size(); i++) {
-			UUID studentID = children.get(i).id;
-			Students s = new Students();
-			s.deleteStudentAccount(studentID);
+			routes.Students.deleteStudentAccount(children.get(i).id);
 		}
-
-		parent.delete();
+		try {
+			parent.delete();
+		} catch (PersistenceException e) {
+			//Do nothing
+		}
 		return redirect(routes.Application.index());
 	}
 

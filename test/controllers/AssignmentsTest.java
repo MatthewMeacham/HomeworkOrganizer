@@ -3,6 +3,8 @@ package controllers;
 import static org.junit.Assert.*;
 import static play.test.Helpers.contentAsString;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -71,20 +73,18 @@ public class AssignmentsTest extends BaseControllerTest {
 		Student student = Student.create("Matthew", "matthew@gmail.com", "f9673401f27353ce150e71ae7a90c99b592463d566d73748d7f4110ae2059b19", "4087adbbc8f6fde6ae311fcf248ecfc07ed078147c36b7c69381a67aa311a223", "10");
 		SchoolClass schoolClass = SchoolClass.create("Math", student.email, student.id, "#FFF", "");
 		Assignment assignment = Assignment.create("2015-08-06", schoolClass.id.toString(), "Homework", "Another homework assignment.", student.id.toString());
-
+		
 		Result result = assignments.read(assignment.id.toString(), student.id.toString());
-
 		assertEquals(200, result.status());
 		assertTrue(contentAsString(result).contains("Another homework assignment."));
 		assertTrue(contentAsString(result).contains("2015"));
-		assertTrue(contentAsString(result).contains("08"));
+		assertTrue(contentAsString(result).contains("August"));
 		assertTrue(contentAsString(result).contains("06"));
-		assertTrue(contentAsString(result).contains("Homework"));
 
 		result = assignments.read("5432412", student.id.toString());
 		assertEquals(400, result.status());
 		assertTrue(contentAsString(result).contains("Error while processing."));
-		assertTrue(contentAsString(result).contains("Logged In As Matthew"));
+		assertTrue(contentAsString(result).contains("Logged in as Matthew"));
 
 		result = assignments.read(assignment.id.toString(), "74692d62-1761-4027-8eb6-f36ee502cdae");
 		assertEquals(303, result.status());
@@ -93,13 +93,11 @@ public class AssignmentsTest extends BaseControllerTest {
 	@Test
 	public void readForParentTest() {
 		Parent parent = Parent.create("Jeanette", "jeanette@gmail.com", "6207d516837d34bf3ced40bf94d2c0abd252b8b3446bf2e6175338ac12bd6290", "b5099d196facc9caaf740ba4114e3ff89ce057832328ca2e7e58e91ff3b2f625");
-
 		Student student = Student.create("Matthew", "jeanette@gmail.com", "6207d516837d34bf3ced40bf94d2c0abd252b8b3446bf2e6175338ac12bd6290", "4087adbbc8f6fde6ae311fcf248ecfc07ed078147c36b7c69381a67aa311a223", "10");
 		SchoolClass schoolClass = SchoolClass.create("Math", student.email, student.id, "#FFF", "");
 		Assignment assignment = Assignment.create("2016-02-20", schoolClass.id.toString(), "Presentation", "My first presentation.", student.id.toString());
 
 		Result result = assignments.readForParent(assignment.id, parent.id, student.id);
-
 		assertEquals(200, result.status());
 		assertTrue(contentAsString(result).contains("My first presentation."));
 		assertTrue(contentAsString(result).contains("2016"));
@@ -110,7 +108,7 @@ public class AssignmentsTest extends BaseControllerTest {
 		result = assignments.readForParent(504839292L, parent.id, student.id);
 		assertEquals(400, result.status());
 		assertTrue(contentAsString(result).contains("Error while processing."));
-		assertTrue(contentAsString(result).contains("Logged In As Jeanette"));
+		assertTrue(contentAsString(result).contains("Logged in as Jeanette"));
 
 		result = assignments.readForParent(assignment.id, UUID.fromString("74692d62-1761-4027-8eb6-f36ee502cdae"), student.id);
 		assertEquals(303, result.status());
@@ -118,7 +116,7 @@ public class AssignmentsTest extends BaseControllerTest {
 		result = assignments.readForParent(assignment.id, parent.id, UUID.fromString("74692d62-1761-4027-8eb6-f36ee502cdae"));
 		assertEquals(400, result.status());
 		assertTrue(contentAsString(result).contains("Error while processing."));
-		assertTrue(contentAsString(result).contains("Logged In As Jeanette"));
+		assertTrue(contentAsString(result).contains("Logged in as Jeanette"));
 	}
 
 	@Test
@@ -139,7 +137,7 @@ public class AssignmentsTest extends BaseControllerTest {
 		result = assignments.readForTeacher("5398249821", teacher.id.toString());
 		assertEquals(400, result.status());
 		assertTrue(contentAsString(result).contains("Error while processing."));
-		assertTrue(contentAsString(result).contains("Logged In As Tom"));
+		assertTrue(contentAsString(result).contains("Logged in as Tom"));
 
 		result = assignments.readForTeacher(assignment.id.toString(), "74692d62-1761-4027-8eb6-f36ee502cdae");
 		assertEquals(303, result.status());
@@ -163,7 +161,7 @@ public class AssignmentsTest extends BaseControllerTest {
 		assertTrue(contentAsString(result).contains("August 06, 2015"));
 		assertTrue(contentAsString(result).contains("My homework assignment."));
 		assertTrue(contentAsString(result).contains("Math"));
-		assertTrue(contentAsString(result).contains("Logged In As Matthew"));
+		assertTrue(contentAsString(result).contains("Logged in as Matthew"));
 
 		data.put("dueDate", "2016-08-06");
 		result = helpers.invokeWithContext(Helpers.fakeRequest().bodyForm(data), () -> assignments.update(assignment.id.toString(), student.id.toString()));
@@ -171,7 +169,7 @@ public class AssignmentsTest extends BaseControllerTest {
 		assertTrue(contentAsString(result).contains("August 06, 2016"));
 		assertTrue(contentAsString(result).contains("My homework assignment."));
 		assertTrue(contentAsString(result).contains("Math"));
-		assertTrue(contentAsString(result).contains("Logged In As Matthew"));
+		assertTrue(contentAsString(result).contains("Logged in as Matthew"));
 
 		data.put("description", "My homework assignment edited.");
 		result = helpers.invokeWithContext(Helpers.fakeRequest().bodyForm(data), () -> assignments.update(assignment.id.toString(), student.id.toString()));
@@ -179,7 +177,7 @@ public class AssignmentsTest extends BaseControllerTest {
 		assertTrue(contentAsString(result).contains("August 06, 2016"));
 		assertTrue(contentAsString(result).contains("My homework assignment edited."));
 		assertTrue(contentAsString(result).contains("Math"));
-		assertTrue(contentAsString(result).contains("Logged In As Matthew"));
+		assertTrue(contentAsString(result).contains("Logged in as Matthew"));
 
 		data.put("schoolClassID", newSchoolClass.id.toString());
 		result = helpers.invokeWithContext(Helpers.fakeRequest().bodyForm(data), () -> assignments.update(assignment.id.toString(), student.id.toString()));
@@ -187,7 +185,7 @@ public class AssignmentsTest extends BaseControllerTest {
 		assertTrue(contentAsString(result).contains("August 06, 2016"));
 		assertTrue(contentAsString(result).contains("My homework assignment edited."));
 		assertTrue(contentAsString(result).contains("English"));
-		assertTrue(contentAsString(result).contains("Logged In As Matthew"));
+		assertTrue(contentAsString(result).contains("Logged in as Matthew"));
 
 		data.put("kindOfAssignment", "Final");
 		result = helpers.invokeWithContext(Helpers.fakeRequest().bodyForm(data), () -> assignments.update(assignment.id.toString(), student.id.toString()));
@@ -195,7 +193,7 @@ public class AssignmentsTest extends BaseControllerTest {
 		assertTrue(contentAsString(result).contains("August 06, 2016"));
 		assertTrue(contentAsString(result).contains("My homework assignment edited."));
 		assertTrue(contentAsString(result).contains("English"));
-		assertTrue(contentAsString(result).contains("Logged In As Matthew"));
+		assertTrue(contentAsString(result).contains("Logged in as Matthew"));
 
 		data.put("dueDate", "2015-12-25");
 		data.put("description", "This is due on Christmas?!");
@@ -206,13 +204,13 @@ public class AssignmentsTest extends BaseControllerTest {
 		assertTrue(contentAsString(result).contains("December 25, 2015"));
 		assertTrue(contentAsString(result).contains("This is due on Christmas?!"));
 		assertTrue(contentAsString(result).contains("Math"));
-		assertTrue(contentAsString(result).contains("Logged In As Matthew"));
+		assertTrue(contentAsString(result).contains("Logged in as Matthew"));
 
 		data.put("schoolClassID", "42914213");
 		result = helpers.invokeWithContext(Helpers.fakeRequest().bodyForm(data), () -> assignments.update(assignment.id.toString(), student.id.toString()));
 		assertEquals(400, result.status());
 		assertTrue(contentAsString(result).contains("Error while processing."));
-		assertFalse(contentAsString(result).contains("Logged In As Matthew"));
+		assertFalse(contentAsString(result).contains("Logged in as Matthew"));
 
 		data.put("schoolClassID", newSchoolClass.id.toString());
 		String description = "";
@@ -223,12 +221,12 @@ public class AssignmentsTest extends BaseControllerTest {
 		result = helpers.invokeWithContext(Helpers.fakeRequest().bodyForm(data), () -> assignments.update(assignment.id.toString(), student.id.toString()));
 		assertEquals(400, result.status());
 		assertTrue(contentAsString(result).contains("Description was too long."));
-		assertFalse(contentAsString(result).contains("Logged In As Matthew"));
+		assertFalse(contentAsString(result).contains("Logged in as Matthew"));
 
 		result = helpers.invokeWithContext(Helpers.fakeRequest().bodyForm(data), () -> assignments.update("3219421", student.id.toString()));
 		assertEquals(400, result.status());
 		assertTrue(contentAsString(result).contains("Error while processing."));
-		assertTrue(contentAsString(result).contains("Logged In As Matthew"));
+		assertTrue(contentAsString(result).contains("Logged in as Matthew"));
 		assertTrue(contentAsString(result).contains("December 25, 2015"));
 		assertTrue(contentAsString(result).contains("This is due on Christmas?!"));
 
@@ -254,35 +252,35 @@ public class AssignmentsTest extends BaseControllerTest {
 		assertEquals(200, result.status());
 		assertTrue(contentAsString(result).contains("August 06, 2015"));
 		assertTrue(contentAsString(result).contains("My homework assignment."));
-		assertTrue(contentAsString(result).contains("Logged In As Jeanette"));
+		assertTrue(contentAsString(result).contains("Logged in as Jeanette"));
 
 		data.put("dueDate", "2016-02-24");
 		result = helpers.invokeWithContext(Helpers.fakeRequest().bodyForm(data), () -> assignments.updateForParent(assignment.id, parent.id, student.id));
 		assertEquals(200, result.status());
 		assertTrue(contentAsString(result).contains("February 24, 2016"));
 		assertTrue(contentAsString(result).contains("My homework assignment."));
-		assertTrue(contentAsString(result).contains("Logged In As Jeanette"));
+		assertTrue(contentAsString(result).contains("Logged in as Jeanette"));
 
 		data.put("description", "I have edited this homework assignment, sweetie.");
 		result = helpers.invokeWithContext(Helpers.fakeRequest().bodyForm(data), () -> assignments.updateForParent(assignment.id, parent.id, student.id));
 		assertEquals(200, result.status());
 		assertTrue(contentAsString(result).contains("February 24, 2016"));
 		assertTrue(contentAsString(result).contains("I have edited this homework assignment, sweetie."));
-		assertTrue(contentAsString(result).contains("Logged In As Jeanette"));
+		assertTrue(contentAsString(result).contains("Logged in as Jeanette"));
 
 		data.put("schoolClassID", newSchoolClass.id.toString());
 		result = helpers.invokeWithContext(Helpers.fakeRequest().bodyForm(data), () -> assignments.updateForParent(assignment.id, parent.id, student.id));
 		assertEquals(200, result.status());
 		assertTrue(contentAsString(result).contains("February 24, 2016"));
 		assertTrue(contentAsString(result).contains("I have edited this homework assignment, sweetie."));
-		assertTrue(contentAsString(result).contains("Logged In As Jeanette"));
+		assertTrue(contentAsString(result).contains("Logged in as Jeanette"));
 
 		data.put("kindOfAssignment", "Final");
 		result = helpers.invokeWithContext(Helpers.fakeRequest().bodyForm(data), () -> assignments.updateForParent(assignment.id, parent.id, student.id));
 		assertEquals(200, result.status());
 		assertTrue(contentAsString(result).contains("February 24, 2016"));
 		assertTrue(contentAsString(result).contains("I have edited this homework assignment, sweetie."));
-		assertTrue(contentAsString(result).contains("Logged In As Jeanette"));
+		assertTrue(contentAsString(result).contains("Logged in as Jeanette"));
 
 		result = helpers.invokeWithContext(Helpers.fakeRequest().bodyForm(data), () -> assignments.updateForParent(assignment.id, UUID.fromString("74692d62-1761-4027-8eb6-f36ee502cdae"), student.id));
 		assertEquals(303, result.status());
@@ -292,12 +290,12 @@ public class AssignmentsTest extends BaseControllerTest {
 		assertTrue(contentAsString(result).contains("Error while processing."));
 		assertTrue(contentAsString(result).contains("February 24, 2016"));
 		assertTrue(contentAsString(result).contains("I have edited this homework assignment, sweetie."));
-		assertTrue(contentAsString(result).contains("Logged In As Jeanette"));
+		assertTrue(contentAsString(result).contains("Logged in as Jeanette"));
 
 		result = helpers.invokeWithContext(Helpers.fakeRequest().bodyForm(data), () -> assignments.updateForParent(48218421L, parent.id, student.id));
 		assertEquals(400, result.status());
 		assertTrue(contentAsString(result).contains("Error while processing."));
-		assertTrue(contentAsString(result).contains("Logged In As Jeanette"));
+		assertTrue(contentAsString(result).contains("Logged in as Jeanette"));
 	}
 
 	@Test
@@ -317,35 +315,35 @@ public class AssignmentsTest extends BaseControllerTest {
 		assertEquals(200, result.status());
 		assertTrue(contentAsString(result).contains("August 06, 2015"));
 		assertTrue(contentAsString(result).contains("My homework assignment."));
-		assertTrue(contentAsString(result).contains("Logged In As Tom"));
+		assertTrue(contentAsString(result).contains("Logged in as Tom"));
 
 		data.put("dueDate", "2015-07-28");
 		result = helpers.invokeWithContext(Helpers.fakeRequest().bodyForm(data), () -> assignments.updateForTeacher(assignment.id.toString(), teacher.id.toString()));
 		assertEquals(200, result.status());
 		assertTrue(contentAsString(result).contains("July 28, 2015"));
 		assertTrue(contentAsString(result).contains("My homework assignment."));
-		assertTrue(contentAsString(result).contains("Logged In As Tom"));
+		assertTrue(contentAsString(result).contains("Logged in as Tom"));
 
 		data.put("description", "This assignment has been edited.");
 		result = helpers.invokeWithContext(Helpers.fakeRequest().bodyForm(data), () -> assignments.updateForTeacher(assignment.id.toString(), teacher.id.toString()));
 		assertEquals(200, result.status());
 		assertTrue(contentAsString(result).contains("July 28, 2015"));
 		assertTrue(contentAsString(result).contains("This assignment has been edited."));
-		assertTrue(contentAsString(result).contains("Logged In As Tom"));
+		assertTrue(contentAsString(result).contains("Logged in as Tom"));
 		
 		data.put("schoolClassID", newSchoolClass.id.toString());
 		result = helpers.invokeWithContext(Helpers.fakeRequest().bodyForm(data), () -> assignments.updateForTeacher(assignment.id.toString(), teacher.id.toString()));
 		assertEquals(200, result.status());
 		assertTrue(contentAsString(result).contains("July 28, 2015"));
 		assertTrue(contentAsString(result).contains("This assignment has been edited."));
-		assertTrue(contentAsString(result).contains("Logged In As Tom"));
+		assertTrue(contentAsString(result).contains("Logged in as Tom"));
 		
 		data.put("kindOfAssignment", "Presentation");
 		result = helpers.invokeWithContext(Helpers.fakeRequest().bodyForm(data), () -> assignments.updateForTeacher(assignment.id.toString(), teacher.id.toString()));
 		assertEquals(200, result.status());
 		assertTrue(contentAsString(result).contains("July 28, 2015"));
 		assertTrue(contentAsString(result).contains("This assignment has been edited."));
-		assertTrue(contentAsString(result).contains("Logged In As Tom"));
+		assertTrue(contentAsString(result).contains("Logged in as Tom"));
 				
 		result = helpers.invokeWithContext(Helpers.fakeRequest().bodyForm(data), () -> assignments.updateForTeacher(assignment.id.toString(), "74692d62-1761-4027-8eb6-f36ee502cdae"));
 		assertEquals(303, result.status());
@@ -355,7 +353,7 @@ public class AssignmentsTest extends BaseControllerTest {
 		assertTrue(contentAsString(result).contains("Error while processing."));
 		assertTrue(contentAsString(result).contains("July 28, 2015"));
 		assertTrue(contentAsString(result).contains("This assignment has been edited."));
-		assertTrue(contentAsString(result).contains("Logged In As Tom"));
+		assertTrue(contentAsString(result).contains("Logged in as Tom"));
 	}
 	
 	@Test
@@ -366,7 +364,7 @@ public class AssignmentsTest extends BaseControllerTest {
 		
 		Result result = assignments.delete(assignment.id.toString(), student.id.toString());
 		assertEquals(200, result.status());
-		assertTrue(contentAsString(result).contains("Logged In As Matthew"));
+		assertTrue(contentAsString(result).contains("Logged in as Matthew"));
 		assertFalse(contentAsString(result).contains("Error while processing."));
 		assertFalse(contentAsString(result).contains("My homework assignment."));
 		
@@ -376,7 +374,7 @@ public class AssignmentsTest extends BaseControllerTest {
 		result = assignments.delete("24892418241", student.id.toString());
 		assertEquals(400, result.status());
 		assertTrue(contentAsString(result).contains("Error while processing."));
-		assertTrue(contentAsString(result).contains("Logged In As Matthew"));
+		assertTrue(contentAsString(result).contains("Logged in as Matthew"));
 	}
 	
 	@Test
@@ -388,13 +386,13 @@ public class AssignmentsTest extends BaseControllerTest {
 		
 		Result result = assignments.deleteForParent(assignment.id, parent.id, student.id);
 		assertEquals(200, result.status());
-		assertTrue(contentAsString(result).contains("Logged In As Jeanette"));
+		assertTrue(contentAsString(result).contains("Logged in as Jeanette"));
 		assertFalse(contentAsString(result).contains("My first presentation."));
 		
 		result = assignments.deleteForParent(24890180942L, parent.id, student.id);
 		assertEquals(400, result.status());
 		assertTrue(contentAsString(result).contains("Error while processing."));
-		assertTrue(contentAsString(result).contains("Logged In As Jeanette"));
+		assertTrue(contentAsString(result).contains("Logged in as Jeanette"));
 		
 		result = assignments.deleteForParent(assignment.id, UUID.fromString("74692d62-1761-4027-8eb6-f36ee502cdae"), student.id);
 		assertEquals(303, result.status());
@@ -402,7 +400,7 @@ public class AssignmentsTest extends BaseControllerTest {
 		result = assignments.deleteForParent(assignment.id, parent.id, UUID.fromString("74692d62-1761-4027-8eb6-f36ee502cdae"));
 		assertEquals(400, result.status());
 		assertTrue(contentAsString(result).contains("Error while processing."));
-		assertTrue(contentAsString(result).contains("Logged In As Jeanette"));
+		assertTrue(contentAsString(result).contains("Logged in as Jeanette"));
 	}
 	
 	@Test
@@ -413,14 +411,14 @@ public class AssignmentsTest extends BaseControllerTest {
 		
 		Result result = assignments.deleteForTeacher(assignment.id.toString(), teacher.id.toString());
 		assertEquals(200, result.status());
-		assertTrue(contentAsString(result).contains("Logged In As Tom"));
+		assertTrue(contentAsString(result).contains("Logged in as Tom"));
 		assertFalse(contentAsString(result).contains("An other assignment, not another."));
 		assertFalse(contentAsString(result).contains("Error while processing."));
 		
 		result = assignments.deleteForTeacher("42984921", teacher.id.toString());
 		assertEquals(400, result.status());
 		assertTrue(contentAsString(result).contains("Error while processing."));
-		assertTrue(contentAsString(result).contains("Logged In As Tom"));
+		assertTrue(contentAsString(result).contains("Logged in as Tom"));
 		
 		result = assignments.deleteForTeacher(assignment.id.toString(), "74692d62-1761-4027-8eb6-f36ee502cdae");
 		assertEquals(303, result.status());
@@ -434,13 +432,13 @@ public class AssignmentsTest extends BaseControllerTest {
 		
 		Result result = assignments.deleteLate(assignment.id.toString(), student.id.toString());
 		assertEquals(200, result.status());
-		assertTrue(contentAsString(result).contains("Logged In As Matthew"));
+		assertTrue(contentAsString(result).contains("Logged in as Matthew"));
 		assertFalse(contentAsString(result).contains("My homework assignment."));
 		assertFalse(contentAsString(result).contains("Error while processing."));
 		
 		result = assignments.deleteLate("4208421241", student.id.toString());
 		assertEquals(400, result.status());
-		assertTrue(contentAsString(result).contains("Logged In As Matthew"));
+		assertTrue(contentAsString(result).contains("Logged in as Matthew"));
 		assertTrue(contentAsString(result).contains("Error while processing."));
 		
 		result = assignments.deleteLate(assignment.id.toString(), "74692d62-1761-4027-8eb6-f36ee502cdae");
@@ -455,13 +453,13 @@ public class AssignmentsTest extends BaseControllerTest {
 		
 		Result result = assignments.deleteFinished(assignment.id.toString(), student.id.toString());
 		assertEquals(200, result.status());
-		assertTrue(contentAsString(result).contains("Logged In As Matthew"));
+		assertTrue(contentAsString(result).contains("Logged in as Matthew"));
 		assertFalse(contentAsString(result).contains("My homework assignment."));
 		assertFalse(contentAsString(result).contains("Error while processing."));
 		
 		result = assignments.deleteFinished("4218498120", student.id.toString());
 		assertEquals(400, result.status());
-		assertTrue(contentAsString(result).contains("Logged In As Matthew"));
+		assertTrue(contentAsString(result).contains("Logged in as Matthew"));
 		assertTrue(contentAsString(result).contains("Error while processing."));
 		
 		result = assignments.deleteFinished(assignment.id.toString(), "74692d62-1761-4027-8eb6-f36ee502cdae");
@@ -476,13 +474,13 @@ public class AssignmentsTest extends BaseControllerTest {
 		
 		Result result = assignments.setFinished(assignment.id.toString(), student.id.toString());
 		assertEquals(200, result.status());
-		assertTrue(contentAsString(result).contains("Logged In As Matthew"));
+		assertTrue(contentAsString(result).contains("Logged in as Matthew"));
 		assertTrue(contentAsString(result).contains("My homework assignment"));
 		assertFalse(contentAsString(result).contains("Error while processing."));
 		
 		result = assignments.setFinished("421784921", student.id.toString());
 		assertEquals(400, result.status());
-		assertTrue(contentAsString(result).contains("Logged In As Matthew"));
+		assertTrue(contentAsString(result).contains("Logged in as Matthew"));
 		assertTrue(contentAsString(result).contains("Error while processing."));
 		
 		result = assignments.setFinished(assignment.id.toString(), "74692d62-1761-4027-8eb6-f36ee502cdae");
@@ -498,13 +496,13 @@ public class AssignmentsTest extends BaseControllerTest {
 		
 		Result result = assignments.setUnfinished(assignment.id.toString(), student.id.toString());
 		assertEquals(200, result.status());
-		assertTrue(contentAsString(result).contains("Logged In As Matthew"));
+		assertTrue(contentAsString(result).contains("Logged in as Matthew"));
 		assertTrue(contentAsString(result).contains("My homework assignment."));
 		assertFalse(contentAsString(result).contains("Error while processing."));
 		
 		result = assignments.setUnfinished("42184291", student.id.toString());
 		assertEquals(400, result.status());
-		assertTrue(contentAsString(result).contains("Logged In As Matthew"));
+		assertTrue(contentAsString(result).contains("Logged in as Matthew"));
 		assertTrue(contentAsString(result).contains("Error while processing."));
 		
 		result = assignments.setUnfinished(assignment.id.toString(), "74692d62-1761-4027-8eb6-f36ee502cdae");

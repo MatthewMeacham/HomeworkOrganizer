@@ -5,24 +5,22 @@ import java.util.UUID;
 
 import javax.persistence.PersistenceException;
 
-import play.data.Form;
-import play.mvc.Controller;
-import play.mvc.Result;
-
+import controllers.Application.Login;
+import controllers.Application.SchoolClassFromCode;
 import models.Assignment;
-import models.Parent;
 import models.SchoolClass;
 import models.Student;
 import models.Teacher;
-
-import controllers.Application.Login;
-import controllers.Application.SchoolClassFromCode;
+import play.data.Form;
+import play.mvc.Controller;
+import play.mvc.Result;
 
 import views.html.index;
 import views.html.studentProfile;
 import views.html.teacherProfile;
 import views.html.schoolClassEdit;
 import views.html.schoolClassEditForTeacher;
+import views.html.unauthorizedError;
 
 public class Classes extends Controller {
 
@@ -32,6 +30,7 @@ public class Classes extends Controller {
 
 	// Create a new school class from the request
 	public Result create(String studentID) {
+		if(session("userID") == null || !session("userID").equals(studentID)) return unauthorized(unauthorizedError.render());
 		Form<SchoolClass> filledForm = schoolClassForm.bindFromRequest();
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		if (student == null) return redirect(routes.Application.index());
@@ -54,6 +53,7 @@ public class Classes extends Controller {
 
 	// Creates a new school class for the teacher from the request
 	public Result createForTeacher(String teacherID) {
+		if(session("userID") == null || !session("userID").equals(teacherID)) return unauthorized(unauthorizedError.render());
 		Form<SchoolClass> filledForm = schoolClassForm.bindFromRequest();
 		Teacher teacher = Teacher.find.where().eq("ID", UUID.fromString(teacherID)).findUnique();
 		if (teacher == null) return redirect(routes.Application.index());
@@ -75,6 +75,7 @@ public class Classes extends Controller {
 
 	// Create a new school class from a teacher provided id and password
 	public Result createFromTeacher(String studentID) {
+		if(session("userID") == null || !session("userID").equals(studentID)) return unauthorized(unauthorizedError.render());
 		Form<SchoolClassFromCode> filledForm = schoolClassFromCodeForm.bindFromRequest();
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		if (student == null) return redirect(routes.Application.index());
@@ -99,29 +100,44 @@ public class Classes extends Controller {
 
 	// Direct to the edit school class page
 	public Result read(String schoolClassID, String studentID) {
+		if(session("userID") == null || !session("userID").equals(studentID)) return unauthorized(unauthorizedError.render());
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
-		if(student == null) return redirect(routes.Application.index());
+		if (student == null) return redirect(routes.Application.index());
 		SchoolClass schoolClass = SchoolClass.find.where().eq("ID", Long.valueOf(schoolClassID)).findUnique();
-		if(schoolClass == null) return badRequest(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "schoolClasses", "Error while processing."));
+		if (schoolClass == null) return badRequest(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "schoolClasses", "Error while processing."));
+
+		List<SchoolClass> schoolClasses = Utilities.createSchoolClassesList(student);
+		if (!schoolClasses.contains(schoolClass)) return badRequest(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "schoolClasses", "Unauthorized request."));
+
 		return ok(schoolClassEdit.render(schoolClass, student, ""));
 	}
 
 	// Direct to the edit school class page for teacher
 	public Result readForTeacher(String schoolClassID, String teacherID) {
+		if(session("userID") == null || !session("userID").equals(teacherID)) return unauthorized(unauthorizedError.render());
 		Teacher teacher = Teacher.find.where().eq("ID", UUID.fromString(teacherID)).findUnique();
-		if(teacher == null) return redirect(routes.Application.index());
+		if (teacher == null) return redirect(routes.Application.index());
 		SchoolClass schoolClass = SchoolClass.find.where().eq("ID", Long.valueOf(schoolClassID)).findUnique();
-		if(schoolClass == null) return badRequest(teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "schoolClasses", "Error while processing."));
+		if (schoolClass == null) return badRequest(teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "schoolClasses", "Error while processing."));
+
+		List<SchoolClass> schoolClasses = Utilities.createSchoolClassListForTeacher(teacher);
+		if (!schoolClasses.contains(schoolClass)) return badRequest(teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "schoolClasses", "Unauthorized request."));
+
 		return ok(schoolClassEditForTeacher.render(schoolClass, teacher, ""));
 	}
 
 	// Edit a schoolClass from a request
 	public Result update(String schoolClassID, String studentID) {
+		if(session("userID") == null || !session("userID").equals(studentID)) return unauthorized(unauthorizedError.render());
 		Form<SchoolClass> filledForm = schoolClassForm.bindFromRequest();
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		if (student == null) return redirect(routes.Application.index());
 		SchoolClass schoolClass = SchoolClass.find.where().eq("ID", Long.valueOf(schoolClassID)).findUnique();
-		if(schoolClass == null) return badRequest(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "schoolClasses", "Error while processing."));
+		if (schoolClass == null) return badRequest(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "schoolClasses", "Error while processing."));
+
+		List<SchoolClass> schoolClasses = Utilities.createSchoolClassesList(student);
+		if (!schoolClasses.contains(schoolClass)) return badRequest(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "schoolClasses", "Unauthorized request."));
+
 		if (filledForm.hasErrors()) return badRequest(schoolClassEdit.render(schoolClass, student, "Error while processing."));
 		String subject = filledForm.data().get("subject");
 		if (subject.trim().isEmpty()) return badRequest(schoolClassEdit.render(schoolClass, student, "Subject can not be empty."));
@@ -138,11 +154,16 @@ public class Classes extends Controller {
 
 	// Edit a schoolClass for a teacher from a request
 	public Result updateForTeacher(String schoolClassID, String teacherID) {
+		if(session("userID") == null || !session("userID").equals(teacherID)) return unauthorized(unauthorizedError.render());
 		Form<SchoolClass> filledForm = schoolClassForm.bindFromRequest();
 		Teacher teacher = Teacher.find.where().eq("ID", UUID.fromString(teacherID)).findUnique();
 		if (teacher == null) return redirect(routes.Application.index());
 		SchoolClass schoolClass = SchoolClass.find.where().eq("ID", Long.valueOf(schoolClassID)).findUnique();
-		if(schoolClass == null)	return badRequest(teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "schoolClasses", "Error while processing."));
+		if (schoolClass == null) return badRequest(teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "schoolClasses", "Error while processing."));
+
+		List<SchoolClass> schoolClasses = Utilities.createSchoolClassListForTeacher(teacher);
+		if (!schoolClasses.contains(schoolClass)) return badRequest(teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "schoolClasses", "Unauthorized request."));
+
 		if (filledForm.hasErrors()) return badRequest(schoolClassEditForTeacher.render(schoolClass, teacher, "Error while processing."));
 		String subject = filledForm.data().get("subject");
 		if (subject.trim().isEmpty()) return badRequest(schoolClassEditForTeacher.render(schoolClass, teacher, "Subject can not be empty."));
@@ -158,10 +179,15 @@ public class Classes extends Controller {
 	}
 
 	public Result delete(String schoolClassID, String studentID) {
+		if(session("userID") == null || !session("userID").equals(studentID)) return unauthorized(unauthorizedError.render());
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
-		if(student == null) return redirect(routes.Application.index());
+		if (student == null) return redirect(routes.Application.index());
 		SchoolClass schoolClass = SchoolClass.find.where().eq("ID", Long.valueOf(schoolClassID)).findUnique();
 		if (schoolClass == null) return badRequest(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "schoolClasses", "Error while processing."));
+
+		List<SchoolClass> schoolClasses = Utilities.createSchoolClassesList(student);
+		if (!schoolClasses.contains(schoolClass)) return badRequest(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "schoolClasses", "Unauthorized request."));
+
 		if (schoolClass.teacherID != null) {
 			schoolClass.students.remove(student);
 			try {
@@ -177,7 +203,7 @@ public class Classes extends Controller {
 						try {
 							assignments.get(i).delete();
 						} catch (PersistenceException e) {
-							//Do nothing
+							// Do nothing
 						}
 						assignments.remove(i);
 					}
@@ -190,7 +216,7 @@ public class Classes extends Controller {
 				try {
 					assignments.get(i).delete();
 				} catch (PersistenceException e) {
-					//Do nothing
+					// Do nothing
 				}
 				assignments.remove(i);
 			}
@@ -204,16 +230,21 @@ public class Classes extends Controller {
 	}
 
 	public Result deleteForTeacher(String schoolClassID, String teacherID) {
+		if(session("userID") == null || !session("userID").equals(teacherID)) return unauthorized(unauthorizedError.render());
 		Teacher teacher = Teacher.find.where().eq("ID", UUID.fromString(teacherID)).findUnique();
-		if(teacher == null) return redirect(routes.Application.index());
+		if (teacher == null) return redirect(routes.Application.index());
 		SchoolClass schoolClass = SchoolClass.find.where().eq("ID", Long.valueOf(schoolClassID)).findUnique();
 		if (schoolClass == null) return badRequest(teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "schoolClasses", "Error while processing."));
+
+		List<SchoolClass> schoolClasses = Utilities.createSchoolClassListForTeacher(teacher);
+		if (!schoolClasses.contains(schoolClass)) return badRequest(teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "schoolClasses", "Unauthorized request."));
+
 		List<Assignment> assignments = Assignment.find.where().eq("SCHOOL_CLASS_ID", schoolClass.id).findList();
 		for (int j = assignments.size() - 1; j >= 0; j--) {
 			try {
 				assignments.get(j).delete();
 			} catch (PersistenceException e) {
-				//Do nothing
+				// Do nothing
 			}
 			assignments.remove(j);
 		}

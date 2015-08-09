@@ -50,7 +50,8 @@ POST   /parent/settings/eit/                                     controllers.Par
 POST   /parent/addchild/                                         controllers.Parents.createChild(parentID: String)
 GET    /parent/tochild/                                          controllers.Parents.redirectToStudent(studentID: java.util.UUID, parentID: String)
 GET    /parent/refresh/											 controllers.Parents.refresh(parentID: java.util.UUID)
-POST   /parent/delete											 controllers.Parents.deleteParentAccount(parentID: java.util.UUID)
+POST   /parent/child/delete/									 controllers.Parents.deleteChildAccount(parentID: java.util.UUID, studentID: java.util.UUID)
+POST   /parent/delete/											 controllers.Parents.deleteParentAccount(parentID: java.util.UUID)
 
 # Signups
 GET    /signup                                                   controllers.Signups.accountTypeSelector()
