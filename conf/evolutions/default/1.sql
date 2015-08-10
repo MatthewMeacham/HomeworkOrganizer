@@ -30,9 +30,9 @@ create table note (
 
 create table parent (
   id                        varchar(40) not null,
-  name                      varchar(255),
   email                     varchar(255),
   password                  varchar(255),
+  name                      varchar(255),
   salt                      varchar(255),
   constraint pk_parent primary key (id))
 ;
@@ -48,9 +48,9 @@ create table school_class (
 
 create table student (
   id                        varchar(40) not null,
-  name                      varchar(255),
   email                     varchar(255),
   password                  varchar(255),
+  name                      varchar(255),
   salt                      varchar(255),
   grade                     varchar(255),
   parent_id                 varchar(40),

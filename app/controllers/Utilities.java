@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 import models.Assignment;
 import models.Note;
@@ -15,9 +19,10 @@ import play.mvc.Controller;
 
 public class Utilities extends Controller {
 
-	// The number of days in today, this is set to year * 366 - (12 - month) *
-	// 31 - (31 - day)
+	// The number of days in today
 	public static int today;
+	
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MM yyyy");
 
 	// Checks to see if the student account with the given studentID is a child
 	// account meaning it was parent created
@@ -36,9 +41,31 @@ public class Utilities extends Controller {
 		// have to add one because 0 is January
 		int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
 		int year = Calendar.getInstance().get(Calendar.YEAR);
-		int total = (year * 366) - ((12 - month) * 31) - (31 - day);
+		int total = calculateTotal(day, month, year);
 		today = total;
 	}
+	
+	public static String getMonthString(int month) {
+		if(month < 10) return "0" + month;
+		return "" + month;
+	}
+	
+	public static String getDayString(int day) {
+		if(day < 10) return "0" + day;
+		return "" + day;
+	}
+	
+	public static int calculateTotal(int day, int month, int year) {
+		String dateString = getDayString(day) + " " + getMonthString(month) + " " + year;
+		try {
+			Date date = dateFormat.parse(dateString);
+			long time = date.getTime();
+			return (int) TimeUnit.DAYS.convert(time, TimeUnit.MILLISECONDS);
+		} catch (ParseException e) {
+			return 0;
+		}
+	}
+
 
 	// For All of the create_Lists Methods:
 	// Recall that SQL uses underscores, you can't use student.id it becomes
@@ -65,7 +92,7 @@ public class Utilities extends Controller {
 
 	// Creates the assignments list for the student
 	// TODO FIND A BETTER WAY TO DO THIS
-	// TODO TRIPLE NESTED FOR LOOP IT SUCH A BAAADDDD IDEA
+	// TODO TRIPLE NESTED FOR LOOP IS SUCH A BAAADDDD IDEA
 	public static List<Assignment> createAssignmentsList(Student student) {
 		setToday();
 
@@ -91,60 +118,6 @@ public class Utilities extends Controller {
 		for(int i = assignments.size() - 1; i >= 0; i--) {
 			if(assignments.get(i).finished) assignments.remove(i);
 		}
-
-		// List<Assignment> assignments =
-		// Assignment.find.where().eq("FOREIGN_ID", student.id).findList();
-		// for (int i = 0; i < schoolClasses.size(); i++) {
-		// List<Assignment> schoolClassAssignments = Assignment.find.where().eq("SCHOOL_CLASS_ID", schoolClasses.get(i).id).findList();
-		// if (schoolClasses.get(i).teacherID != null) {
-		// // SchoolClass from a teacher
-		// // for(int j = schoolClassAssignments.size() - 1; j >= 0; j--) {
-		// // for(int k = schoolClassAssignments.size() - 1; k >= 0; k--) {
-		// // if(j == k) continue;
-		// // if(Assignment.same(schoolClassAssignments.get(j),
-		// // schoolClassAssignments.get(k))) {
-		// // schoolClassAssignments.remove(j);
-		// // }
-		// // }
-		// // }
-		//
-		// for (int j = schoolClassAssignments.size() - 1; j >= 0; j--) {
-		// for (int k = 0; k < assignments.size(); k++) {
-		//
-		// }
-		// }
-		//
-		// assignments.addAll(schoolClassAssignments);
-		// } else {
-		// // Self-added SchoolClass
-		// assignments.addAll(schoolClassAssignments);
-		// }
-		// }
-		// for (int i = 0; i < schoolClasses.size(); i++) {
-		//
-		// List<Assignment> schoolClassAssignments =
-		// Assignment.find.where().eq("SCHOOL_CLASS_ID",
-		// schoolClasses.get(i).id).findList();
-		//
-		// if (schoolClasses.get(i).teacherID != null) {
-		// for (int k = schoolClassAssignments.size() - 1; k >= 0; k--) {
-		// for (int j = assignments.size() - 1; j >= 0; j--) {
-		// if (Assignment.same(assignments.get(j),
-		// schoolClassAssignments.get(k))) {
-		// schoolClassAssignments.remove(k);
-		// }
-		// }
-		// }
-		// }
-		// for (int j = 0; j < schoolClassAssignments.size(); j++) {
-		// assignments.add(Assignment.create(schoolClassAssignments.get(j),
-		// student.id));
-		// }
-		// }
-		//
-		// for (int i = assignments.size() - 1; i >= 0; i--) {
-		// if (assignments.get(i).finished) assignments.remove(i);
-		// }
 
 		return sortList(assignments);
 	}
@@ -192,9 +165,6 @@ public class Utilities extends Controller {
 	// Create the children list for the given parent
 	public static List<Student> createChildrenList(Parent parent) {
 		List<Student> children = Student.find.where().eq("email", parent.email).findList();
-		for (int i = children.size() - 1; i >= 0; i--) {
-			if (children.get(i).parent == null) continue;
-		}
 		return children;
 	}
 
@@ -221,7 +191,10 @@ public class Utilities extends Controller {
 	// Sort a list from the oldest date to the newest date
 	public static List<Assignment> sortList(List<Assignment> assignments) {
 		if (assignments.size() <= 1) return assignments;
+		/*
+		List<Assignment> beginningAssignments = assignments;
 		List<Assignment> returnAssignments = new ArrayList<Assignment>();
+		long startTime1 = System.nanoTime();
 		returnAssignments.add(assignments.remove(0));
 
 		for (int i = assignments.size() - 1; i >= 0; i--) {
@@ -237,7 +210,29 @@ public class Utilities extends Controller {
 				if (j == 0) returnAssignments.add(0, assignments.remove(i));
 			}
 		}
-		return returnAssignments;
-	}
+		long endTime1 = System.nanoTime();
+		System.out.println("TEST 1: " + (double) ((endTime1 - startTime1) / 1000000.0));
+		*/
+		
+		//long startTime2 = System.nanoTime();
+		
+		boolean noOperation;
+		do {
+			noOperation = true;
+			for(int i = 0; i < assignments.size() - 1; i++) {
+				if(assignments.get(i).total > assignments.get(i + 1).total) {
+					Assignment tempAssignment = assignments.get(i + 1);
+					assignments.set(i + 1, assignments.get(i));
+					assignments.set(i, tempAssignment);
+					noOperation = false;
+				}
+			}
+		}while(!noOperation);
+		
+		//long endTime2 = System.nanoTime();
+		//System.out.println("TEST 2: " + (double) ((endTime2 - startTime2) / 1000000.0));
 
+		
+		return assignments;
+	}
 }

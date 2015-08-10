@@ -4,24 +4,12 @@ import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-
-import play.data.validation.Constraints.Required;
+import javax.persistence.PersistenceException;
 
 import com.avaje.ebean.Model;
 
 @Entity
 public class Teacher extends AUser {
-
-	// @Id
-	// public Long id;
-
-	@Required
-	public String email;
-	@Required
-	public String password;
-	@Required
-	public String name;
-	public String salt;
 
 	@OneToMany
 	public SchoolClass schoolClass;
@@ -35,8 +23,8 @@ public class Teacher extends AUser {
 		this.salt = salt;
 	}
 
-	public static Teacher create(String name, String email, String salt, String password) {
-		if (find.where().eq("email", email.toLowerCase()).eq("password", password).findUnique() == null && Parent.find.where().eq("email", email.toLowerCase()).findUnique() == null && Student.find.where().eq("email", email.toLowerCase()).findUnique() == null) {
+	public static Teacher create(String name, String email, String salt, String password) throws PersistenceException{
+		if (find.where().eq("email", email.toLowerCase()).eq("password", password).findUnique() == null && Parent.find.where().eq("email", email.toLowerCase()).findUnique() == null && Student.find.where().eq("email", email).findUnique() == null) {
 			Teacher teacher = new Teacher(name, email, salt, password);
 			teacher.save();
 			return teacher;
@@ -45,15 +33,13 @@ public class Teacher extends AUser {
 	}
 
 	public static Teacher authenticate(String email, String password) {
-		Teacher teacher = find.where().eq("email", email).eq("password", password).findUnique();
+		Teacher teacher = find.where().eq("email", email.toLowerCase()).eq("password", password).findUnique();
 		if (teacher == null) return null;
 		return teacher;
 	}
 
 	public static boolean exists(String email) {
-		Teacher teacher = find.where().eq("email", email).findUnique();
-		if (teacher == null) return false;
-		return true;
+		return !(find.where().eq("email", email.toLowerCase()).findUnique() == null);
 	}
 
 }

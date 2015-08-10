@@ -6,6 +6,15 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.*;
 
+import controllers.Application;
+
+import com.google.common.collect.ImmutableMap;
+
+import static play.mvc.Http.Status.OK;
+import static play.test.Helpers.GET;
+import static play.test.Helpers.contentAsString;
+import static play.test.Helpers.route;
+
 import play.mvc.*;
 import play.test.*;
 import play.data.DynamicForm;
@@ -14,11 +23,14 @@ import play.data.validation.Constraints.RequiredValidator;
 import play.i18n.Lang;
 import play.libs.F;
 import play.libs.F.*;
+import play.data.Form;
+import play.mvc.Result;
+import play.test.FakeApplication;
+import play.test.WithApplication;
 import play.twirl.api.Content;
 
 import static play.test.Helpers.*;
 import static org.junit.Assert.*;
-
 
 /**
 *
@@ -26,13 +38,14 @@ import static org.junit.Assert.*;
 * If you are interested in mocking a whole application, see the wiki for more details.
 *
 */
-public class ApplicationTest {
+public class ApplicationTest extends WithApplication {
 
     @Test
     public void simpleCheck() {
         int a = 1 + 1;
         assertEquals(2, a);
     }
+
 
 //    @Test
 //    public void renderTemplate() {

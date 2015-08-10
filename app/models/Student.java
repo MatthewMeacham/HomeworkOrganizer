@@ -5,6 +5,7 @@ import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PersistenceException;
 
 import play.data.validation.Constraints.Required;
 
@@ -13,13 +14,6 @@ import com.avaje.ebean.Model;
 @Entity
 public class Student extends AUser {
 
-	@Required
-	public String name;
-	@Required
-	public String email;
-	@Required
-	public String password;
-	public String salt;
 	@Required
 	public String grade;
 
@@ -39,7 +33,7 @@ public class Student extends AUser {
 		this.grade = grade;
 	}
 
-	public static Student create(String name, String email, String salt, String password, String grade) {
+	public static Student create(String name, String email, String salt, String password, String grade) throws PersistenceException{
 		if (find.where().eq("email", email.toLowerCase()).eq("password", password).findUnique() == null && Teacher.find.where().eq("email", email).findUnique() == null) {
 			Student student = new Student(name, email, salt, password, grade);
 			student.save();
@@ -55,9 +49,7 @@ public class Student extends AUser {
 	}
 
 	public static boolean exists(String email) {
-		Student student = find.where().eq("email", email.toLowerCase()).findUnique();
-		if (student == null) return false;
-		return true;
+		return find.where().eq("email", email.toLowerCase()).findList().size() > 0;
 	}
 
 }

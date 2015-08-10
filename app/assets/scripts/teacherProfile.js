@@ -145,24 +145,28 @@ var submitted = false;
 function submitAssignmentDeleteForm(id) {
 	if (submitted)
 		return;
+	submitted = true;
 	document.getElementById('assignmentDeleteForm' + id).submit();
 }
 
 function submitAssignmentEditForm(id) {
 	if (submitted)
 		return;
+	submitted = true;
 	document.getElementById('assignmentEditForm' + id).submit();
 }
 
 function submitSchoolClassDeleteForm(id) {
 	if (submitted)
 		return;
+	submitted = true;
 	document.getElementById('schoolClassDeleteForm' + id).submit();
 }
 
 function submitSchoolClassEditForm(id) {
 	if (submitted)
 		return;
+	submitted = true;
 	document.getElementById('schoolClassEditForm' + id).submit();
 }
 

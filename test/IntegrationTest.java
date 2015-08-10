@@ -1,21 +1,16 @@
-import org.junit.*;
+import org.junit.Test;
 
-import play.mvc.*;
-import play.test.*;
-import play.libs.F.*;
+import controllers.routes;
 
-import static play.test.Helpers.*;
-import static org.junit.Assert.*;
-
-import static org.fluentlenium.core.filter.FilterConstructor.*;
-
-public class IntegrationTest {
+public class IntegrationTest extends BaseIntegrationTest{
 
     /**
      * add your integration test here
      * in this example we just check if the welcome page is being shown
-     */
-    /** Commented out because it's generic and doesn't apply to Orgnizer.
+     */	
+	
+	
+    /* Commented out because it's generic and doesn't apply to Orgnizer.
 	@Test
     public void test() {
         running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, new Callback<TestBrowser>() {
@@ -25,5 +20,5 @@ public class IntegrationTest {
             }
         });
     }
-	**/
+	*/
 }
