@@ -80,7 +80,7 @@ function changeColorField(color) {
 		e.value = colors[11];
 		break;
 	default:
-		e.value = "#c34444";
+		e.value = "#C54340";
 	}
 }
 

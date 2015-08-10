@@ -4,12 +4,12 @@
 
 # Application
 GET    /                                                         controllers.Application.index()
-GET    /login                                                    controllers.Application.login()
-GET    /logout                                                   controllers.Application.logout()
-POST   /authenticate                                             controllers.Application.authenticate()
-GET    /faq                                                      controllers.Application.faq()
-GET    /contact                                                  controllers.Application.contactUsPage()
-POST   /contact                                                  controllers.Application.contactUs()
+GET    /login/                                                   controllers.Application.login()
+GET    /logout/                                                  controllers.Application.logout()
+POST   /authenticate/                                            controllers.Application.authenticate()
+GET    /faq/                                                     controllers.Application.faq()
+GET    /contact/                                                 controllers.Application.contactUsPage()
+POST   /contact/                                                 controllers.Application.contactUs()
 GET	   /privacyPolicy/											 controllers.Application.privacyPolicy()
 GET	   /termsAndConditions/										 controllers.Application.termsAndConditions()
 
@@ -43,28 +43,28 @@ POST   /schoolClass/delete/                                      controllers.Cla
 POST   /teacher/schoolClass/delete/                              controllers.Classes.deleteForTeacher(schoolClassID: String, teacherID: String)
 
 # Parents
-GET    /parent/profile                                           controllers.Parents.toProfile(parentID: String)
-POST   /parent/settings/edit                                     controllers.Parents.updateSettings(parentID: String, studentID: String)
-POST   /parent/addchild                                          controllers.Parents.createChild(parentID: String)
-GET    /parent/tochild                                           controllers.Parents.redirectToStudent(studentID: java.util.UUID, parentID: String)
+GET    /parent/profile/                                          controllers.Parents.toProfile(parentID: String)
+POST   /parent/settings/eit/                                     controllers.Parents.updateSettings(parentID: String, studentID: String)
+POST   /parent/addchild/                                         controllers.Parents.createChild(parentID: String)
+GET    /parent/tochild/                                          controllers.Parents.redirectToStudent(studentID: java.util.UUID, parentID: String)
 GET    /parent/refresh/											 controllers.Parents.refresh(parentID: java.util.UUID)
 
 # Signups
 GET    /signup                                                   controllers.Signups.accountTypeSelector()
-GET    /signup/student                                           controllers.Signups.studentForm()
-POST   /signup/student                                           controllers.Signups.createStudent()
-GET    /signup/parent                                            controllers.Signups.parentForm()
-POST   /signup/parent                                            controllers.Signups.createParent()
-GET    /signup/teacher                                           controllers.Signups.teacherForm()
-POST   /signup/teacher                                           controllers.Signups.createTeacher()
+GET    /signup/student/                                          controllers.Signups.studentForm()
+POST   /signup/student/                                          controllers.Signups.createStudent()
+GET    /signup/parent/                                           controllers.Signups.parentForm()
+POST   /signup/parent/                                           controllers.Signups.createParent()
+GET    /signup/teacher/                                          controllers.Signups.teacherForm()
+POST   /signup/teacher/                                          controllers.Signups.createTeacher()
 
 # Students
-GET    /student/profile                                          controllers.Students.toProfile(studentID: String)
+GET    /student/profile/                                         controllers.Students.toProfile(studentID: String)
 POST   /student/settings/update                                  controllers.Students.updateSettings(studentID: String)
-GET    /student/refresh                                          controllers.Students.refresh(studentID: java.util.UUID)
+GET    /student/refresh/                                         controllers.Students.refresh(studentID: java.util.UUID)
 
 # Teachers
-GET    /teacher/profile                                          controllers.Teachers.toProfile(teacherID: java.util.UUID)
+GET    /teacher/profile/                                         controllers.Teachers.toProfile(teacherID: java.util.UUID)
 POST   /teacher/settings/edit                                    controllers.Teachers.updateSettings(teacherID: String)
 GET    /teacher/refresh/										 controllers.Teachers.refresh(teacherID: java.util.UUID)
 

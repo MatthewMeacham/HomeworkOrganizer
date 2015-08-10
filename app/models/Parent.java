@@ -35,8 +35,6 @@ public class Parent extends AUser {
 	}
 
 	public static boolean exists(String email) {
-		Parent parent = find.where().eq("email", email.toLowerCase()).findUnique();
-		if (parent == null) return false;
-		return true;
+		return !(find.where().eq("email", email.toLowerCase()).findUnique() == null);
 	}
 }
