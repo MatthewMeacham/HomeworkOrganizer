@@ -26,3 +26,4 @@ addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "4.0.0")
 
 // Play2War Plugin
 addSbtPlugin("com.github.play2war" % "play2-war-plugin" % "1.4-beta1")
+
