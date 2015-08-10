@@ -78,7 +78,7 @@ public class Utilities extends Controller {
 	public static List<SchoolClass> createSchoolClassesList(Student student) {
 		List<SchoolClass> returnSchoolClasses = new ArrayList<SchoolClass>();
 
-		String sql = "SELECT * FROM SCHOOL_CLASS_STUDENT WHERE STUDENT_ID=\'" + student.id + "\'";
+		String sql = "SELECT * FROM school_class_student WHERE student_id=\'" + student.id + "\'";
 
 		Connection connection = DB.getConnection();
 		Statement statement = null;
