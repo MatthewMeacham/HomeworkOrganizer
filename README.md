@@ -1,2 +1,2 @@
-# Orgnizer v1.1.0
+# Orgnizer v1.1.1
 #####The Premier Homework Organizing Application
