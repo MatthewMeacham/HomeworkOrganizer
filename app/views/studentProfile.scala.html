@@ -115,7 +115,7 @@
 										<div class="green" style="border-left: 40px solid @if(!assignment.schoolClass.color.equals("#C54340")) {@assignment.schoolClass.color;}else{#4FBF8D;}">
 									} else {
 										@if(assignment.total <= today + 5 && assignment.total > today + 1){
-										<div class="yellow" style="border-left: 40px solid  @if(!assignment.schoolClass.color.equals("#C54340")) {@assignment.schoolClass.color;}else{#F2CA27;}">
+										<div class="yellow" style="border-left: 40px solid  @if(!assignment.schoolClass.color.equals("#C54340")) {@assignment.schoolClass.color;}else{#F3D03F;}">
 										} else {
 										<div class="red" style="border-left: 40px solid  @if(!assignment.schoolClass.color.equals("#C54340")) {@assignment.schoolClass.color;}else{#C54340;}">
 										}
@@ -139,7 +139,7 @@
 											}
 											@form(action = routes.Assignments.setFinished(String.valueOf(assignment.id), student.id.toString()), 'id -> ("assignmentFinishedForm" + String.valueOf(assignment.id))) {
 												<a href="#" onclick="submitFinishedAssignmentForm(@assignment.id); return false">
-													<i data-toggle="tooltip" data-placement="top" title="Finished" class="fa fa-check myIcon"></i>
+													<i data-toggle="tooltip" data-placement="top" title="Finish" class="fa fa-check myIcon"></i>
 												</a>
 											}
 
@@ -195,7 +195,7 @@
 							}
 							@form(action = routes.Classes.create(student.id.toString())) {
 								<input type="hidden" name="studentId" value="@student.id">
-								<input type="hidden" id="color" name="color" value="#c34444">
+								<input type="hidden" id="color" name="color" value="#C54340">
 								<h2 id="subjectError" style="color:red;"></h2>
 								<br><input id="subject" type="text" name="subject" placeholder="New Class" required><br>
 									<!-- BEGIN COLOR CHOOSER BOX -->
@@ -416,15 +416,18 @@
 												@finishedAssignment.spanner
 											</span>
 											<div class="contentInside">
-											@form(action = routes.Assignments.setUnfinished(String.valueOf(finishedAssignment.id), student.id.toString()), 'id -> ("assignmentUnfinishedForm" + String.valueOf(finishedAssignment.id))) {
+												@form(action = routes.Assignments.setUnfinished(String.valueOf(finishedAssignment.id), student.id.toString()), 'id -> ("assignmentUnfinishedForm" + String.valueOf(finishedAssignment.id))) {
 													<a href="#" onclick="submitUnfinishedAssignmentForm(@finishedAssignment.id); return false">
-														<i class="fa fa-undo myIcon" data-toggle="tooltip" title="Unfinished"></i>
+														<i class="fa fa-undo myIcon" data-toggle="tooltip" title="Unfinish"></i>
 													</a>
 												}
-											@form(action = routes.Assignments.deleteFinished(String.valueOf(finishedAssignment.id), student.id.toString()), 'id -> ("deleteFinishedAssignment" + String.valueOf(finishedAssignment.id))) {
-													<a href="#" onclick="deleteFinishedAssignmentForm(@finishedAssignment.id); return false">
-														<i class="fa fa-trash myIcon" data-toggle="tooltip" title="Delete"></i>
-													</a>
+													
+												@if(finishedAssignment.schoolClass.teacherID == null) {
+													@form(action = routes.Assignments.deleteFinished(String.valueOf(finishedAssignment.id), student.id.toString()), 'id -> ("deleteFinishedAssignment" + String.valueOf(finishedAssignment.id))) {
+														<a href="#" onclick="deleteFinishedAssignmentForm(@finishedAssignment.id); return false">
+															<i class="fa fa-trash myIcon" data-toggle="tooltip" title="Delete"></i>
+														</a>
+													}
 												}
 												<h2 class="itemHeaderBig">@finishedAssignment.schoolClass.subject</h2>
 												<h3 class="itemDueDateBig"> @finishedAssignment.dueDate</h3>
