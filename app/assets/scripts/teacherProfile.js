@@ -209,6 +209,8 @@ function toggle_visibility(id) {
 
 // Only called upon load
 function changeNavColor(id) {
+	if(id === '') 
+		id = 'overview';
 	var e = document.getElementById(id + 'Anchor');
 	document.getElementById('overviewAnchor').style.color = "white";
 	document.getElementById('schoolClassesAnchor').style.color = "white";

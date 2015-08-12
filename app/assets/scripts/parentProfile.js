@@ -149,8 +149,6 @@ function deleteStudentAccount(id){
 	document.getElementById('accountDeleteForm' + id).submit();
 }
 
-//studentDeleteAccount
-
 function deleteParentAccount(){
 	if (submitted)
 		return;
@@ -216,6 +214,8 @@ function toggle_visibility(id) {
 
 // Only called upon load
 function changeNavColor(id) {
+	if(id === '') 
+		id = 'overview';
 	var e = document.getElementById(id + 'Anchor');
 	document.getElementById('overviewAnchor').style.color = "white";
 	document.getElementById('addChildAnchor').style.color = "white";

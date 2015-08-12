@@ -110,7 +110,7 @@
 										<div class="green" style="border-left: 40px solid @if(!assignment.schoolClass.color.equals("#C54340")) {@assignment.schoolClass.color;}else{#4FBF8D;}">
 									} else {
 										@if(assignment.total <= today + 5 && assignment.total > today + 1){
-										<div class="yellow" style="border-left: 40px solid  @if(!assignment.schoolClass.color.equals("#C54340")) {@assignment.schoolClass.color;}else{#F2CA27;}">
+										<div class="yellow" style="border-left: 40px solid  @if(!assignment.schoolClass.color.equals("#C54340")) {@assignment.schoolClass.color;}else{#F3D03F;}">
 										} else {
 										<div class="red" style="border-left: 40px solid  @if(!assignment.schoolClass.color.equals("#C54340")) {@assignment.schoolClass.color;}else{#C54340;}">
 										}
@@ -167,7 +167,7 @@
 											<div>
 												<p id="classColor" style="font-size: 20px; margin-bottom: -15px; margin-top: -15px;">
 													<span class="thisColorhere" style="background-color: @schoolClass.color "></span>
-													@schoolClass.subject - ID: @schoolClass.id - Password: @schoolClass.password
+													@schoolClass.subject - ID: @schoolClass.id 
 													<i id="delete" data-toggle="tooltip" data-placement="right" title="Delete" class="fa fa-trash delete" onclick="submitSchoolClassDeleteForm(@schoolClass.id); return false;"></i>
 													<i id="edit" data-toggle="tooltip" data-placement="right" title="Edit" class="fa fa-pencil edit" onclick="submitSchoolClassEditForm(@schoolClass.id); return false;"></i>
 													@form(action = routes.Classes.deleteForTeacher(String.valueOf(schoolClass.id), schoolClass.teacherID.toString()), 'id -> ("schoolClassDeleteForm" + String.valueOf(schoolClass.id))) {
@@ -182,7 +182,7 @@
 							}
 							@form(action = routes.Classes.createForTeacher(teacher.id.toString())) {
 								<input type="hidden" name="teacherId" value="teacher.id">
-								<input type="hidden" id="color" name="color" value="#c34444">
+								<input type="hidden" id="color" name="color" value="#C54340">
 								<h2 id="subjectError" style="color:red;"></h2>
 								<br><input id="subject" type="text" name="subject" placeholder="New Class" required><br>
 								<br><input id="password" type="password" name="password" placeholder="Optional password for the class"><br>

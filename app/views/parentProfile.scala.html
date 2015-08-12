@@ -103,40 +103,50 @@
 					<div class="area center">
 						<h2 style="text-align: center;">Overview</h2>
 						@if(students.length > 0) {
-							@for(assignment <- overview) {
-								<div class="itemBigContainer">
-									@if(assignment.total > today + 5) {
-									<div class="green">
-									} else {
-										@if(assignment.total <= today + 5 && assignment.total > today + 1){
-										<div class="yellow">
+							@if(overview.length > 0) {
+								@for(assignment <- overview) {
+									<div class="itemBigContainer">
+										@if(assignment.total > today + 5) {
+										<div class="green">
 										} else {
-										<div class="red">
-										}
-									}
-										<span class="alertBig">
-											@assignment.spanner
-										</span>
-
-										<div class="contentInside">  
-											@if(assignment.schoolClass.teacherID == null) {
-												@form(action = routes.Assignments.deleteForParent(assignment.id, parent.id, assignment.foreignID), 'id -> ("assignmentDeleteForm" + String.valueOf(assignment.id))) {
-													<a href="#" onclick="submitAssignmentDeleteForm(@assignment.id); return false;">
-														<i data-toggle="tooltip" data-placement="top" title="Delete" class="fa fa-trash myIcon"></i>
-													</a>
-												}
-			
-												@form(action = routes.Assignments.readForParent(assignment.id, parent.id, assignment.foreignID), 'id -> ("assignmentEditForm" + String.valueOf(assignment.id))) {
-													<a href="#" onclick="submitAssignmentEditForm(@assignment.id); return false;">
-														<i data-toggle="tooltip" data-placement="top" title="Edit" class="fa fa-pencil myIcon"></i>
-													</a>
-												}
+											@if(assignment.total <= today + 5 && assignment.total > today + 1){
+											<div class="yellow">
+											} else {
+											<div class="red">
 											}
-											<p class="itemHeaderBig">@assignment.schoolClass.subject - @Student.find.where().eq("ID", assignment.foreignID).findUnique().name</p>
-											<p class="itemDueDateBig"> @assignment.dueDate</p>
-											<p class="itemDescBig"> @assignment.description </p>
+										}
+											<span class="alertBig">
+												@assignment.spanner
+											</span>
+	
+											<div class="contentInside">  
+												@if(assignment.schoolClass.teacherID == null) {
+													@form(action = routes.Assignments.deleteForParent(assignment.id, parent.id, assignment.foreignID), 'id -> ("assignmentDeleteForm" + String.valueOf(assignment.id))) {
+														<a href="#" onclick="submitAssignmentDeleteForm(@assignment.id); return false;">
+															<i data-toggle="tooltip" data-placement="top" title="Delete" class="fa fa-trash myIcon"></i>
+														</a>
+													}
+				
+													@form(action = routes.Assignments.readForParent(assignment.id, parent.id, assignment.foreignID), 'id -> ("assignmentEditForm" + String.valueOf(assignment.id))) {
+														<a href="#" onclick="submitAssignmentEditForm(@assignment.id); return false;">
+															<i data-toggle="tooltip" data-placement="top" title="Edit" class="fa fa-pencil myIcon"></i>
+														</a>
+													}
+												}
+												<p class="itemHeaderBig">@assignment.schoolClass.subject - @Student.find.where().eq("ID", assignment.foreignID).findUnique().name</p>
+												<p class="itemDueDateBig"> @assignment.dueDate</p>
+												<p class="itemDescBig"> @assignment.description </p>
+											</div>
 										</div>
 									</div>
+								}
+							} else {
+								<div style="text-align: center;">
+									@if(students.length == 1){
+										<h3> Your child doesn't have any assignments yet. Once he/she adds some, they will appear here. </h3>
+									} else {
+										<h3> None of your children have any assignments yet. Once they add some, they will appear here. </h3>
+									}
 								</div>
 							}
 						} else {

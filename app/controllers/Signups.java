@@ -118,7 +118,7 @@ public class Signups extends Controller {
 
 		session("userID", parent.id.toString());
 
-		return ok(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "", ""));
+		return ok(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "overview", ""));
 	}
 
 	// Create a new Teacher account from the request
@@ -151,7 +151,7 @@ public class Signups extends Controller {
 
 		session("userID", teacher.id.toString());
 
-		return ok(teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "", ""));
+		return ok(teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "overview", ""));
 	}
 
 }
