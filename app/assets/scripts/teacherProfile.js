@@ -128,7 +128,6 @@ $(function() {
 		var w = $(window).width();
 		if (w <= 750) {
 			$(menu).slideToggle();
-			$('#toggle, .pull').toggleClass("on");
 		}
 	});
 
@@ -219,15 +218,6 @@ function changeNavColor(id) {
 	e.style.color = '#56ced6';
 }
 
-$(".pull").bind('click', function() {
-	$('#toggle').toggleClass("on");
-	return false;
-});
-
-$(".pull").bind('click', function() {
-	$('#toggle').toggleClass("on");
-	return false;
-});
 
 var today = new Date();
 var dd = today.getDate();
