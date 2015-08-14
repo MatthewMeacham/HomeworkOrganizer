@@ -3,7 +3,7 @@ import com.github.play2war.plugin._
 
 name := """HomeworkOrganizer"""
 
-version := "1.1.0"
+version := "1.1.1"
 
 // Add Play2War settings to project
 Play2WarPlugin.play2WarSettings

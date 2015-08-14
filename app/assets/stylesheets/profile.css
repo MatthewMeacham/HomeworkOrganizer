@@ -586,487 +586,44 @@ nav a#pull {
 	position: relative;
 	top: 30px;
 }
-@media screen and (max-width: 600px) {
-	.innerContentMain {
-		max-height: 354px;
-		max-width: 100%;
-	}
 
-	.container {
-		margin: 0;
-		margin-top: 20px;
-		margin-bottom: 20px;
-		margin-left: -20px;
-		text-align: center;
-		background-color: #ecf0f1;
-		width: 100%;
-		color: #c4413b;
-	}
 
-	.area {
-		width: 100%;
-		margin-left: -15px;
-		margin-bottom: 20px;
-		padding: 15px;
-		position: relative;
-	}
-
-	#mobile {
-		margin: 0;
-		padding: 0;
-		display: inline-block;
-		text-align: center;
-		width: 100%;
-	}
-
-	#browser {
-		display: none;
-	}
-
-	nav {
-  		height: auto;
-  		outline: none;
-		text-transform: uppercase;
-  	}
-
-  	nav:focus {
-		outline: 0;
-	}
-  	nav ul {
-  		width: 50%;
-  		display: block;
-  		height: auto;
-  		outline: none;
-  	}
-  	nav li {
-  		width: 100%;
-  		text-align: center;
-  		float: left;
-  		position: relative;
-  		outline: none;
-  		margin: 0;
-  	}
-  	nav li a {
-		outline: none;
-		text-align: center;
-	  	-o-transition:.5s;
-		-ms-transition:.5s;
-		-moz-transition:.5s;
-		-webkit-transition:.5s;
-		transition:.5s;
-	}
-
-	nav li a:hover {
-		outline: none;
-		text-align: center;
-		color: #e74c3c;
-	}
-
-  	nav a {
-	  	text-align: left;
-	  	width: 50%;
-	  	outline: none;
-	  	text-indent: 5px;
-  	}
-
+.innerContentMain {
+	max-height: 354px;
+	max-width: 100%;
 }
 
-
-	.innerContentMain {
-		max-height: 354px;
-		max-width: 100%;
-	}
-
-	.container {
-		margin: 0;
-		margin-top: 20px;
-		margin-bottom: 20px;
-		margin-left: -20px;
-		text-align: center;
-		background-color: #ecf0f1;
-		width: 100%;
-		color: #c4413b;
-	}
-
-	.area {
-		width: 100%;
-		margin-left: -15px;
-		margin-bottom: 20px;
-		padding: 15px;
-		position: relative;
-	}
-
-	#mobile {
-		margin: 0;
-		padding: 0;
-		display: inline-block;
-		text-align: center;
-		width: 100%;
-	}
-
-	#browser {
-		display: none;
-	}
-@media screen and (max-width: 1024px) {
-    #delete, #edit {
-		opacity: 1 !important;
-		display: inline-block;
-		cursor: pointer;
-		position: relative;
-	}
-	.edit, .delete {
-		top: -1px !important;
-		position: relative;
-	}
-	#edit {
-		font-size: 14px;
-		color: black;
-	}
-
-}
-@media screen and (max-width: 840px) {
-	nav a {
-		font-size: 14px;
-	}
-}
-@media screen and (max-width: 750px) {
-	.innerContentMain {
-		max-height: 354px;
-		max-width: 100%;
-	}
-
-	.container {
-		margin: 0;
-		margin-top: 20px;
-		margin-bottom: 20px;
-		margin-left: -20px;
-		text-align: center;
-		background-color: #ecf0f1;
-		width: 100%;
-		color: #c4413b;
-	}
-
-	nav a {
-		font-size: 16px;
-	}
-
-	.area {
-		width: 100%;
-		margin-left: -15px;
-		margin-bottom: 20px;
-		padding: 15px;
-		position: relative;
-	}
-
-	#mobile {
-		margin: 0;
-		padding: 0;
-		display: inline-block;
-		text-align: center;
-		width: 100%;
-	}
-
-	#browser {
-		display: none;
-	}
-
-	nav {
-  		height: auto;
-  		outline: 0;
-		text-transform: uppercase;
-		border-bottom: 0;
-		outline: none;
-		text-align: center;
-  	}
-
-  	nav:focus {
-		outline: none;
-	}
-  	nav ul {
-  		width: 50%;
-  		display: block;
-  		height: auto;
-  		outline: none;
-  		right: 0px;
-  	}
-  	nav li {
-  		width: 100%;
-  		text-align: center;
-  		float: left;
-  		position: relative;
-  		outline: none;
-  		margin: 0;
-  	}
-  	nav li a {
-		outline: none;
-		text-align: center;
-	  	-o-transition:.5s;
-		-ms-transition:.5s;
-		-moz-transition:.5s;
-		-webkit-transition:.5s;
-		transition:.5s;
-	}
-
-	nav li a:hover {
-		outline: none;
-		text-align: center;
-		color: #e74c3c;
-	}
-
-  	nav a {
-	  	text-align: left;
-	  	width: 50%;
-	  	outline: none;
-	  	text-indent: 5px;
-  	}
-  	.innerContentMain {
-		max-height: 354px;
-		max-width: 100%;
-	}
-
-	.container {
-		margin: 0;
-		margin-top: 20px;
-		margin-bottom: 20px;
-		margin-left: -20px;
-		text-align: center;
-		background-color: #ecf0f1;
-		width: 100%;
-		color: #c4413b;
-	}
-
-	.area {
-		width: 100%;
-		margin-left: -15px;
-		margin-bottom: 20px;
-		padding: 15px;
-		position: relative;
-	}
-
-	#mobile {
-		margin: 0;
-		padding: 0;
-		display: inline-block;
-		text-align: center;
-		width: 100%;
-	}
-
-	#browser {
-		display: none;
-	}
-
-
-	nav:focus {
-		outline: none;
-	}
-	nav ul {
-		display: none;
-		height: auto;
-		outline: none;
-	}
-	nav .pull {
-		display: block;
-		background-color: #61c0c6;
-		width: 100%;
-		height: 44px;
-		position: relative;
-		outline: none;
-		z-index: 1;
-		cursor: pointer;
-	}
-
-	nav a#pull img{
-		position: absolute;
-		margin-top: 2px;
-		margin-left: 20px;
-		z-index: 10;
-		pointer-events: none;
-	}
-
-	nav a#pull:after {
-		content:"";
-		background: url('nav-icon.png') no-repeat;
-		width: 30px;
-		height: 30px;
-		display: inline-block;
-		position: absolute;
-		right: 15px;
-		top: 10px;
-		outline: none;
-		z-index: -1;
-		pointer-events: none;
-	}
-	#toggle {
-    	width: 28px;
-		height: 30px;
-		margin: 7px auto;
-		float: right;
-		padding-top: 0px;
-		padding-right: 15px;
-		cursor: pointer;
-		opacity: 1;
-		position: relative;
-		transition: 200ms ease-in-out;
-    }
-
-	#toggle:hover {
-		opacity: 0.9;
-		transition: 200ms ease-in-out;
-	}
-	#toggle div {
-		width: 100%;
-		height: 5px;
-		background: white;
-		margin: 4px auto;
-		transition: all  .5s;
-		backface-visibility: hidden;
-	}
-
-	#toggle.on .one {
-		transform: rotate(45deg) translate(5px, 5px);
-	}
-
-	#toggle.on .two {
-
-		opacity: 0;
-	}
-
-	#toggle.on .three {
-		transform: rotate(-45deg) translate(7px, -8px);
-	}
-
-	.refresh {
-		padding: 10px !important;
-		position: relative;
-		margin: 10px;
-		display: none !important;
-	}
-  .download {
-    padding: 10px !important;
-    position: relative;
-    margin: 10px;
-    display: none !important;
-  }
-  #logo {
-    left: 0 !important;
-  }
-  #classColor {
-    position: relative;
-    left: 0px !important;
-  }
-  #studentDeleteAcct {
-        position: relative;
-        right: 40px;
-  }
-
+.container {
+	margin: 0;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	margin-left: -20px;
+	text-align: center;
+	background-color: #ecf0f1;
+	width: 100%;
+	color: #c4413b;
 }
 
-@media only screen and (max-width : 425px) {
-	.assignment select  {
-		width: 90%;
-	}
-	.assignment input {
-		width: 90%;
-	}
-	.assignment button {
-		width: 90%;
-	}
+.area {
+	width: 100%;
+	margin-left: -15px;
+	margin-bottom: 20px;
+	padding: 15px;
+	position: relative;
 }
-@media only screen and (max-width : 320px) {
-	.innerContentMain {
-		max-height: 354px;
-		max-width: 100%;
-	}
 
-	.container {
-		margin: 0;
-		margin-top: 20px;
-		margin-bottom: 20px;
-		margin-left: -20px;
-		text-align: center;
-		background-color: #ecf0f1;
-		width: 100%;
-		color: #c4413b;
-	}
-
-	.area {
-		width: 100%;
-		margin-left: -15px;
-		margin-bottom: 20px;
-		padding: 15px;
-		position: relative;
-	}
-
-	#mobile {
-		margin: 0;
-		padding: 0;
-		display: inline-block;
-		text-align: center;
-		width: 100%;
-	}
-
-	#browser {
-		display: none;
-	}
-
-	nav:focus {
-		outline: none;
-	}
-	nav li a {
-		outline: none;
-	  	-o-transition:.5s;
-		-ms-transition:.5s;
-		-moz-transition:.5s;
-		-webkit-transition:.5s;
-		/* ...and now for the proper property */
-		transition:.5s;
-	}
-	nav li a:hover {
-		outline: none;
-		text-align: center;
-		color: #e74c3c;
-	}
+#mobile {
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+	text-align: center;
+	width: 100%;
 }
-@media screen and (max-width: 415px) {
-	.addClass {
-		width: 95%;
-	}
-	#subject, #password {
-		width: 85%;
-	}
-	#addAssignment .container select {
-		position: relative;
-		right: 5px;
-	}
-	#addAssignment .container select, .submit {
-		width: 90%;
-	}
-	#description {
-		width: 82%;
-	}
-	.alignContentParent button {
-		width: 90%;
-		margin: 5 auto;
-		right: 3px;
-		position: relative;
-	}
-	.alignContentParent input {
-		width: 80%;
-		margin: 15 auto;
-	}
-	.bottomInputFields input {
-		width: 85%;
-	}
-	#accountEmail {
-		position: relative;
-		left: 3px !important;
-	}
-	.left {
-		position: relative;
-		right: 50px !important;
-	}
 
+#browser {
+	display: none;
 }
+
 ::-webkit-scrollbar-track
 {
   background-color: #56ced6;
@@ -1159,178 +716,6 @@ nav a#pull {
 	width: 50%;
 	margin: 0 auto;
 }
-
-/* BEGIN MEDIA QUERIES */
-
-@media screen and (max-width: 860px) {
-	.col {
-		left: 5px;
-	}
-}
-/*  GO FULL WIDTH BELOW 480 PIXELS */
-@media only screen and (max-width: 787px) {
-	.col {
-		margin: 1% 0 1% 0%;
-	}
-	.span_1_of_4, .span_2_of_4, .span_3_of_4, .span_4_of_4 {
-		width: 100%;
-	}
-	.saveChanges {
-		width: 70%;
-		margin: 0 auto;
-		left: 10px;
-		position: relative;
-	}
-	.btn {
-		text-align: center;
-		margin-left: auto;
-		margin-right: auto;
-	}
-	.btnStudent {
-		position: relative;
-		right: 5%;
-	}
-	.span_3_of_3, .span_2_of_3, .span_1_of_3 {
-		width: 100%;
-	}
-	.choosePerson {
-		text-align: center;
-		width: 105%;
-		margin: 0 auto;
-	}
-	.changeSettings .email {
-		position: relative;
-		left: 2%;
-	}
-	#accountEmail {
-		position: relative;
-		left: 10px;
-	}
-
-}
-@media only screen and (max-width: 755px) {
-.itemDueDate {
-	color: #ecf0f1;
-	margin-left: 60px;
-	font-size: 12px;
-	margin-top: -33px;
-}
-
-.itemDueDateBig {
-	/*color: #ecf0f1;*/
-	color: black;
-	margin-left: 60px;
-	font-size: 16px;
-	margin-top: -40px;
-	position: relative;
-	top: 30px;
-}
-
-.itemDesc {
-	color: #ecf0f1;
-	margin-left: 60px;
-	font-size: 8px;
-	margin-top: -28px;
-}
-
-.itemDescBig {
-	/*color: #ecf0f1; */
-	color: black;
-	margin-left: 60px;
-	font-size: 12px;
-	margin-top: 30px;
-	top: 10px;
-	position: relative;
-	line-height: 15px;
-}
-
-.green {
-	margin-left: auto;
-	margin-right: auto;
-	padding-left: 20px;
-	border-radius: 20px;
-	padding-top: 5px;
-	padding: 20px;
-	width: 50%;
-	max-height: 100%;
-	min-height: 75px;
-	line-height: 15px;
-	margin-bottom: 20px;
-	background-color: #4FBF8D;
-}
-
-.yellow {
-	margin-left: auto;
-	margin-right: auto;
-	padding-left: 20px;
-	border-radius: 20px;
-	padding-top: 5px;
-	padding: 20px;
-	width: 50%;
-	max-height: 100%;
-	min-height: 75px;
-	line-height: 15px;
-	margin-bottom: 20px;
-	background-color: #F3D03F;
-}
-
-.red {
-	margin-left: auto;
-	margin-right: auto;
-	padding-left: 20px;
-	border-radius: 20px;
-	padding-top: 5px;
-	padding: 20px;
-	width: 50%;
-	max-height: 100%;
-	min-height: 75px;
-	line-height: 15px;
-	margin-bottom: 20px;
-	background-color: #C54340;
-}
-.itemHeaderBig {
-	font-size: 22px;
-	position: relative;
-	top: 10px;
-	line-height: 20px;
-	margin-left: 60px;
-}
-.alertBig {
-	height: 50px;
-	width: 50px;
-	border-radius: 50%;
-	background-color: #ecf0f1;
-	/*background-color: black;*/
-	color: rgb(197, 67, 64);
-	display: inline-block;
-	line-height: 55px;
-	font-size: 45px;
-	margin-right: 2px;
-	display: inline-block;
-	text-align: center;
-	font-weight: bold;
-}
-.fa {
-	top: 5px;
-	position: relative;
-	left: 15px;
-	z-index: 100;
-}
-.itemBig .itemDueDateBig {
-	position: relative;
-	top: 35px;
-}
-.itemBig .alertBig {
-	position: relative;
-	right: 10px;
-}
-.itemBig .contentInside {
-	position: relative;
-	right: 10px;
-}
-
-}
-
 .overviewToggle {
 	-webkit-animation: fadeIn 3s infinite;
 	-moz-animation: fadeIn 3s infinite;
@@ -1382,7 +767,7 @@ nav a#pull {
 	word-wrap:normal;
 	white-space:normal;
 	filter:alpha(opacity=0);
-	opacity:0;
+	opacity: 0;
 	line-break:auto;
 }
 
@@ -1625,9 +1010,633 @@ img {
     display: block;
     font-size: 18px;
 }
+
+
+
+
+
+
+/* BEGIN MEDIA QUERIES */
+
+
+
+
+
+@media only screen and (max-width : 320px) {
+	.innerContentMain {
+		max-height: 354px;
+		max-width: 100%;
+	}
+	.container {
+		margin: 0;
+		margin-top: 20px;
+		margin-bottom: 20px;
+		margin-left: -20px;
+		text-align: center;
+		background-color: #ecf0f1;
+		width: 100%;
+		color: #c4413b;
+	}
+	.area {
+		width: 100%;
+		margin-left: -15px;
+		margin-bottom: 20px;
+		padding: 15px;
+		position: relative;
+	}
+	#mobile {
+		margin: 0;
+		padding: 0;
+		display: inline-block;
+		text-align: center;
+		width: 100%;
+	}
+	#browser {
+		display: none;
+	}
+	nav:focus {
+		outline: none;
+	}
+	nav li a {
+		outline: none;
+	  	-o-transition:.5s;
+		-ms-transition:.5s;
+		-moz-transition:.5s;
+		-webkit-transition:.5s;
+		/* ...and now for the proper property */
+		transition:.5s;
+	}
+	nav li a:hover {
+		outline: none;
+		text-align: center;
+	}
+}
 @media screen and (max-width: 350px) {
     .deleteButton {
         width: 90%;
         font-size: 14px;
     }
 }
+@media screen and (max-width: 415px) {
+	.addClass {
+		width: 95%;
+	}
+	#subject, #password {
+		width: 85%;
+	}
+	#addAssignment .container select {
+		position: relative;
+		right: 5px;
+	}
+	#addAssignment .container select, .submit {
+		width: 90%;
+	}
+	#description {
+		width: 82%;
+	}
+	.alignContentParent button {
+		width: 90%;
+		margin: 5 auto;
+		right: 3px;
+		position: relative;
+	}
+	.alignContentParent input {
+		width: 80%;
+		margin: 15 auto;
+	}
+	.bottomInputFields input {
+		width: 85%;
+	}
+	#accountEmail {
+		position: relative;
+		left: 3px !important;
+	}
+	.left {
+		position: relative;
+		right: 50px !important;
+	}
+}
+@media only screen and (max-width : 425px) {
+	.assignment select  {
+		width: 90%;
+	}
+	.assignment input {
+		width: 90%;
+	}
+	.assignment button {
+		width: 90%;
+	}
+}
+@media screen and (max-width: 600px) {
+	.innerContentMain {
+		max-height: 354px;
+		max-width: 100%;
+	}
+
+	.container {
+		margin: 0;
+		margin-top: 20px;
+		margin-bottom: 20px;
+		margin-left: -20px;
+		text-align: center;
+		background-color: #ecf0f1;
+		width: 100%;
+		color: #c4413b;
+	}
+
+	.area {
+		width: 100%;
+		margin-left: -15px;
+		margin-bottom: 20px;
+		padding: 15px;
+		position: relative;
+	}
+
+	#mobile {
+		margin: 0;
+		padding: 0;
+		display: inline-block;
+		text-align: center;
+		width: 100%;
+	}
+
+	#browser {
+		display: none;
+	}
+
+	nav {
+  		height: auto;
+  		outline: none;
+		text-transform: uppercase;
+  	}
+
+  	nav:focus {
+		outline: 0;
+	}
+  	nav ul {
+  		width: 50%;
+  		display: block;
+  		height: auto;
+  		outline: none;
+  	}
+  	nav li {
+  		width: 100%;
+  		text-align: center;
+  		float: left;
+  		position: relative;
+  		outline: none;
+  		margin: 0;
+  	}
+  	nav li a {
+		outline: none;
+		text-align: center;
+	  	-o-transition:.5s;
+		-ms-transition:.5s;
+		-moz-transition:.5s;
+		-webkit-transition:.5s;
+		transition:.5s;
+	}
+
+	nav li a:hover {
+		outline: none;
+		text-align: center;
+		color: #e74c3c;
+	}
+
+  	nav a {
+	  	text-align: left;
+	  	width: 50%;
+	  	outline: none;
+	  	text-indent: 5px;
+  	}
+
+}
+@media screen and (max-width: 750px) {
+	.innerContentMain {
+		max-height: 354px;
+		max-width: 100%;
+	}
+
+	.container {
+		margin: 0;
+		margin-top: 20px;
+		margin-bottom: 20px;
+		margin-left: -20px;
+		text-align: center;
+		background-color: #ecf0f1;
+		width: 100%;
+		color: #c4413b;
+	}
+
+	nav a {
+		font-size: 16px;
+	}
+
+	.area {
+		width: 100%;
+		margin-left: -15px;
+		margin-bottom: 20px;
+		padding: 15px;
+		position: relative;
+	}
+
+	#mobile {
+		margin: 0;
+		padding: 0;
+		display: inline-block;
+		text-align: center;
+		width: 100%;
+	}
+
+	#browser {
+		display: none;
+	}
+
+	nav {
+  		height: auto;
+  		outline: 0;
+		text-transform: uppercase;
+		border-bottom: 0;
+		outline: none;
+		text-align: center;
+  	}
+
+  	nav:focus {
+		outline: none;
+	}
+  	nav ul {
+  		width: 50%;
+  		display: block;
+  		height: auto;
+  		outline: none;
+  		right: 0px;
+  	}
+  	nav li {
+  		width: 100%;
+  		text-align: center;
+  		float: left;
+  		position: relative;
+  		outline: none;
+  		margin: 0;
+  	}
+  	nav li a {
+		outline: none;
+		text-align: center;
+	  	-o-transition:.5s;
+		-ms-transition:.5s;
+		-moz-transition:.5s;
+		-webkit-transition:.5s;
+		transition:.5s;
+	}
+
+	nav li a:hover {
+		outline: none;
+		text-align: center;
+		color: #e74c3c;
+	}
+
+  	nav a {
+	  	text-align: left;
+	  	width: 50%;
+	  	outline: none;
+	  	text-indent: 5px;
+  	}
+  	.innerContentMain {
+		max-height: 354px;
+		max-width: 100%;
+	}
+
+	.container {
+		margin: 0;
+		margin-top: 20px;
+		margin-bottom: 20px;
+		margin-left: -20px;
+		text-align: center;
+		background-color: #ecf0f1;
+		width: 100%;
+		color: #c4413b;
+	}
+
+	.area {
+		width: 100%;
+		margin-left: -15px;
+		margin-bottom: 20px;
+		padding: 15px;
+		position: relative;
+	}
+
+	#mobile {
+		margin: 0;
+		padding: 0;
+		display: inline-block;
+		text-align: center;
+		width: 100%;
+	}
+
+	#browser {
+		display: none;
+	}
+
+
+	nav:focus {
+		outline: none;
+	}
+	nav ul {
+		display: none;
+		height: auto;
+		outline: none;
+	}
+	nav .pull {
+		display: block;
+		background-color: #61c0c6;
+		width: 100%;
+		height: 44px;
+		position: relative;
+		outline: none;
+		z-index: 1;
+		cursor: pointer;
+	}
+
+	nav a#pull img{
+		position: absolute;
+		margin-top: 2px;
+		margin-left: 20px;
+		z-index: 10;
+		pointer-events: none;
+	}
+
+	nav a#pull:after {
+		content:"";
+		background: url('nav-icon.png') no-repeat;
+		width: 30px;
+		height: 30px;
+		display: inline-block;
+		position: absolute;
+		right: 15px;
+		top: 10px;
+		outline: none;
+		z-index: -1;
+		pointer-events: none;
+	}
+	#toggle {
+    	width: 28px;
+		height: 30px;
+		margin: 7px auto;
+		float: right;
+		padding-top: 0px;
+		padding-right: 15px;
+		cursor: pointer;
+		opacity: 1;
+		position: relative;
+		transition: 200ms ease-in-out;
+    }
+
+	#toggle:hover {
+		opacity: 0.9;
+		transition: 200ms ease-in-out;
+	}
+	#toggle div {
+		width: 100%;
+		height: 5px;
+		background: white;
+		margin: 4px auto;
+		transition: all  .5s;
+		backface-visibility: hidden;
+	}
+
+	#toggle.on .one {
+		transform: rotate(45deg) translate(5px, 5px);
+	}
+
+	#toggle.on .two {
+
+		opacity: 0;
+	}
+
+	#toggle.on .three {
+		transform: rotate(-45deg) translate(7px, -8px);
+	}
+
+	.refresh {
+		padding: 10px !important;
+		position: relative;
+		margin: 10px;
+		display: none !important;
+	}
+	.download {
+		padding: 10px !important;
+		position: relative;
+		margin: 10px;
+		display: none !important;
+	}
+	#logo {
+		left: 0 !important;
+	}
+	#classColor {
+		position: relative;
+		left: 0px !important;
+	}
+	#studentDeleteAcct {
+		position: relative;
+		right: 40px;
+	}
+
+}
+@media only screen and (max-width: 755px) {
+	.itemDueDate {
+		color: #ecf0f1;
+		margin-left: 60px;
+		font-size: 12px;
+		margin-top: -33px;
+	}
+
+	.itemDueDateBig {
+		/*color: #ecf0f1;*/
+		color: black;
+		margin-left: 60px;
+		font-size: 16px;
+		margin-top: -40px;
+		position: relative;
+		top: 30px;
+	}
+
+	.itemDesc {
+		color: #ecf0f1;
+		margin-left: 60px;
+		font-size: 8px;
+		margin-top: -28px;
+	}
+
+	.itemDescBig {
+		/*color: #ecf0f1; */
+		color: black;
+		margin-left: 60px;
+		font-size: 12px;
+		margin-top: 30px;
+		top: 10px;
+		position: relative;
+		line-height: 15px;
+	}
+	.descContent {
+		margin-top: 0.8em;
+	}
+	.green {
+		margin-left: auto;
+		margin-right: auto;
+		padding-left: 20px;
+		border-radius: 20px;
+		padding-top: 5px;
+		padding: 20px;
+		width: 50%;
+		max-height: 100%;
+		min-height: 75px;
+		line-height: 15px;
+		margin-bottom: 20px;
+		background-color: #4FBF8D;
+	}
+
+	.yellow {
+		margin-left: auto;
+		margin-right: auto;
+		padding-left: 20px;
+		border-radius: 20px;
+		padding-top: 5px;
+		padding: 20px;
+		width: 50%;
+		max-height: 100%;
+		min-height: 75px;
+		line-height: 15px;
+		margin-bottom: 20px;
+		background-color: #F3D03F;
+	}
+
+	.red {
+		margin-left: auto;
+		margin-right: auto;
+		padding-left: 20px;
+		border-radius: 20px;
+		padding-top: 5px;
+		padding: 20px;
+		width: 50%;
+		max-height: 100%;
+		min-height: 75px;
+		line-height: 15px;
+		margin-bottom: 20px;
+		background-color: #C54340;
+	}
+	.itemHeaderBig {
+		font-size: 22px;
+		position: relative;
+		top: 10px;
+		line-height: 20px;
+		margin-left: 60px;
+	}
+	.alertBig {
+		height: 50px;
+		width: 50px;
+		border-radius: 50%;
+		background-color: #ecf0f1;
+		/*background-color: black;*/
+		color: rgb(197, 67, 64);
+		display: inline-block;
+		line-height: 55px;
+		font-size: 45px;
+		margin-right: 2px;
+		display: inline-block;
+		text-align: center;
+		font-weight: bold;
+		margin-top: 10px;
+	}
+	.fa {
+		top: -10px;
+		position: relative;
+		left: 15px;
+		z-index: 100;
+	}
+	#lateAssignments .fa, #finishedAssignments .fa {
+		top: 0px !important;
+	}
+	.itemBig .itemDueDateBig {
+		position: relative;
+		top: 35px;
+	}
+	.itemBig .alertBig {
+		position: relative;
+		right: 10px;
+	}
+	.itemBig .contentInside {
+		position: relative;
+		right: 10px;
+	}
+	.tooltip {
+		display: none !important;
+	}
+}
+@media only screen and (max-width: 787px) {
+	.col {
+		margin: 1% 0 1% 0%;
+	}
+	.span_1_of_4, .span_2_of_4, .span_3_of_4, .span_4_of_4 {
+		width: 100%;
+	}
+	.saveChanges {
+		width: 70%;
+		margin: 0 auto;
+		left: 10px;
+		position: relative;
+	}
+	.btn {
+		text-align: center;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.btnStudent {
+		position: relative;
+		right: 5%;
+	}
+	.span_3_of_3, .span_2_of_3, .span_1_of_3 {
+		width: 100%;
+	}
+	.choosePerson {
+		text-align: center;
+		width: 105%;
+		margin: 0 auto;
+	}
+	.changeSettings .email {
+		position: relative;
+		left: 2%;
+	}
+	#accountEmail {
+		position: relative;
+		left: 10px;
+	}
+
+}
+@media screen and (max-width: 840px) {
+	nav a {
+		font-size: 14px;
+	}
+}
+@media screen and (max-width: 860px) {
+	.col {
+		left: 5px;
+	}
+}
+@media screen and (max-width: 1024px) {
+    #delete, #edit {
+		opacity: 1 !important;
+		display: inline-block;
+		cursor: pointer;
+		position: relative;
+	}
+	.edit, .delete {
+		top: -1px !important;
+		position: relative;
+	}
+	#edit {
+		font-size: 14px;
+		color: black;
+	}
+}
+
+

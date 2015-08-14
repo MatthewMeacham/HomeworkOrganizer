@@ -258,7 +258,7 @@
 									<div class="btn">
 										<button type="submit" class="saveChanges"> Save Changes </button>
 									</div>
-									
+									<br>
 									@form(action = routes.Parents.deleteChildAccount(parent.id, child.id), 'id -> ("accountDeleteForm" + child.id)){
 										<p>Want to delete this child account? <a id="deleteLink" href="#" onclick="deleteStudentAccount(@child.id)"> Click Here </a></p>
 									}
