@@ -128,7 +128,6 @@ $(function() {
 		var w = $(window).width();
 		if (w <= 750) {
 			$(menu).slideToggle();
-			$('#toggle, .pull').toggleClass("on");
 		}
 	});
 
@@ -141,6 +140,20 @@ $(function() {
 });
 
 var submitted = false;
+
+function deleteStudentAccount(id){
+	if (submitted)
+		return;
+	submitted = true;
+	document.getElementById('accountDeleteForm' + id).submit();
+}
+
+function deleteParentAccount(){
+	if (submitted)
+		return;
+	submitted = true;
+	document.getElementById('accountDeleteForm0').submit();
+}
 
 function submitAssignmentDeleteForm(id) {
 	if (submitted)
@@ -200,6 +213,8 @@ function toggle_visibility(id) {
 
 // Only called upon load
 function changeNavColor(id) {
+	if(id === '') 
+		id = 'overview';
 	var e = document.getElementById(id + 'Anchor');
 	document.getElementById('overviewAnchor').style.color = "white";
 	document.getElementById('addChildAnchor').style.color = "white";
@@ -207,7 +222,3 @@ function changeNavColor(id) {
 	e.style.color = '#56ced6';
 }
 
-$(".pull").bind('click', function() {
-	$('#toggle').toggleClass("on");
-	return false;
-});

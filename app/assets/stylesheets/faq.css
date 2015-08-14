@@ -4,6 +4,7 @@ body {
 	margin: 0;
 	padding: 0;
 	background-color: white;
+	width: 100%;
 }
 
 .content {
@@ -47,25 +48,36 @@ body {
 	margin: 0 auto;
 	position: relative;
 }
-
-.questionsContainers {
-	width: 100%;
-	text-align: center;
+/* Align questions and answers in the center */
+.center {
+    padding-top: 50px;
+    max-width: 80%;
+    margin: 0 auto;
+    display: block;
 }
-
-.question {
+.question, .answer {
 	position: relative;
-	margin-left: auto;
-	margin-right: auto;
-	text-align: center;
-}
-
-.answer {
-	position: relative;
-	margin-left: auto;
-	margin-right: auto;
-	text-align: center;
+	text-align: left;
+	margin: 5px;
 }
 img {
-	border: 0;	
+	border: 0;
+}
+.moreQuestions {
+    text-align: center;
+    padding: 20px;
+    margin: 10px;
+    color: #c34444;
+}
+.moreQuestions a {
+    color: #56ced6;
+}
+footer {
+    max-width: 100%;
+    margin: 0 auto;
+}
+@media screen and (max-width: 500px) {
+    .moreQuestions {
+        font-size: 16px;
+    }
 }

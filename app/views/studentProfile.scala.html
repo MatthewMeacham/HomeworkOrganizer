@@ -56,7 +56,7 @@
 
 
 				<img id="logo" src=@routes.Assets.versioned("images/logo.png") alt="Orgnizer">
-				<h3 class="studentName">Logged In As @student.name </h3>
+				<h3 class="studentName">Logged in as @student.name </h3>
 			</div>
 
 			<div class="topNav">
@@ -101,7 +101,7 @@
 				<div id="overview" class="overview" style="@if(startingBlock == "overview" || startingBlock == "") {display: block;} else {display: none}">
 
 					<a href="@routes.Assignments.createPrintableDocument(student.id)">
-						<i data-toggle="tooltip" data-placement="left" title="Downlaod a list of your assignments." class="fa fa-download fa-2x download"></i>
+						<i data-toggle="tooltip" data-placement="left" title="Download a list of your assignments." class="fa fa-download fa-2x download"></i>
 					</a>
 
 					<div class="area center">
@@ -115,7 +115,7 @@
 										<div class="green" style="border-left: 40px solid @if(!assignment.schoolClass.color.equals("#C54340")) {@assignment.schoolClass.color;}else{#4FBF8D;}">
 									} else {
 										@if(assignment.total <= today + 5 && assignment.total > today + 1){
-										<div class="yellow" style="border-left: 40px solid  @if(!assignment.schoolClass.color.equals("#C54340")) {@assignment.schoolClass.color;}else{#F2CA27;}">
+										<div class="yellow" style="border-left: 40px solid  @if(!assignment.schoolClass.color.equals("#C54340")) {@assignment.schoolClass.color;}else{#F3D03F;}">
 										} else {
 										<div class="red" style="border-left: 40px solid  @if(!assignment.schoolClass.color.equals("#C54340")) {@assignment.schoolClass.color;}else{#C54340;}">
 										}
@@ -139,14 +139,14 @@
 											}
 											@form(action = routes.Assignments.setFinished(String.valueOf(assignment.id), student.id.toString()), 'id -> ("assignmentFinishedForm" + String.valueOf(assignment.id))) {
 												<a href="#" onclick="submitFinishedAssignmentForm(@assignment.id); return false">
-													<i data-toggle="tooltip" data-placement="top" title="Finished" class="fa fa-check myIcon"></i>
+													<i data-toggle="tooltip" data-placement="top" title="Finish" class="fa fa-check myIcon"></i>
 												</a>
 											}
 
 											<div class="descContent">
-											<p class="itemHeaderBig">@assignment.schoolClass.subject</p>
-											<p class="itemDueDateBig"> @assignment.dueDate</p>
-											<p class="itemDescBig"> @assignment.description </p>
+												<p class="itemHeaderBig">@assignment.schoolClass.subject</p>
+												<p class="itemDueDateBig"> @assignment.dueDate</p>
+												<p class="itemDescBig"> @assignment.description </p>
 											</div>
 										</div>
 									</div>
@@ -195,7 +195,7 @@
 							}
 							@form(action = routes.Classes.create(student.id.toString())) {
 								<input type="hidden" name="studentId" value="@student.id">
-								<input type="hidden" id="color" name="color" value="#c34444">
+								<input type="hidden" id="color" name="color" value="#C54340">
 								<h2 id="subjectError" style="color:red;"></h2>
 								<br><input id="subject" type="text" name="subject" placeholder="New Class" required><br>
 									<!-- BEGIN COLOR CHOOSER BOX -->
@@ -407,6 +407,7 @@
 					<div class="area center">
 						<h2 style="text-align: center;">Finished Assignments</h2>
 						@if(finishedAssignments.length > 0) {
+
 							<div class="innerContentMain" >
 								@for(finishedAssignment <- finishedAssignments) {
 									<div class="itemBigContainer">
@@ -415,10 +416,18 @@
 												@finishedAssignment.spanner
 											</span>
 											<div class="contentInside">
-											@form(action = routes.Assignments.setUnfinished(String.valueOf(finishedAssignment.id), student.id.toString()), 'id -> ("assignmentUnfinishedForm" + String.valueOf(finishedAssignment.id))) {
+												@form(action = routes.Assignments.setUnfinished(String.valueOf(finishedAssignment.id), student.id.toString()), 'id -> ("assignmentUnfinishedForm" + String.valueOf(finishedAssignment.id))) {
 													<a href="#" onclick="submitUnfinishedAssignmentForm(@finishedAssignment.id); return false">
-														<i class="fa fa-undo myIcon" data-toggle="tooltip" title="Unfinished"></i>
+														<i class="fa fa-undo myIcon" data-toggle="tooltip" title="Unfinish"></i>
 													</a>
+												}
+													
+												@if(finishedAssignment.schoolClass.teacherID == null) {
+													@form(action = routes.Assignments.deleteFinished(String.valueOf(finishedAssignment.id), student.id.toString()), 'id -> ("deleteFinishedAssignment" + String.valueOf(finishedAssignment.id))) {
+														<a href="#" onclick="deleteFinishedAssignmentForm(@finishedAssignment.id); return false">
+															<i class="fa fa-trash myIcon" data-toggle="tooltip" title="Delete"></i>
+														</a>
+													}
 												}
 												<h2 class="itemHeaderBig">@finishedAssignment.schoolClass.subject</h2>
 												<h3 class="itemDueDateBig"> @finishedAssignment.dueDate</h3>
@@ -428,6 +437,11 @@
 									</div>
 								}
 							</div>
+							@form(action = routes.Assignments.deleteAllFinished(student.id.toString()), 'id -> ("deleteAllFinishedAssignments")) {
+													<a class="deleteFinished" href="#" onclick="deleteAllFinishedAssignmentsForm(); return false">
+														<button class="deleteButton">Delete All Finished Assignments</button>
+													</a>
+												}
 						} else {
 							<div align="center" style="text-align: center;">
 								<h3> Once an assignment is finished, it will appear here. </h3>
@@ -442,46 +456,50 @@
 					@if(!Utilities.childAccount(student.id.toString())) {
 						<div class="area center">
 							<h1 style="text-align: center;"> Account Settings </h1>
-							@form(action = routes.Students.updateSettings(student.id.toString())) {
-									<div class="changeSettings section group">
-										<div class="col span_1_of_4">
-											<label class="email">Change Email</label> <br>
-											<h3 id="emailError" style="color: red;"></h3>
-											<input class="email" type="text" name="email" value="@student.email">
-										</div>
-										<div class="col span_1_of_4">
-											<label>Change Password</label> <br>
-											<h3 id="currentPasswordError" style="color: red;"></h3>
-											<input id="currentPassword" type="password" name="currentPassword" placeholder="Enter Current Password">
-											<h3 id="newPasswordError" style="color: red;"></h3>
-											<input id="newPassword" type="password" name="newPassword" placeholder="Enter New Password">
-											<h3 id="newPasswordAgainError" style="color: red;"></h3>
-											<input id="newPasswordAgain" type="password" name="newPasswordAgain" placeholder="Enter New Password Again">
-
-										</div>
-										<div class="col span_1_of_4">
-											<label>Change Name</label> <br>
-											<h3 id="nameError" style="color: red;"></h3>
-											<input id="name" type="text" name="name" value="@student.name">
-										</div>
-										<div class="col span_1_of_4">
-											<label>Change Grade</label> <br>
-											<h3></h3>
-											<input type="number" name="grade" min="1" max="16" value="@student.grade">
-										</div>
-
-
+							@form(action = routes.Students.updateSettings(student.id.toString()), 'id -> ("updateAccountSettings")) {
+								<div class="changeSettings section group">
+									<div class="col span_1_of_4">
+										<label class="email">Change Email</label> <br>
+										<h3 id="emailError" style="color: red;"></h3>
+										<input class="email" type="text" name="email" value="@student.email">
+									</div>
+									<div class="col span_1_of_4">
+										<label>Change Password</label> <br>
+										<h3 id="currentPasswordError" style="color: red;"></h3>
+										<input id="currentPassword" type="password" name="currentPassword" placeholder="Enter Current Password">
+										<h3 id="newPasswordError" style="color: red;"></h3>
+										<input id="newPassword" type="password" name="newPassword" placeholder="Enter New Password">
+										<h3 id="newPasswordAgainError" style="color: red;"></h3>
+										<input id="newPasswordAgain" type="password" name="newPasswordAgain" placeholder="Enter New Password Again">
 
 									</div>
-									<br><br><br><br><br>
-									<div class="btn btnStudent" style="text-align: center;">
-										<button class="saveChanges"> Save Changes </button>
+									<div class="col span_1_of_4">
+										<label>Change Name</label> <br>
+										<h3 id="nameError" style="color: red;"></h3>
+										<input id="name" type="text" name="name" value="@student.name">
 									</div>
-									<br>
-									<div id="studentDeleteAcct" class="deleteAccountPrompt">
-											<p>Want to delete your account? <a id="deleteLink" href="#"> Click Here </a></p>
+									<div class="col span_1_of_4">
+										<label>Change Grade</label> <br>
+										<h3></h3>
+										<input type="number" name="grade" min="1" max="16" value="@student.grade">
 									</div>
-								}
+
+
+
+								</div>
+								<br><br><br><br><br>
+								<div class="btn btnStudent" style="text-align: center;">
+									<button type="submit" class="saveChanges"> Save Changes </button>
+								</div>
+									
+							}
+									
+							<br>
+							<div id="studentDeleteAcct" class="deleteAccountPrompt">
+									@form(action = routes.Students.deleteStudentAccount(student.id), 'id -> ("studentDeleteAccount")){
+									<p>Want to delete your account? <a id="deleteLink" href="#" onclick="deleteStudentAccount()"> Click Here </a></p>
+									}
+							</div>
 						</div>
 					} else {
 						<div class="area center">
@@ -506,7 +524,10 @@
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<script>
 
-		    $('[data-toggle="tooltip"]').tooltip();
+		          $('[data-toggle="tooltip"]').tooltip();
+		  
+
+
 
 		</script>
 		<script>

@@ -3,6 +3,7 @@ package controllers;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
+import java.util.List;
 
 import javax.persistence.PersistenceException;
 
@@ -11,14 +12,19 @@ import com.matthew.hasher.Hasher;
 import models.Parent;
 import models.Student;
 import models.Teacher;
+import models.Assignment;
+import models.SchoolClass;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import controllers.Application.AccountSettings;
 import controllers.Application.Login;
+import controllers.Utilities;
+import controllers.Students;
 
 import views.html.index;
 import views.html.teacherProfile;
+import views.html.unauthorizedError;
 
 public class Teachers extends Controller {
 
@@ -29,6 +35,7 @@ public class Teachers extends Controller {
 
 	// Direct to the teacher profile page after authentication
 	public Result toProfile(UUID teacherID) {
+		if(session("userID") == null || !session("userID").equals(teacherID.toString())) return unauthorized(unauthorizedError.render());
 		Teacher teacher = Teacher.find.where().eq("ID", teacherID).findUnique();
 		if (teacher == null) return redirect(routes.Application.index());
 		return ok(teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "", ""));
@@ -36,9 +43,10 @@ public class Teachers extends Controller {
 
 	// Changes account settings for a teacher
 	public Result updateSettings(String teacherID) {
+		if(session("userID") == null || !session("userID").equals(teacherID)) return unauthorized(unauthorizedError.render());
 		Form<AccountSettings> filledForm = accountSettingsForm.bindFromRequest();
 		Teacher teacher = Teacher.find.where().eq("ID", UUID.fromString(teacherID)).findUnique();
-		if(teacher == null) return redirect(routes.Application.index());
+		if (teacher == null) return redirect(routes.Application.index());
 		if (filledForm.hasErrors()) return badRequest(teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "accountSettings", "Error while processing."));
 		String name = filledForm.data().get("name");
 		if (!name.equals(teacher.name)) {
@@ -70,6 +78,7 @@ public class Teachers extends Controller {
 			String newPassword = filledForm.data().get("newPassword");
 			String newPasswordAgain = filledForm.data().get("newPasswordAgain");
 			if (!currentPassword.trim().isEmpty() && !newPassword.trim().isEmpty() && !newPasswordAgain.trim().isEmpty()) {
+				if (newPassword.length() < 8 || newPasswordAgain.length() < 8) return badRequest(teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "accountSettings", "New password must be at least 8 characters long."));
 				currentPassword = HASHER.hashWithSaltSHA256(currentPassword, teacher.salt);
 				newPassword = HASHER.hashWithSaltSHA256(newPassword, teacher.salt);
 				newPasswordAgain = HASHER.hashWithSaltSHA256(newPasswordAgain, teacher.salt);
@@ -90,12 +99,36 @@ public class Teachers extends Controller {
 
 		return ok(teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "overview", "Account changed successfully."));
 	}
-	
+
 	// Refresh the teacherProfile page
 	public Result refresh(UUID teacherID) {
+		if(session("userID") == null || !session("userID").equals(teacherID.toString())) return unauthorized(unauthorizedError.render());
 		Teacher teacher = Teacher.find.where().eq("ID", teacherID).findUnique();
 		if (teacher == null) return redirect(routes.Application.index());
 		return redirect(routes.Teachers.toProfile(teacher.id));
+	}
+
+	// Deletes the teacher account and everything created by the teacher, redirects to home page
+	public Result deleteTeacherAccount(UUID teacherID) {
+		if(session("userID") == null || !session("userID").equals(teacherID.toString())) return unauthorized(unauthorizedError.render());
+		Teacher teacher = Teacher.find.where().eq("ID", teacherID).findUnique();
+		if (teacher == null) return redirect(routes.Application.index());
+
+		List<Assignment> assignments = Utilities.createAssignmentsListForTeacher(teacher);
+		List<SchoolClass> classes = Utilities.createSchoolClassListForTeacher(teacher);
+		for (int i = 0; i < assignments.size(); i++) {
+			try {
+				assignments.get(i).delete();
+			} catch (PersistenceException e) {
+				// Do nothing
+			}
+		}
+		for (int i = 0; i < classes.size(); i++) {
+			routes.Classes.deleteForTeacher(classes.get(i).id.toString(), teacherID.toString());
+		}
+
+		teacher.delete();
+		return redirect(routes.Application.index());
 	}
 
 }

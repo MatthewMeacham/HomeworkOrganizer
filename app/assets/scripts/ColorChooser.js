@@ -79,6 +79,9 @@ function changeColorField(color) {
 	case 'brown':
 		e.value = colors[11];
 		break;
+	case 'default':
+		e.value = "#C54340";
+		break;
 	default:
 		e.value = "#C54340";
 	}
