@@ -128,7 +128,6 @@ $(function() {
 		var w = $(window).width();
 		if (w <= 750) {
 			$(menu).slideToggle();
-			$('#toggle, .pull').toggleClass("on");
 		}
 	});
 
@@ -141,6 +140,27 @@ $(function() {
 });
 
 var submitted = false;
+
+function deleteStudentAccount(){
+	if (submitted)
+		return;
+	submitted = true;
+	document.getElementById('studentDeleteAccount').submit();
+}
+
+function deleteFinishedAssignmentForm(id) {
+	if (submitted)
+		return;
+	submitted = true;
+	document.getElementById('deleteFinishedAssignment' + id).submit();
+}
+
+function deleteAllFinishedAssignmentsForm() {
+	if (submitted)
+		return;
+	submitted = true;
+	document.getElementById('deleteAllFinishedAssignments').submit();
+}
 
 function submitAssignmentDeleteForm(id) {
 	if (submitted)
@@ -220,6 +240,8 @@ function toggle_visibility(id) {
 
 // Only called upon load
 function changeNavColor(id) {
+	if(id === '') 
+		id = 'overview';
 	var e = document.getElementById(id + 'Anchor');
 	document.getElementById('overviewAnchor').style.color = "white";
 	document.getElementById('schoolClassesAnchor').style.color = "white";
@@ -229,11 +251,6 @@ function changeNavColor(id) {
 	document.getElementById('accountSettingsAnchor').style.color = "white";
 	e.style.color = '#56ced6';
 }
-
-$(".pull").bind('click', function() {
-	$('#toggle').toggleClass("on");
-	return false;
-});
 
 var today = new Date();
 var dd = today.getDate();

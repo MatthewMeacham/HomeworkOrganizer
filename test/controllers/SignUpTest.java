@@ -54,7 +54,7 @@ public class SignUpTest extends BaseControllerTest {
 		Map<String, String> data = new HashMap<String, String>();
 		data.put("name", "Matthew");
 		data.put("email", "matthew@gmail.com");
-		data.put("password", "hunter2");
+		data.put("password", "hunter223");
 		data.put("grade", "10");
 		
 		RequestBuilder request = new RequestBuilder().method("POST").uri("/signup/student/").bodyForm(data);
@@ -80,7 +80,7 @@ public class SignUpTest extends BaseControllerTest {
 		assertEquals(400, result.status());
 		assertTrue(contentAsString(result).toLowerCase().contains("invalid password"));
 		
-		data.put("password", "hunter2");
+		data.put("password", "hunter223");
 		data.put("name", " ");
 		request.bodyForm(data);
 		result = Helpers.route(request);
@@ -111,7 +111,7 @@ public class SignUpTest extends BaseControllerTest {
 		Map<String, String> data = new HashMap<String, String>();
 		data.put("name", "Jeanette");
 		data.put("email", "jeanette@gmail.com");
-		data.put("password", "hunter2");
+		data.put("password", "hunter223");
 		
 		RequestBuilder request = new RequestBuilder().method("POST").uri("/signup/parent/").bodyForm(data);
 		Result result = Helpers.route(request);
@@ -136,7 +136,7 @@ public class SignUpTest extends BaseControllerTest {
 		assertEquals(400, result.status());
 		assertTrue(contentAsString(result).toLowerCase().contains("invalid password"));
 
-		data.put("password", "hunter2");
+		data.put("password", "hunter223");
 		data.put("name", " ");
 		request.bodyForm(data);
 		result = Helpers.route(request);
@@ -167,7 +167,7 @@ public class SignUpTest extends BaseControllerTest {
 		Map<String, String> data = new HashMap<String, String>();
 		data.put("name", "Tom");
 		data.put("email", "tom@gmail.com");
-		data.put("password", "hunter2");
+		data.put("password", "hunter223");
 		
 		RequestBuilder request = new RequestBuilder().method("POST").uri("/signup/teacher/").bodyForm(data);
 		Result result = Helpers.route(request);
@@ -192,7 +192,7 @@ public class SignUpTest extends BaseControllerTest {
 		assertEquals(400, result.status());
 		assertTrue(contentAsString(result).toLowerCase().contains("invalid password"));
 		
-		data.put("password", "hunter2");
+		data.put("password", "hunter223");
 		data.put("name", " ");
 		request.bodyForm(data);
 		result = Helpers.route(request);

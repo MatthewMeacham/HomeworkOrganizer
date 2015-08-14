@@ -53,7 +53,7 @@
 				</a>
 
 				<img src=@routes.Assets.versioned("images/logo.png") alt="Orgnizer">
-				<h3 class="studentName">Logged In As @parent.name </h3>
+				<h3 class="studentName">Logged in as @parent.name </h3>
 			</div>
 
 			<div class="topNav">
@@ -61,7 +61,7 @@
 					<ul class="clearfix">
 						<li><a id="overviewAnchor" href="#Overview" onclick="toggle_visibility('overview')"><div id="overviewToggle" style="display: inline-block;">Overview</div></a></li>
 						@for(student <- students) {
-							<li><a href="@routes.Parents.redirectToStudent(student.id, parent.id.toString())" target="_blank"><div style="display: inline-block;">@student.name</div></a></li>
+							<li><a href="@routes.Parents.redirectToStudent(student.id, parent.id.toString())"><div style="display: inline-block;">@student.name</div></a></li>
 						}
 						<li><a id="addChildAnchor" href="#AddChild" onclick="toggle_visibility('addChild')"><div id="addChildToggle" style="display: inline-block;">Add Child</div></a></li>
 						<li><a id="accountSettingsAnchor" href="#Account" onclick="toggle_visibility('accountSettings')"><div id="accountSettingsToggle" style="display: inline-block;">Account</div></a></li>
@@ -103,40 +103,50 @@
 					<div class="area center">
 						<h2 style="text-align: center;">Overview</h2>
 						@if(students.length > 0) {
-							@for(assignment <- overview) {
-								<div class="itemBigContainer">
-									@if(assignment.total > today + 5) {
-									<div class="green">
-									} else {
-										@if(assignment.total <= today + 5 && assignment.total > today + 1){
-										<div class="yellow">
+							@if(overview.length > 0) {
+								@for(assignment <- overview) {
+									<div class="itemBigContainer">
+										@if(assignment.total > today + 5) {
+										<div class="green">
 										} else {
-										<div class="red">
-										}
-									}
-										<span class="alertBig">
-											@assignment.spanner
-										</span>
-
-										<div class="contentInside">  
-											@if(assignment.schoolClass.teacherID == null) {
-												@form(action = routes.Assignments.deleteForParent(assignment.id, parent.id, assignment.foreignID), 'id -> ("assignmentDeleteForm" + String.valueOf(assignment.id))) {
-													<a href="#" onclick="submitAssignmentDeleteForm(@assignment.id); return false;">
-														<i data-toggle="tooltip" data-placement="top" title="Delete" class="fa fa-trash myIcon"></i>
-													</a>
-												}
-			
-												@form(action = routes.Assignments.readForParent(assignment.id, parent.id, assignment.foreignID), 'id -> ("assignmentEditForm" + String.valueOf(assignment.id))) {
-													<a href="#" onclick="submitAssignmentEditForm(@assignment.id); return false;">
-														<i data-toggle="tooltip" data-placement="top" title="Edit" class="fa fa-pencil myIcon"></i>
-													</a>
-												}
+											@if(assignment.total <= today + 5 && assignment.total > today + 1){
+											<div class="yellow">
+											} else {
+											<div class="red">
 											}
-											<p class="itemHeaderBig">@assignment.schoolClass.subject - @Student.find.where().eq("ID", assignment.foreignID).findUnique().name</p>
-											<p class="itemDueDateBig"> @assignment.dueDate</p>
-											<p class="itemDescBig"> @assignment.description </p>
+										}
+											<span class="alertBig">
+												@assignment.spanner
+											</span>
+	
+											<div class="contentInside">  
+												@if(assignment.schoolClass.teacherID == null) {
+													@form(action = routes.Assignments.deleteForParent(assignment.id, parent.id, assignment.foreignID), 'id -> ("assignmentDeleteForm" + String.valueOf(assignment.id))) {
+														<a href="#" onclick="submitAssignmentDeleteForm(@assignment.id); return false;">
+															<i data-toggle="tooltip" data-placement="top" title="Delete" class="fa fa-trash myIcon"></i>
+														</a>
+													}
+				
+													@form(action = routes.Assignments.readForParent(assignment.id, parent.id, assignment.foreignID), 'id -> ("assignmentEditForm" + String.valueOf(assignment.id))) {
+														<a href="#" onclick="submitAssignmentEditForm(@assignment.id); return false;">
+															<i data-toggle="tooltip" data-placement="top" title="Edit" class="fa fa-pencil myIcon"></i>
+														</a>
+													}
+												}
+												<p class="itemHeaderBig">@assignment.schoolClass.subject - @Student.find.where().eq("ID", assignment.foreignID).findUnique().name</p>
+												<p class="itemDueDateBig"> @assignment.dueDate</p>
+												<p class="itemDescBig"> @assignment.description </p>
+											</div>
 										</div>
 									</div>
+								}
+							} else {
+								<div style="text-align: center;">
+									@if(students.length == 1){
+										<h3> Your child doesn't have any assignments yet. Once he/she adds some, they will appear here. </h3>
+									} else {
+										<h3> None of your children have any assignments yet. Once they add some, they will appear here. </h3>
+									}
 								</div>
 							}
 						} else {
@@ -174,7 +184,7 @@
 				<!-- BEGIN ACCOUNT SETTINGS -->
 				<div class="acctSettings" id="accountSettings" style=@if(startingBlock == "accountSettings") {"display: block;"} else {"display: none"}>
 					<div class="area center" style="text-align: center;">
-						<h2 style="text-algin: center;"> Account Settings</h2>
+						<h2 style="text-align: center;"> Account Settings</h2>
 
 				 		<div class="changeSettings section group">
 					 		<div class="choosePerson">
@@ -215,15 +225,16 @@
 									<button class="saveChanges"> Save Changes </button>
 								</div>
 								<br>
-								<div id="studentDeleteAcct" class="deleteAccountPrompt">
-										<p>Want to delete your account? <a id="deleteLink" href="#"> Click Here </a></p>
-								</div>
+								
+								@form(action = routes.Parents.deleteParentAccount(parent.id), 'id -> ("accountDeleteForm0")){
+									<p>Want to delete your account? <a id="deleteLink" href="#" onclick="deleteParentAccount()"> Click Here </a></p>
+								}
+								
 							</div>
 						}
 
-
 				 		@for(child <- students) {
-				 			@form(action = routes.Parents.updateSettings(parent.id.toString(), child.id.toString()), 'id -> ("accountSettingsform" + child.id)) {
+				 			@form(action = routes.Parents.updateSettings(parent.id.toString(), child.id.toString()), 'id -> ("accountSettingsForm" + child.id)) {
 				 				<div style="display: none;" id="accountSettings@child.id">
 				 					<div class="changeSettings section group">
 
@@ -245,8 +256,13 @@
 				 					</div>
 				 					<br><br><br><br><br>
 									<div class="btn">
-										<button class="saveChanges"> Save Changes </button>
+										<button type="submit" class="saveChanges"> Save Changes </button>
 									</div>
+									<br>
+									@form(action = routes.Parents.deleteChildAccount(parent.id, child.id), 'id -> ("accountDeleteForm" + child.id)){
+										<p>Want to delete this child account? <a id="deleteLink" href="#" onclick="deleteStudentAccount(@child.id)"> Click Here </a></p>
+									}
+									
 				 				</div>
 				 			}
 				 		}
@@ -266,6 +282,7 @@
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="@routes.Assets.versioned("scripts/parentProfile.js")" type="text/javascript"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 	<script>

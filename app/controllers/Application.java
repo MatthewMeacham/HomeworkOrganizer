@@ -16,6 +16,7 @@ import javax.mail.internet.MimeMessage;
 
 import play.data.Form;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
 
 import models.Parent;
@@ -55,12 +56,12 @@ public class Application extends Controller {
 	
 	private volatile static ArrayList<String[]> emailQueue = new ArrayList<String[]>();
 	
-	//This is how long in Minutes that the email thread should wait before performing operations again
+	//This is how long in minutes that the email thread should wait before performing operations again
 	private final int WAIT_TIME = 5;
 	
 	private Thread emailSendingThread = new Thread(new Runnable() {
 		public void run() {			
-			// Set properties for the smtp server we are sending to
+			// Set properties for the smtp server we are sending through
 			mailServerProperties = System.getProperties();
 			mailServerProperties.put("mail.smtp.port", "587");
 			mailServerProperties.put("mail.smtp.auth", "true");
@@ -86,6 +87,7 @@ public class Application extends Controller {
 
 	// Redirects the request to the index for logging out
 	public Result logout() {
+		session().clear();
 		return redirect(routes.Application.index());
 	}
 
@@ -155,6 +157,7 @@ public class Application extends Controller {
 			}
 			if (Parent.authenticate(filledForm.data().get("email"), password) != null) {
 				parent = Parent.find.where().eq("email", email).eq("password", password).findUnique();
+				session("userID", parent.id.toString());
 				return redirect(routes.Parents.toProfile(parent.id.toString()));
 			}
 		}
@@ -171,6 +174,7 @@ public class Application extends Controller {
 			}
 			if (Teacher.authenticate(filledForm.data().get("email"), password) != null) {
 				teacher = Teacher.find.where().eq("email", email).eq("password", password).findUnique();
+				session("userID", teacher.id.toString());
 				return redirect(routes.Teachers.toProfile(teacher.id));
 			}
 		}
@@ -200,7 +204,10 @@ public class Application extends Controller {
 
 		if (password == null || student == null) return badRequest(login.render(loginForm, "Invalid email or password."));
 		
-		if (Student.authenticate(email, password) != null) return redirect(routes.Students.toProfile(student.id.toString()));
+		if (Student.authenticate(email, password) != null){
+			session("userID", student.id.toString());
+			return redirect(routes.Students.toProfile(student.id.toString()));
+		}
 
 		return badRequest(login.render(loginForm, "Invalid email or password."));
 	}
@@ -233,10 +240,10 @@ public class Application extends Controller {
 	//This method is used by the emailSendingThread, this thread here will scan through all the emails in the emailQueue
 	//and if there are any duplicates (which is possible if a user hits the send button multiple times), this will filter those out
 	//Then it will send all the good emails, and sleep for a WAIT_TIME minutes total to keep processing usage down
-	public void sendEmails() {
-		//Sleep first for 10 seconds to make sure that all the requests from the user hitting the send button multiple times have been processed
+	private void sendEmails() {
+		//Sleep first for 20 seconds to make sure that all the requests from the user hitting the send button multiple times have been processed
 		try {
-			emailSendingThread.sleep(10 * 1000);
+			emailSendingThread.sleep(20 * 1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -255,14 +262,14 @@ public class Application extends Controller {
 		}
 		//Finish out sleeping for WAIT_TIME minutes to keep the processing usage down
 		try {
-			emailSendingThread.sleep((WAIT_TIME * 60 - 10) * 1000);
+			emailSendingThread.sleep((WAIT_TIME * 60 - 20) * 1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
 
 	//This method compares two emails and returns if they are the same
-	public boolean compareEmail(String[] first, String[] second) {
+	private boolean compareEmail(String[] first, String[] second) {
 		if(first[0].equals(second[0]) && first[1].equals(second[1]) && first[2].equals(second[2]) && first[3].equals(second[3])) return true;
 		return false;
 	}

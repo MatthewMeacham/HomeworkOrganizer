@@ -1,0 +1,24 @@
+* {
+	padding: 0;
+	margin: 0;
+}
+body {
+	font-family: 'Nunito', Arial, Helvetica, sans-serif;
+	width: 100%;
+	text-align: center;
+	text-transform: uppercase;
+	background: #ECECEC;
+}
+.container {
+	margin: 2em;
+	padding: 2em;
+}
+.fa-exclamation-triangle {
+	color: #c4413b;
+}
+h3 a {
+	color: #c4413b;
+}
+h1, h3 {
+	padding-top: 2em;
+}

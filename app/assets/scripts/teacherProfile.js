@@ -128,7 +128,6 @@ $(function() {
 		var w = $(window).width();
 		if (w <= 750) {
 			$(menu).slideToggle();
-			$('#toggle, .pull').toggleClass("on");
 		}
 	});
 
@@ -141,6 +140,13 @@ $(function() {
 });
 
 var submitted = false;
+
+function deleteTeacherAccount() {
+	if (submitted)
+		return;
+	submitted = true;
+	document.getElementById('teacherDeleteAccount').submit();
+}
 
 function submitAssignmentDeleteForm(id) {
 	if (submitted)
@@ -202,6 +208,8 @@ function toggle_visibility(id) {
 
 // Only called upon load
 function changeNavColor(id) {
+	if(id === '') 
+		id = 'overview';
 	var e = document.getElementById(id + 'Anchor');
 	document.getElementById('overviewAnchor').style.color = "white";
 	document.getElementById('schoolClassesAnchor').style.color = "white";
@@ -210,7 +218,20 @@ function changeNavColor(id) {
 	e.style.color = '#56ced6';
 }
 
-$(".pull").bind('click', function() {
-	$('#toggle').toggleClass("on");
-	return false;
-});
+
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1;
+var yyyy = today.getFullYear();
+
+if (dd<10) {
+	dd = '0' + dd;
+}
+if (mm<10) {
+	mm = '0' + mm;
+}
+today = mm+'/'+dd+'/'+yyyy;
+
+document.getElementById("monthassignment").value = mm;
+document.getElementById("daysassignment").value = dd;
+document.getElementById("yearassignment").value = yyyy;
