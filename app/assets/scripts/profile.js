@@ -7,6 +7,26 @@ $(document).ready(function() {
 	});
 });
 
+	// Animate loading spinner
+	var cl = new CanvasLoader('canvasloader-container');
+	cl.setColor('#21a374'); // default is '#000000'
+	cl.setDiameter(45); // default is 40
+	cl.setDensity(80); // default is 40
+	cl.setRange(0.9); // default is 1.3
+	cl.setSpeed(3); // default is 2
+	cl.show(); // Hidden by default
+
+	// Loading spinner positioning
+	var loaderObj = document.getElementById("canvasLoader");
+	loaderObj.style.position = "absolute";
+	loaderObj.style.top = cl.getDiameter() * -0.5 + "px";
+	loaderObj.style.left = cl.getDiameter() * -0.5 + "px";
+
+	//Call loading spinner when forms are submitted
+	$('.loading').click(function() {
+		$(".wrapper, .overlay").fadeIn("slow");
+	});
+
 function removeOptions(selectbox) {
 	var length = selectbox.options.length;
 	for (i = length - 1; i >= 0; i--) {

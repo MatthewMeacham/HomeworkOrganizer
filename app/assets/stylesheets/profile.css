@@ -88,6 +88,24 @@ input[type="checkbox"] {
 	font-size: 18px;
 
 }
+.wrapper {
+  position:fixed;
+  top:50%;
+  left:50%;
+  display: none;
+  z-index: 10000;
+}
+.overlay {
+  position: fixed;
+  background: rgba(0,0,0,0.2);
+  top:0;
+  bottom:0;
+  right:0;
+  left:0;
+  overflow:hidden;
+  display: none;
+  z-index: 10000;
+}
 
 select {
   padding: 6px;
@@ -1009,6 +1027,7 @@ img {
     text-align: center;
     display: block;
     font-size: 18px;
+    text-decoration: underline;
 }
 
 
@@ -1016,7 +1035,11 @@ img {
 
 
 
-/* BEGIN MEDIA QUERIES */
+/* 
+============================================================
+BEGIN MEDIA QUERIES 
+============================================================
+*/
 
 
 
@@ -1069,6 +1092,28 @@ img {
 	nav li a:hover {
 		outline: none;
 		text-align: center;
+	}
+		.alertBig {
+		height: 40px !important;
+		width: 40px !important;
+		position: relative;
+		line-height: 42px !important;
+		margin-top: 0px !important;
+		right: 10px !important;
+		font-size: 38px !important;
+		margin-right: 15px !important;
+		top: 10px !important;
+	}
+	.itemBig .itemDueDateBig, .itemBig .itemHeaderBig, .itemBig .itemDescBig {
+		margin-left: 50px !important;
+	}
+	.itemDueDateBig, .itemHeaderBig, .itemDescBig {
+		margin-left: 40px !important;
+		margin-top: 1em;
+	}
+	.fa {
+		top:  !important;
+		position: relative !important;
 	}
 }
 @media screen and (max-width: 350px) {
@@ -1125,6 +1170,20 @@ img {
 	}
 	.assignment button {
 		width: 90%;
+	}
+	.descContent {
+		margin-top: 0em !important;
+	}
+	.fa {
+		top: 0px !important;
+	}
+	.itemHeaderBig {
+		font-size: 20px !important;
+		line-height: ;
+	}
+	.itemDueDateBig {
+		font-size: 14px !important;
+		white-space: nowrap;
 	}
 }
 @media screen and (max-width: 600px) {
@@ -1458,6 +1517,7 @@ img {
 		margin-top: -40px;
 		position: relative;
 		top: 30px;
+		white-space: nowrap;
 	}
 
 	.itemDesc {
