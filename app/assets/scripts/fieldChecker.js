@@ -1,26 +1,47 @@
 $(document).ready(function() {
-	$('#password').on('input', function(){
-		checkPassword('password');
+	$('#password').on('input', function() {
+		check('password');
+		checkPasswordLength();
 	});
-	$('#name').on('input', function(){
-		checkPassword('name');
+	$('#passwordAgain').on('input', function() {
+		check('passwordAgain');
+		checkPasswords();
+		checkPasswordLength();
 	});
-	$('#email').on('input', function(){
-		checkPassword('email');
+	$('#name').on('input', function() {
+		check('name');
 	});
-	$('#subject').on('input', function(){
-		checkPassword('subject');
+	$('#email').on('input', function() {
+		check('email');
 	});
-	$('#description').on('input', function(){
-		checkPassword('description');
+	$('#subject').on('input', function() {
+		check('subject');
+	});
+	$('#description').on('input', function() {
+		check('description');
 	});
 });
 
-function checkPassword(id) {
+function check(id) {
 	var e = document.getElementById(id);
-	if(e.value.length >= 250) {
+	if (e.value.length >= 250) {
 		document.getElementById((id + 'Error')).innerHTML = "Too long";
 	} else {
 		document.getElementById((id + 'Error')).innerHTML = "";
+	}
+}
+
+function checkPasswords() {
+	var password = document.getElementById('password').value;
+	var passwordAgain = document.getElementById('passwordAgain').value;
+	if (password != passwordAgain) {
+		document.getElementById('passwordAgainError').innerHTML = "Passwords do not match.";
+	}
+}
+
+function checkPasswordLength(id) {
+	var password = document.getElementById(id).value;
+	if (value.length < 8) {
+		document.getElementById(id + 'Error').innerHTML = "Password must be at least 8 chracters.";
 	}
 }

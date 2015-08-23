@@ -35,7 +35,7 @@ import com.matthew.hasher.Hasher;
 //The controller, it controls all data flow and handles/processes requests and returns the correct information
 public class Application extends Controller {
 
-	public final static String[] OPTIONS = { "Homework", "Project", "Test", "Final", "Presentation", "Other" };
+	public final static String[] OPTIONS = { "Homework", "Quiz", "Project", "Test", "Presentation", "Final", "Other" };
 
 	private Form<Login> loginForm = Form.form(Login.class);
 	private Form<ContactUs> contactUsForm = Form.form(ContactUs.class);
