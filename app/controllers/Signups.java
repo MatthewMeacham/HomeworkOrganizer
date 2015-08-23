@@ -58,6 +58,7 @@ public class Signups extends Controller {
 		String email = filledForm.data().get("email").toLowerCase();
 		String name = filledForm.data().get("name");
 		String password = filledForm.data().get("password");
+		String passwordAgain = filledForm.data().get("passwordAgain");
 		String grade = filledForm.data().get("grade");
 		if (Integer.valueOf(grade) <= 8) return badRequest(studentSignUp.render(studentForm, "Sorry, if you are not in at least ninth grade, a parent must create an account and add you."));
 		if (!email.contains("@") || !email.contains(".") || email.trim().isEmpty()) return badRequest(studentSignUp.render(studentForm, "Invalid email address."));
@@ -65,8 +66,9 @@ public class Signups extends Controller {
 		if (email.length() >= 250) return badRequest(studentSignUp.render(studentForm, "Email was too long."));
 		if (name.length() >= 250) return badRequest(studentSignUp.render(studentForm, "Name was too long."));
 		if (name.trim().isEmpty()) return badRequest(studentSignUp.render(studentForm, "Invalid name."));
-		if (password.trim().isEmpty()) return badRequest(studentSignUp.render(studentForm, "Invalid password."));
-		if (password.length() < 8) return badRequest(studentSignUp.render(studentForm, "Password must be at least 8 characters long."));
+		if (password.trim().isEmpty() || passwordAgain.trim().isEmpty()) return badRequest(studentSignUp.render(studentForm, "Invalid password."));
+		if (password.length() < 8 || passwordAgain.length() < 8) return badRequest(studentSignUp.render(studentForm, "Password must be at least 8 characters long."));
+		if (!password.equals(passwordAgain))return badRequest(studentSignUp.render(studentForm, "Passwords did not match."));
 		String[] hashed = null;
 		try {
 			hashed = HASHER.hashSHA256(password);
@@ -94,13 +96,15 @@ public class Signups extends Controller {
 		String email = filledForm.data().get("email").toLowerCase();
 		String name = filledForm.data().get("name");
 		String password = filledForm.data().get("password");
+		String passwordAgain = filledForm.data().get("passwordAgain");
 		if (!email.contains("@") || !email.contains(".") || email.trim().isEmpty()) return badRequest(parentSignUp.render(parentForm, "Invalid email address."));
 		if (Student.exists(email) || Teacher.exists(email) || Parent.exists(email)) return badRequest(parentSignUp.render(parentForm, "That email is already associated with an account."));
 		if (email.length() >= 250) return badRequest(parentSignUp.render(parentForm, "Email was too long."));
 		if (name.length() >= 250) return badRequest(parentSignUp.render(parentForm, "Name was too long."));
 		if (name.trim().isEmpty()) return badRequest(parentSignUp.render(parentForm, "Invalid name."));
-		if (password.trim().isEmpty()) return badRequest(parentSignUp.render(parentForm, "Invalid password."));
-		if (password.length() < 8) return badRequest(parentSignUp.render(parentForm, "Password must be at least 8 characters long."));
+		if (password.trim().isEmpty() || passwordAgain.trim().isEmpty()) return badRequest(parentSignUp.render(parentForm, "Invalid password."));
+		if (password.length() < 8 || passwordAgain.length() < 8) return badRequest(parentSignUp.render(parentForm, "Password must be at least 8 characters long."));
+		if (!password.equals(passwordAgain)) return badRequest(parentSignUp.render(parentForm, "Passwords did not match."));
 		String[] hashed = null;
 		try {
 			hashed = HASHER.hashSHA256(password);
@@ -128,13 +132,15 @@ public class Signups extends Controller {
 		String email = filledForm.data().get("email").toLowerCase();
 		String name = filledForm.data().get("name");
 		String password = filledForm.data().get("password");
+		String passwordAgain = filledForm.data().get("passwordAgain");
 		if (!email.contains("@") || !email.contains(".") || email.trim().isEmpty()) return badRequest(teacherSignUp.render(teacherForm, "Invalid email address."));
 		if (Student.exists(email) || Parent.exists(email) || Teacher.exists(email)) return badRequest(teacherSignUp.render(teacherForm, "That email is already associated with an account."));
 		if (email.length() >= 250) return badRequest(teacherSignUp.render(teacherForm, "Email was too long."));
 		if (name.length() >= 250) return badRequest(teacherSignUp.render(teacherForm, "Name was too long."));
 		if (name.trim().isEmpty()) return badRequest(teacherSignUp.render(teacherForm, "Invalid name."));
-		if (password.trim().isEmpty()) return badRequest(teacherSignUp.render(teacherForm, "Invalid password."));
-		if (password.length() < 8) return badRequest(teacherSignUp.render(teacherForm, "Password must be at least 8 characters long."));
+		if (password.trim().isEmpty() || passwordAgain.trim().isEmpty()) return badRequest(teacherSignUp.render(teacherForm, "Invalid password."));
+		if (password.length() < 8 || passwordAgain.length() < 8) return badRequest(teacherSignUp.render(teacherForm, "Password must be at least 8 characters long."));
+		if (!password.equals(passwordAgain)) return badRequest(teacherSignUp.render(teacherForm, "Passwords did not match."));
 		String[] hashed = null;
 		try {
 			hashed = HASHER.hashSHA256(password);

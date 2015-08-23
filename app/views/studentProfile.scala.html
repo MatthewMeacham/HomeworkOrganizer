@@ -197,7 +197,7 @@
 								<input type="hidden" name="studentId" value="@student.id">
 								<input type="hidden" id="color" name="color" value="#C54340">
 								<h2 id="subjectError" style="color:red;"></h2>
-								<br><input id="subject" type="text" name="subject" placeholder="New Class" required><br>
+								<br><input id="subject" type="text" name="subject" placeholder="Class Name" required><br>
 									<!-- BEGIN COLOR CHOOSER BOX -->
 									<div class="box">
 										<h1>Choose a color for this class:</h1>
@@ -236,7 +236,7 @@
 									<button class="addClass" type="submit" value="Add Class">Add Class</button>
 								}
 								<br>
-								<h2> OR, add a class by ID </h2>
+								<h2> OR, use a class ID from a teacher </h2>
 								@form(action = routes.Classes.createFromTeacher(student.id.toString())) {
 									<div class="bottomInputFields">
 										<input type="number" name="schoolClassID" placeholder="Class ID" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required><br/>
