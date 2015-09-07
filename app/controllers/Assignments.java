@@ -53,7 +53,7 @@ public class Assignments extends Controller {
 
 	// Create a new assignment from the request
 	public Result create(String studentID) {
-		if (session("userID") == null || !session("userID").equals(studentID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", studentID)) return unauthorized(unauthorizedError.render());
 		Form<Assignment> filledForm = assignmentForm.bindFromRequest();
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		if (student == null) return redirect(routes.Application.index());
@@ -72,7 +72,7 @@ public class Assignments extends Controller {
 	}
 
 	public Result createForTeacher(String teacherID) {
-		if (session("userID") == null || !session("userID").equals(teacherID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", teacherID)) return unauthorized(unauthorizedError.render());
 		Form<Assignment> filledForm = assignmentForm.bindFromRequest();
 		Teacher teacher = Teacher.find.where().eq("ID", UUID.fromString(teacherID)).findUnique();
 		if (teacher == null) return redirect(routes.Application.index());
@@ -96,7 +96,7 @@ public class Assignments extends Controller {
 
 	// Direct to the edit assignment page
 	public Result read(String assignmentID, String studentID) {
-		if (session("userID") == null || !session("userID").equals(studentID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", studentID)) return unauthorized(unauthorizedError.render());
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		if (student == null) return redirect(routes.Application.index());
 		Assignment assignment = Assignment.find.where().eq("ID", Long.valueOf(assignmentID)).findUnique();
@@ -107,7 +107,7 @@ public class Assignments extends Controller {
 
 	// Direct a parent to the edit assignment page
 	public Result readForParent(Long assignmentID, UUID parentID, UUID studentID) {
-		if (session("userID") == null || !session("userID").equals(parentID.toString())) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", parentID.toString())) return unauthorized(unauthorizedError.render());
 		Parent parent = Parent.find.where().eq("ID", parentID).findUnique();
 		Student student = Student.find.where().eq("ID", studentID).findUnique();
 		Assignment assignment = Assignment.find.where().eq("ID", assignmentID).findUnique();
@@ -120,7 +120,7 @@ public class Assignments extends Controller {
 
 	// Direct a teacher to the edit assignment page
 	public Result readForTeacher(String assignmentID, String teacherID) {
-		if (session("userID") == null || !session("userID").equals(teacherID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", teacherID)) return unauthorized(unauthorizedError.render());
 		Teacher teacher = Teacher.find.where().eq("ID", UUID.fromString(teacherID)).findUnique();
 		if (teacher == null) return redirect(routes.Application.index());
 		Assignment assignment = Assignment.find.where().eq("ID", Long.valueOf(assignmentID)).findUnique();
@@ -132,7 +132,7 @@ public class Assignments extends Controller {
 	// Edit an assignment from a request
 	// TODO make errors take them back to edit page
 	public Result update(String assignmentID, String studentID) {
-		if (session("userID") == null || !session("userID").equals(studentID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", studentID)) return unauthorized(unauthorizedError.render());
 		Form<Assignment> filledForm = assignmentForm.bindFromRequest();
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		Assignment assignment = Assignment.find.where().eq("ID", Long.valueOf(assignmentID)).findUnique();
@@ -156,7 +156,7 @@ public class Assignments extends Controller {
 	// Edit an assignment from a parent request
 	// TODO make errors take them back to edit page
 	public Result updateForParent(Long assignmentID, UUID parentID, UUID studentID) {
-		if (session("userID") == null || !session("userID").equals(parentID.toString())) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", parentID.toString())) return unauthorized(unauthorizedError.render());
 		Parent parent = Parent.find.where().eq("ID", parentID).findUnique();
 		Student student = Student.find.where().eq("ID", studentID).findUnique();
 		Assignment assignment = Assignment.find.where().eq("ID", assignmentID).findUnique();
@@ -171,7 +171,7 @@ public class Assignments extends Controller {
 	// Edit an assignment from a teacher request
 	// TODO make errors take them back to edit page
 	public Result updateForTeacher(String assignmentID, String teacherID) {
-		if (session("userID") == null || !session("userID").equals(teacherID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", teacherID)) return unauthorized(unauthorizedError.render());
 		Form<Assignment> filledForm = assignmentForm.bindFromRequest();
 		Teacher teacher = Teacher.find.where().eq("ID", UUID.fromString(teacherID)).findUnique();
 		if (teacher == null) return redirect(routes.Application.index());
@@ -216,7 +216,7 @@ public class Assignments extends Controller {
 
 	// Delete an assignment
 	public Result delete(String assignmentID, String studentID) {
-		if (session("userID") == null || !session("userID").equals(studentID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", studentID)) return unauthorized(unauthorizedError.render());
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		if (student == null) return redirect(routes.Application.index());
 		Assignment assignment = Assignment.find.where().eq("ID", Long.valueOf(assignmentID)).findUnique();
@@ -231,14 +231,14 @@ public class Assignments extends Controller {
 	}
 
 	public Result deleteForParent(Long assignmentID, UUID parentID, UUID studentID) {
-		if (session("userID") == null || !session("userID").equals(parentID.toString())) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", parentID.toString())) return unauthorized(unauthorizedError.render());
 		Parent parent = Parent.find.where().eq("ID", parentID).findUnique();
 		Student student = Student.find.where().eq("ID", studentID).findUnique();
 		Assignment assignment = Assignment.find.where().eq("ID", assignmentID).findUnique();
 		if (parent == null) return redirect(routes.Application.index());
 		if (student == null) return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "overview", "Error while processing."));
 		if (assignment == null) return badRequest(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "overview", "Error while processing."));
-		
+
 		try {
 			assignment.delete();
 		} catch (PersistenceException e) {
@@ -249,7 +249,7 @@ public class Assignments extends Controller {
 
 	// Delete an assignment for teacher
 	public Result deleteForTeacher(String assignmentID, String teacherID) {
-		if (session("userID") == null || !session("userID").equals(teacherID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", teacherID)) return unauthorized(unauthorizedError.render());
 		Teacher teacher = Teacher.find.where().eq("ID", UUID.fromString(teacherID)).findUnique();
 		if (teacher == null) return redirect(routes.Application.index());
 		Assignment assignment = Assignment.find.where().eq("ID", Long.valueOf(assignmentID)).findUnique();
@@ -280,7 +280,7 @@ public class Assignments extends Controller {
 
 	// Delete a late assignment
 	public Result deleteLate(String assignmentID, String studentID) {
-		if (session("userID") == null || !session("userID").equals(studentID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", studentID)) return unauthorized(unauthorizedError.render());
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		if (student == null) return redirect(routes.Application.index());
 		Assignment lateAssignment = Assignment.find.where().eq("ID", Long.valueOf(assignmentID)).findUnique();
@@ -295,7 +295,7 @@ public class Assignments extends Controller {
 
 	// Delete a finished assignment
 	public Result deleteFinished(String assignmentID, String studentID) {
-		if (session("userID") == null || !session("userID").equals(studentID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", studentID)) return unauthorized(unauthorizedError.render());
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		if (student == null) return redirect(routes.Application.index());
 		Assignment finishedAssignment = Assignment.find.where().eq("ID", Long.valueOf(assignmentID)).findUnique();
@@ -309,7 +309,7 @@ public class Assignments extends Controller {
 	}
 
 	public Result deleteAllFinished(String studentID) {
-		if (session("userID") == null || !session("userID").equals(studentID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", studentID)) return unauthorized(unauthorizedError.render());
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		if (student == null) return redirect(routes.Application.index());
 		List<Assignment> finishedAssignments = Utilities.createFinishedAssignmentsList(student);
@@ -323,7 +323,7 @@ public class Assignments extends Controller {
 
 	// Set the finished value of an assignment to true
 	public Result setFinished(String assignmentID, String studentID) {
-		if (session("userID") == null || !session("userID").equals(studentID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", studentID)) return unauthorized(unauthorizedError.render());
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		Assignment assignment = Assignment.find.where().eq("ID", Long.valueOf(assignmentID)).findUnique();
 		if (student == null) return redirect(routes.Application.index());
@@ -332,14 +332,14 @@ public class Assignments extends Controller {
 		try {
 			assignment.save();
 		} catch (PersistenceException e) {
-			return ok(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "finishedAssignments", ""));
+			return ok(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "overview", ""));
 		}
-		return ok(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "finishedAssignments", ""));
+		return ok(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "overview", ""));
 	}
 
 	// Set the finished assignment back to unfinished
 	public Result setUnfinished(String assignmentID, String studentID) {
-		if (session("userID") == null || !session("userID").equals(studentID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", studentID)) return unauthorized(unauthorizedError.render());
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		Assignment assignment = Assignment.find.where().eq("ID", Long.valueOf(assignmentID)).findUnique();
 		if (student == null) return redirect(routes.Application.index());
@@ -357,7 +357,7 @@ public class Assignments extends Controller {
 
 	// Create a PDF of the assignments and deliver it to webpage
 	public Result createPrintableDocument(UUID studentID) {
-		if (session("userID") == null || !session("userID").equals(studentID.toString())) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", studentID.toString())) return unauthorized(unauthorizedError.render());
 		Student student = Student.find.where().eq("ID", studentID).findUnique();
 		if (student == null) return redirect(routes.Application.index());
 		List<Assignment> assignments = Utilities.createAssignmentsList(student);
@@ -438,7 +438,7 @@ public class Assignments extends Controller {
 	}
 
 	public Result createPrintableDocumentForParent(UUID parentID) {
-		if (session("userID") == null || !session("userID").equals(parentID.toString())) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", parentID.toString())) return unauthorized(unauthorizedError.render());
 		Parent parent = Parent.find.where().eq("ID", parentID).findUnique();
 		if (parent == null) return redirect(routes.Application.index());
 		List<Assignment> assignments = Utilities.createAssignmentsListForParent(parent);
@@ -539,7 +539,7 @@ public class Assignments extends Controller {
 	}
 
 	public Result createPrintableDocumentForTeacher(UUID teacherID) {
-		if (session("userID") == null || !session("userID").equals(teacherID.toString())) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", teacherID.toString())) return unauthorized(unauthorizedError.render());
 		Teacher teacher = Teacher.find.where().eq("ID", teacherID).findUnique();
 		if (teacher == null) return redirect(routes.Application.index());
 		List<Assignment> assignments = Utilities.createAssignmentsListForTeacher(teacher);
@@ -566,8 +566,6 @@ public class Assignments extends Controller {
 			table.setHeader(headerRow);
 
 			Row columnNameRow = table.createRow(15f);
-
-			// Duedate class kindof description
 
 			cell = columnNameRow.createCell((100 / 5) * 1.0f, "Due Date");
 			cell.setFont(PDType1Font.HELVETICA);

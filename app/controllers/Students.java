@@ -39,7 +39,7 @@ public class Students extends Controller {
 
 	// Direct to the student profile page after authentication
 	public Result toProfile(String studentID) {
-		if(session("userID") == null || !session("userID").equals(studentID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", studentID)) return unauthorized(unauthorizedError.render());
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		if (student == null) return redirect(routes.Application.index());
 		return ok(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "overview", ""));
@@ -48,7 +48,7 @@ public class Students extends Controller {
 	// Changes the account settings for the student with the given studentID and
 	// returns either A) Successful or B) Error
 	public Result updateSettings(String studentID) {
-		if(session("userID") == null || !session("userID").equals(studentID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", studentID.toString())) return unauthorized(unauthorizedError.render());
 		Form<AccountSettings> filledForm = accountSettingsForm.bindFromRequest();
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		if (student == null) return redirect(routes.Application.index());
@@ -116,7 +116,7 @@ public class Students extends Controller {
 
 	// Refresh the studentProfile page
 	public Result refresh(UUID studentID) {
-		if(session("userID") == null || !session("userID").equals(studentID.toString())) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", studentID.toString())) return unauthorized(unauthorizedError.render());
 		Student student = Student.find.where().eq("ID", studentID).findUnique();
 		if (student == null) return redirect(routes.Application.index());
 		return redirect(routes.Students.toProfile(student.id.toString()));
@@ -124,7 +124,7 @@ public class Students extends Controller {
 
 	// Deletes the student account and redirects to main page
 	public Result deleteStudentAccount(UUID studentID) {
-		if(session("userID") == null || !session("userID").equals(studentID.toString())) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", studentID.toString())) return unauthorized(unauthorizedError.render());
 		Student student = Student.find.where().eq("ID", studentID).findUnique();
 		if (student == null) return redirect(routes.Application.index());
 		List<Assignment> assignments = Utilities.createAssignmentsList(student);
@@ -133,18 +133,18 @@ public class Students extends Controller {
 			try {
 				assignments.get(i).delete();
 			} catch (PersistenceException | NullPointerException e) {
-				//Do nothing
+				// Do nothing
 			}
 		}
 		for (int j = 0; j < finishedAssignments.size(); j++) {
 			try {
 				finishedAssignments.get(j).delete();
 			} catch (PersistenceException | NullPointerException e) {
-				//Do nothing
+				// Do nothing
 			}
 		}
 		List<SchoolClass> classes = Utilities.createSchoolClassesList(student);
-		for (int i = 0; i < classes.size(); i++) {	
+		for (int i = 0; i < classes.size(); i++) {
 			if (classes.get(i).teacherID == null) {
 				classes.get(i).delete();
 			} else {
@@ -152,7 +152,7 @@ public class Students extends Controller {
 				try {
 					classes.get(i).save();
 				} catch (PersistenceException e) {
-					//Do nothing
+					// Do nothing
 				}
 			}
 		}

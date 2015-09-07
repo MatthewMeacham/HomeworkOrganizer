@@ -26,7 +26,7 @@ POST   /assn/delete/                                             controllers.Ass
 POST   /parent/assn/delete/										 controllers.Assignments.deleteForParent(assnID: Long, parentID: java.util.UUID, studentID: java.util.UUID)
 POST   /teacher/assn/delete/                                     controllers.Assignments.deleteForTeacher(assnID: String, teacherID: String)
 POST   /assn/deleteFinished/									 controllers.Assignments.deleteFinished(assnID: String, studentID: String)
-POST   /assn/deleteAllFinished									 controllers.Assignments.deleteAllFinished(studentID: String)
+POST   /assn/deleteAllFinished/									 controllers.Assignments.deleteAllFinished(studentID: String)
 POST   /finishedAssn/                                            controllers.Assignments.setFinished(assnID: String, studentID: String)
 POST   /unFinishedAssn/                                          controllers.Assignments.setUnfinished(assnID: String, studentID: String)
 GET	   /assn/download/											 controllers.Assignments.createPrintableDocument(studentID: java.util.UUID)
@@ -34,9 +34,9 @@ GET    /parent/assn/download/									 controllers.Assignments.createPrintableDo
 GET    /teacher/assn/download/									 controllers.Assignments.createPrintableDocumentForTeacher(teacherID: java.util.UUID)
 
 # Classes
-GET    /schoolClass/editPage/:schoolClassID/:studentID           controllers.Classes.read(schoolClassID: String, studentID: String)
+GET    /schoolClass/editPage/:schoolClassID/:studentID/          controllers.Classes.read(schoolClassID: String, studentID: String)
 POST   /schoolClass/edit/                                        controllers.Classes.update(schoolClassID: String, studentID: String)
-GET    /teacher/schoolClass/editPage/:schoolClassID/:teacherID   controllers.Classes.readForTeacher(schoolClassID: String, teacherID: String)
+GET    /teacher/schoolClass/editPage/:schoolClassID/:teacherID/  controllers.Classes.readForTeacher(schoolClassID: String, teacherID: String)
 POST   /teacher/schoolClass/edit/                                controllers.Classes.updateForTeacher(schoolClassID: String, teacherID: String)
 POST   /profileClassChanged/                                     controllers.Classes.create(studentID: String)
 POST   /newSchoolClass/                                          controllers.Classes.createForTeacher(teacherID: String)
@@ -54,7 +54,7 @@ POST   /parent/child/delete/									 controllers.Parents.deleteChildAccount(par
 POST   /parent/delete/											 controllers.Parents.deleteParentAccount(parentID: java.util.UUID)
 
 # Signups
-GET    /signup                                                   controllers.Signups.accountTypeSelector()
+GET    /signup/                                                  controllers.Signups.accountTypeSelector()
 GET    /signup/student/                                          controllers.Signups.studentForm()
 POST   /signup/student/                                          controllers.Signups.createStudent()
 GET    /signup/parent/                                           controllers.Signups.parentForm()
@@ -66,13 +66,13 @@ POST   /signup/teacher/                                          controllers.Sig
 GET    /student/profile/                                         controllers.Students.toProfile(studentID: String)
 POST   /student/settings/update                                  controllers.Students.updateSettings(studentID: String)
 GET    /student/refresh/                                         controllers.Students.refresh(studentID: java.util.UUID)
-POST   /student/delete											 controllers.Students.deleteStudentAccount(studentID: java.util.UUID)
+POST   /student/delete/											 controllers.Students.deleteStudentAccount(studentID: java.util.UUID)
 
 # Teachers
 GET    /teacher/profile/                                         controllers.Teachers.toProfile(teacherID: java.util.UUID)
 POST   /teacher/settings/edit                                    controllers.Teachers.updateSettings(teacherID: String)
 GET    /teacher/refresh/										 controllers.Teachers.refresh(teacherID: java.util.UUID)
-POST   /teacher/delete                                           controllers.Teachers.deleteTeacherAccount(teacherID: java.util.UUID)
+POST   /teacher/delete/                                          controllers.Teachers.deleteTeacherAccount(teacherID: java.util.UUID)
 
 # Map static resources from the /public folder to the /assets URL path
 GET    /assets/*file                                             controllers.Assets.versioned(path="/public", file: Asset)

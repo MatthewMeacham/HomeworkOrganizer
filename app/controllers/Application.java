@@ -53,14 +53,14 @@ public class Application extends Controller {
 	private Properties mailServerProperties;
 	private Session session;
 	private MimeMessage mailMessage;
-	
+
 	private volatile static ArrayList<String[]> emailQueue = new ArrayList<String[]>();
-	
-	//This is how long in minutes that the email thread should wait before performing operations again
+
+	// This is how long in minutes that the email thread should wait before performing operations again
 	private final int WAIT_TIME = 5;
-	
+
 	private Thread emailSendingThread = new Thread(new Runnable() {
-		public void run() {			
+		public void run() {
 			// Set properties for the smtp server we are sending through
 			mailServerProperties = System.getProperties();
 			mailServerProperties.put("mail.smtp.port", "587");
@@ -68,7 +68,8 @@ public class Application extends Controller {
 			mailServerProperties.put("mail.smtp.starttls.enable", "true");
 
 			session = Session.getDefaultInstance(mailServerProperties, null);
-			while(true) sendEmails();
+			while (true)
+				sendEmails();
 		}
 	});
 
@@ -100,13 +101,13 @@ public class Application extends Controller {
 	public Result contactUsPage() {
 		return ok(contact.render(""));
 	}
-	
-	//Directs the user to the privacy policy page
+
+	// Directs the user to the privacy policy page
 	public Result privacyPolicy() {
 		return ok(privacyPolicy.render());
 	}
-	
-	//Directs the user to the terms and conditions page
+
+	// Directs the user to the terms and conditions page
 	public Result termsAndConditions() {
 		return ok(termsAndConditions.render());
 	}
@@ -124,13 +125,13 @@ public class Application extends Controller {
 		if (!email.contains("@")) return badRequest(contact.render("Invalid email address."));
 		if (subject.isEmpty() || subject.trim().isEmpty()) return badRequest(contact.render("Subject can't be empty."));
 		if (message.isEmpty() || message.trim().isEmpty()) return badRequest(contact.render("Message can't be empty."));
-		String[] strings = {name, email, subject, message};
+		String[] strings = { name, email, subject, message };
 		emailQueue.add(strings);
 		try {
-			if(!emailSendingThread.isAlive()) emailSendingThread.start();
+			if (!emailSendingThread.isAlive()) emailSendingThread.start();
 		} catch (IllegalStateException e) {
-			//Ignore this exception, this is thrown when the emailSendingThread hasn't been started before and therefore has no state
-			//(a null state), which means we can't perform boolean operators on it, so it will throw this exception to tell us that
+			// Ignore this exception, this is thrown when the emailSendingThread hasn't been started before and therefore has no state
+			// (a null state), which means we can't perform boolean operators on it, so it will throw this exception to tell us that
 		}
 		return redirect(routes.Application.index());
 	}
@@ -139,7 +140,7 @@ public class Application extends Controller {
 	public Result authenticate() {
 		Form<Login> filledForm = loginForm.bindFromRequest();
 		if (filledForm.hasErrors()) return badRequest(login.render(loginForm, "Login error, try again."));
-		
+
 		String email = filledForm.data().get("email").toLowerCase();
 		Parent parent = Parent.find.where().eq("email", email).findUnique();
 		Teacher teacher = Teacher.find.where().eq("email", email).findUnique();
@@ -157,7 +158,7 @@ public class Application extends Controller {
 			}
 			if (Parent.authenticate(filledForm.data().get("email"), password) != null) {
 				parent = Parent.find.where().eq("email", email).eq("password", password).findUnique();
-				session("userID", parent.id.toString());
+				Utilities.createCookies(session(), "userID", parent.id.toString());
 				return redirect(routes.Parents.toProfile(parent.id.toString()));
 			}
 		}
@@ -174,7 +175,7 @@ public class Application extends Controller {
 			}
 			if (Teacher.authenticate(filledForm.data().get("email"), password) != null) {
 				teacher = Teacher.find.where().eq("email", email).eq("password", password).findUnique();
-				session("userID", teacher.id.toString());
+				Utilities.createCookies(session(), "userID", teacher.id.toString());
 				return redirect(routes.Teachers.toProfile(teacher.id));
 			}
 		}
@@ -203,16 +204,16 @@ public class Application extends Controller {
 		student = Student.find.where().eq("email", email).eq("password", password).findUnique();
 
 		if (password == null || student == null) return badRequest(login.render(loginForm, "Invalid email or password."));
-		
-		if (Student.authenticate(email, password) != null){
-			session("userID", student.id.toString());
+
+		if (Student.authenticate(email, password) != null) {
+			Utilities.createCookies(session(), "userID", student.id.toString());
 			return redirect(routes.Students.toProfile(student.id.toString()));
 		}
 
 		return badRequest(login.render(loginForm, "Invalid email or password."));
 	}
 
-	//This method will generate and send the email
+	// This method will generate and send the email
 	private boolean generateAndSendEmail(String name, String email, String subject, String message) {
 		mailMessage = new MimeMessage(session);
 		try {
@@ -235,32 +236,32 @@ public class Application extends Controller {
 			return false;
 		}
 	}
-	
+
 	@SuppressWarnings("static-access")
-	//This method is used by the emailSendingThread, this thread here will scan through all the emails in the emailQueue
-	//and if there are any duplicates (which is possible if a user hits the send button multiple times), this will filter those out
-	//Then it will send all the good emails, and sleep for a WAIT_TIME minutes total to keep processing usage down
+	// This method is used by the emailSendingThread, this thread here will scan through all the emails in the emailQueue
+	// and if there are any duplicates (which is possible if a user hits the send button multiple times), this will filter those out
+	// Then it will send all the good emails, and sleep for a WAIT_TIME minutes total to keep processing usage down
 	private void sendEmails() {
-		//Sleep first for 20 seconds to make sure that all the requests from the user hitting the send button multiple times have been processed
+		// Sleep first for 20 seconds to make sure that all the requests from the user hitting the send button multiple times have been processed
 		try {
 			emailSendingThread.sleep(20 * 1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		for(int i = 0; i < emailQueue.size(); i++) {
-			for(int j = emailQueue.size() - 1; j >= 0; j--) {
-				if(i == j) continue;
-				if(compareEmail(emailQueue.get(i), emailQueue.get(j))){
+		for (int i = 0; i < emailQueue.size(); i++) {
+			for (int j = emailQueue.size() - 1; j >= 0; j--) {
+				if (i == j) continue;
+				if (compareEmail(emailQueue.get(i), emailQueue.get(j))) {
 					emailQueue.remove(j);
-					if(i > j) i--;
+					if (i > j) i--;
 				}
 			}
 		}
-		for(int i = emailQueue.size() - 1; i >= 0; i--) {
+		for (int i = emailQueue.size() - 1; i >= 0; i--) {
 			String[] strings = emailQueue.get(i);
-			if(generateAndSendEmail(strings[0], strings[1], strings[2], strings[3])) emailQueue.remove(i);
+			if (generateAndSendEmail(strings[0], strings[1], strings[2], strings[3])) emailQueue.remove(i);
 		}
-		//Finish out sleeping for WAIT_TIME minutes to keep the processing usage down
+		// Finish out sleeping for WAIT_TIME minutes to keep the processing usage down
 		try {
 			emailSendingThread.sleep((WAIT_TIME * 60 - 20) * 1000);
 		} catch (InterruptedException e) {
@@ -268,12 +269,12 @@ public class Application extends Controller {
 		}
 	}
 
-	//This method compares two emails and returns if they are the same
+	// This method compares two emails and returns if they are the same
 	private boolean compareEmail(String[] first, String[] second) {
-		if(first[0].equals(second[0]) && first[1].equals(second[1]) && first[2].equals(second[2]) && first[3].equals(second[3])) return true;
+		if (first[0].equals(second[0]) && first[1].equals(second[1]) && first[2].equals(second[2]) && first[3].equals(second[3])) return true;
 		return false;
 	}
-	
+
 	// Login class that the loginForm forms to for logging in
 	public static class Login {
 		public String email;

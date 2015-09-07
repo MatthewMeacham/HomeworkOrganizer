@@ -68,7 +68,7 @@ public class Signups extends Controller {
 		if (name.trim().isEmpty()) return badRequest(studentSignUp.render(studentForm, "Invalid name."));
 		if (password.trim().isEmpty() || passwordAgain.trim().isEmpty()) return badRequest(studentSignUp.render(studentForm, "Invalid password."));
 		if (password.length() < 8 || passwordAgain.length() < 8) return badRequest(studentSignUp.render(studentForm, "Password must be at least 8 characters long."));
-		if (!password.equals(passwordAgain))return badRequest(studentSignUp.render(studentForm, "Passwords did not match."));
+		if (!password.equals(passwordAgain)) return badRequest(studentSignUp.render(studentForm, "Passwords did not match."));
 		String[] hashed = null;
 		try {
 			hashed = HASHER.hashSHA256(password);
@@ -84,7 +84,7 @@ public class Signups extends Controller {
 		}
 		if (student == null) return badRequest(studentSignUp.render(studentForm, "That email is already associated with an account."));
 
-		session("userID", student.id.toString());
+		Utilities.createCookies(session(), "userID", student.id.toString());
 
 		return ok(studentProfile.render(student, Utilities.createSchoolClassesList(student), Utilities.createAssignmentsList(student), Utilities.createFinishedAssignmentsList(student), Utilities.createLateAssignmentsList(student), Utilities.createTeachersList(student), Utilities.createNotesList(student), Utilities.today, "overview", ""));
 	}
@@ -120,7 +120,7 @@ public class Signups extends Controller {
 		}
 		if (parent == null) return badRequest(parentSignUp.render(parentForm, "That email is already associated with an account."));
 
-		session("userID", parent.id.toString());
+		Utilities.createCookies(session(), "userID", parent.id.toString());
 
 		return ok(parentProfile.render(parent, Utilities.createChildrenList(parent), Utilities.createAssignmentsListForParent(parent), Utilities.today, "overview", ""));
 	}
@@ -155,7 +155,7 @@ public class Signups extends Controller {
 		}
 		if (teacher == null) return badRequest(teacherSignUp.render(teacherForm, "That email is already associated with an account."));
 
-		session("userID", teacher.id.toString());
+		Utilities.createCookies(session(), "userID", teacher.id.toString());
 
 		return ok(teacherProfile.render(teacher, Utilities.createAssignmentsListForTeacher(teacher), Utilities.createSchoolClassListForTeacher(teacher), Utilities.today, "overview", ""));
 	}

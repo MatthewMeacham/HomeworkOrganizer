@@ -21,6 +21,8 @@ import models.Student;
 import models.Teacher;
 import play.db.DB;
 import play.mvc.Controller;
+import play.mvc.Http.Session;
+import play.mvc.Result;
 
 public class Utilities extends Controller {
 
@@ -36,6 +38,24 @@ public class Utilities extends Controller {
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		for (Parent parent : parents) {
 			if (student.email.equals(parent.email)) return true;
+		}
+		return false;
+	}
+
+	public static void createCookies(Session session, String key, String value) {
+		for (int i = 1;; i++) {
+			if (session(key + i) == null) {
+				session(key + i, value);
+				break;
+			}
+		}
+	}
+
+	public static boolean checkCookies(Session session, String key, String value) {
+		if (session == null || value.equals("") || key.equals("") || key == null || value == null) return false;
+		for (int i = 1;; i++) {
+			if (session(key + i) == null) break;
+			if (session(key + i).equals(value)) return true;
 		}
 		return false;
 	}
