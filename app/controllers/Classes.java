@@ -30,7 +30,7 @@ public class Classes extends Controller {
 
 	// Create a new school class from the request
 	public Result create(String studentID) {
-		if(session("userID") == null || !session("userID").equals(studentID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", studentID)) return unauthorized(unauthorizedError.render());
 		Form<SchoolClass> filledForm = schoolClassForm.bindFromRequest();
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		if (student == null) return redirect(routes.Application.index());
@@ -53,7 +53,7 @@ public class Classes extends Controller {
 
 	// Creates a new school class for the teacher from the request
 	public Result createForTeacher(String teacherID) {
-		if(session("userID") == null || !session("userID").equals(teacherID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", teacherID)) return unauthorized(unauthorizedError.render());
 		Form<SchoolClass> filledForm = schoolClassForm.bindFromRequest();
 		Teacher teacher = Teacher.find.where().eq("ID", UUID.fromString(teacherID)).findUnique();
 		if (teacher == null) return redirect(routes.Application.index());
@@ -75,7 +75,7 @@ public class Classes extends Controller {
 
 	// Create a new school class from a teacher provided id and password
 	public Result createFromTeacher(String studentID) {
-		if(session("userID") == null || !session("userID").equals(studentID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", studentID)) return unauthorized(unauthorizedError.render());
 		Form<SchoolClassFromCode> filledForm = schoolClassFromCodeForm.bindFromRequest();
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		if (student == null) return redirect(routes.Application.index());
@@ -100,7 +100,7 @@ public class Classes extends Controller {
 
 	// Direct to the edit school class page
 	public Result read(String schoolClassID, String studentID) {
-		if(session("userID") == null || !session("userID").equals(studentID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", studentID)) return unauthorized(unauthorizedError.render());
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		if (student == null) return redirect(routes.Application.index());
 		SchoolClass schoolClass = SchoolClass.find.where().eq("ID", Long.valueOf(schoolClassID)).findUnique();
@@ -114,7 +114,7 @@ public class Classes extends Controller {
 
 	// Direct to the edit school class page for teacher
 	public Result readForTeacher(String schoolClassID, String teacherID) {
-		if(session("userID") == null || !session("userID").equals(teacherID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", teacherID)) return unauthorized(unauthorizedError.render());
 		Teacher teacher = Teacher.find.where().eq("ID", UUID.fromString(teacherID)).findUnique();
 		if (teacher == null) return redirect(routes.Application.index());
 		SchoolClass schoolClass = SchoolClass.find.where().eq("ID", Long.valueOf(schoolClassID)).findUnique();
@@ -128,7 +128,7 @@ public class Classes extends Controller {
 
 	// Edit a schoolClass from a request
 	public Result update(String schoolClassID, String studentID) {
-		if(session("userID") == null || !session("userID").equals(studentID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", studentID)) return unauthorized(unauthorizedError.render());
 		Form<SchoolClass> filledForm = schoolClassForm.bindFromRequest();
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		if (student == null) return redirect(routes.Application.index());
@@ -154,7 +154,7 @@ public class Classes extends Controller {
 
 	// Edit a schoolClass for a teacher from a request
 	public Result updateForTeacher(String schoolClassID, String teacherID) {
-		if(session("userID") == null || !session("userID").equals(teacherID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", teacherID)) return unauthorized(unauthorizedError.render());
 		Form<SchoolClass> filledForm = schoolClassForm.bindFromRequest();
 		Teacher teacher = Teacher.find.where().eq("ID", UUID.fromString(teacherID)).findUnique();
 		if (teacher == null) return redirect(routes.Application.index());
@@ -179,7 +179,7 @@ public class Classes extends Controller {
 	}
 
 	public Result delete(String schoolClassID, String studentID) {
-		if(session("userID") == null || !session("userID").equals(studentID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", studentID)) return unauthorized(unauthorizedError.render());
 		Student student = Student.find.where().eq("ID", UUID.fromString(studentID)).findUnique();
 		if (student == null) return redirect(routes.Application.index());
 		SchoolClass schoolClass = SchoolClass.find.where().eq("ID", Long.valueOf(schoolClassID)).findUnique();
@@ -230,7 +230,7 @@ public class Classes extends Controller {
 	}
 
 	public Result deleteForTeacher(String schoolClassID, String teacherID) {
-		if(session("userID") == null || !session("userID").equals(teacherID)) return unauthorized(unauthorizedError.render());
+		if (!Utilities.checkCookies(session(), "userID", teacherID)) return unauthorized(unauthorizedError.render());
 		Teacher teacher = Teacher.find.where().eq("ID", UUID.fromString(teacherID)).findUnique();
 		if (teacher == null) return redirect(routes.Application.index());
 		SchoolClass schoolClass = SchoolClass.find.where().eq("ID", Long.valueOf(schoolClassID)).findUnique();
