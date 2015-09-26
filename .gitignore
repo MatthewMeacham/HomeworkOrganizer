@@ -18,4 +18,3 @@ target
 !.elasticbeanstalk/*.global.yml
 conf/prod.conf
 conf/application.conf
-conf/application.conf
