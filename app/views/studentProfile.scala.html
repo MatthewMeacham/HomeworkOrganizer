@@ -68,7 +68,7 @@
 						<li><a id="lateAssignmentsAnchor" href="#Late" onclick="toggle_visibility('lateAssignments')"><div id="lateAssingmentsToggle" style="display: inline-block;">Late </div></a></li>
 						<li><a id="finishedAssignmentsAnchor" href="#Finished" onclick="toggle_visibility('finishedAssignments')"><div id="finishedAssignmentsToggle" style="display: inline-block;">Finished </div></a></li>
 						<li><a id="accountSettingsAnchor" href="#Account" onclick="toggle_visibility('accountSettings')"><div id="accountSettingsToggle" style="display: inline-block;">Account</div></a></li>
-						<li><a href="@routes.Application.logout()">Log Out</a></li>
+						<li><a href="@routes.Application.logout(student.id)">Log Out</a></li>
 						<div id="browser">
 							<li>|</li>
 						</div>

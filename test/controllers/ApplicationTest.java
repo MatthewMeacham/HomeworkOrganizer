@@ -6,14 +6,16 @@ import static play.test.Helpers.contentAsString;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+
+import org.junit.Test;
 
 import models.Parent;
 import models.Student;
 import models.Teacher;
-
-import org.junit.Test;
-
+import play.mvc.Http.Cookie;
 import play.mvc.Http.RequestBuilder;
+import play.mvc.Http.Session;
 import play.mvc.Result;
 import play.test.Helpers;
 
@@ -37,7 +39,8 @@ public class ApplicationTest extends BaseControllerTest {
 
 	@Test
 	public void logoutTest() {
-		Result result = application.logout();
+		Student student = Student.create("Matthew", "matthew@gmail.com", "d4c446b3862597d42603ba832db64101c4baaac64113bb0412c3f728b8b16c3f", "4abcaea679015003dabdd76577b07dbd754a1ac01988921ffd0ad25efb19175c", "10");
+		Result result = application.logout(student.id);
 		assertEquals(303, result.status());
 	}
 
@@ -90,8 +93,8 @@ public class ApplicationTest extends BaseControllerTest {
 		Map<String, String> data = new HashMap<String, String>();
 		data.put("email", student.email);
 		data.put("password", "hunter2");
+		RequestBuilder request = new RequestBuilder().session("UserID1", student.id.toString()).method("POST").uri("/authenticate/").bodyForm(data);
 		
-		RequestBuilder request = new RequestBuilder().method("POST").uri("/authenticate/").bodyForm(data);
 		Result result = Helpers.route(request);
 		
 		assertEquals(303, result.status());
