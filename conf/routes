@@ -5,7 +5,7 @@
 # Application
 GET    /                                                         controllers.Application.index()
 GET    /login/                                                   controllers.Application.login()
-GET    /logout/                                                  controllers.Application.logout()
+GET    /logout/                                                  controllers.Application.logout(uniqueID: java.util.UUID)
 POST   /authenticate/                                            controllers.Application.authenticate()
 GET    /faq/                                                     controllers.Application.faq()
 GET    /contact/                                                 controllers.Application.contactUsPage()

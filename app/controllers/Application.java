@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Properties;
+import java.util.UUID;
 import java.util.ArrayList;
 import java.lang.Thread;
 
@@ -56,7 +57,8 @@ public class Application extends Controller {
 
 	private volatile static ArrayList<String[]> emailQueue = new ArrayList<String[]>();
 
-	// This is how long in minutes that the email thread should wait before performing operations again
+	// This is how long in minutes that the email thread should wait before
+	// performing operations again
 	private final int WAIT_TIME = 5;
 
 	private Thread emailSendingThread = new Thread(new Runnable() {
@@ -87,8 +89,10 @@ public class Application extends Controller {
 	}
 
 	// Redirects the request to the index for logging out
-	public Result logout() {
-		session().clear();
+	public Result logout(UUID uniqueID) {
+		int index = Utilities.findIndexOfValue(session(), "UserID", uniqueID.toString());
+		if (index != -1) session("UserID" + Utilities.findIndexOfValue(session(), "UserID", uniqueID.toString()), "Logged Out");
+
 		return redirect(routes.Application.index());
 	}
 
@@ -130,8 +134,10 @@ public class Application extends Controller {
 		try {
 			if (!emailSendingThread.isAlive()) emailSendingThread.start();
 		} catch (IllegalStateException e) {
-			// Ignore this exception, this is thrown when the emailSendingThread hasn't been started before and therefore has no state
-			// (a null state), which means we can't perform boolean operators on it, so it will throw this exception to tell us that
+			// Ignore this exception, this is thrown when the emailSendingThread
+			// hasn't been started before and therefore has no state
+			// (a null state), which means we can't perform boolean operators on
+			// it, so it will throw this exception to tell us that
 		}
 		return redirect(routes.Application.index());
 	}
@@ -237,14 +243,17 @@ public class Application extends Controller {
 		}
 	}
 
-	@SuppressWarnings("static-access")
-	// This method is used by the emailSendingThread, this thread here will scan through all the emails in the emailQueue
-	// and if there are any duplicates (which is possible if a user hits the send button multiple times), this will filter those out
-	// Then it will send all the good emails, and sleep for a WAIT_TIME minutes total to keep processing usage down
+	// This method is used by the emailSendingThread, this thread here will scan
+	// through all the emails in the emailQueue
+	// and if there are any duplicates (which is possible if a user hits the
+	// send button multiple times), this will filter those out
+	// Then it will send all the good emails, and sleep for a WAIT_TIME minutes
+	// total to keep processing usage down
 	private void sendEmails() {
-		// Sleep first for 20 seconds to make sure that all the requests from the user hitting the send button multiple times have been processed
+		// Sleep first for 20 seconds to make sure that all the requests from
+		// the user hitting the send button multiple times have been processed
 		try {
-			emailSendingThread.sleep(20 * 1000);
+			Thread.sleep(20 * 1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -261,9 +270,10 @@ public class Application extends Controller {
 			String[] strings = emailQueue.get(i);
 			if (generateAndSendEmail(strings[0], strings[1], strings[2], strings[3])) emailQueue.remove(i);
 		}
-		// Finish out sleeping for WAIT_TIME minutes to keep the processing usage down
+		// Finish out sleeping for WAIT_TIME minutes to keep the processing
+		// usage down
 		try {
-			emailSendingThread.sleep((WAIT_TIME * 60 - 20) * 1000);
+			Thread.sleep((WAIT_TIME * 60 - 20) * 1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

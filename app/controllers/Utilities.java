@@ -22,13 +22,13 @@ import models.Teacher;
 import play.db.DB;
 import play.mvc.Controller;
 import play.mvc.Http.Session;
-import play.mvc.Result;
 
 public class Utilities extends Controller {
 
 	// The number of days in today
 	public static int today;
 
+	//The date format that we use
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MM yyyy");
 
 	// Checks to see if the student account with the given studentID is a child
@@ -42,6 +42,8 @@ public class Utilities extends Controller {
 		return false;
 	}
 
+	//Creates a cookie at the last available spot in the session by checking until the key + i is null, which
+	//signifies an empty spot which we can add to, once that is achieved, the method exits
 	public static void createCookies(Session session, String key, String value) {
 		for (int i = 1;; i++) {
 			if (session(key + i) == null) {
@@ -51,13 +53,25 @@ public class Utilities extends Controller {
 		}
 	}
 
+	//Checks all the cookies in the session and if the given key is in the session it will return true
+	//otherwise it will return false
 	public static boolean checkCookies(Session session, String key, String value) {
-		if (session == null || value.equals("") || key.equals("") || key == null || value == null) return false;
+		if (session == null || value.trim().equals("") || key.trim().equals("") || key == null || value == null) return false;
 		for (int i = 1;; i++) {
 			if (session(key + i) == null) break;
 			if (session(key + i).equals(value)) return true;
 		}
 		return false;
+	}
+	
+	//Given a session, key, and value, it will find the "index" in the session with the given value
+	public static int findIndexOfValue(Session session, String key, String value) {
+		if(session == null || key.trim().equals("") || value.trim().equals("")) return -1;
+		for(int i = 1;; i++) {
+			if(session(key + i) == null) break;
+			if(session(key + i).equals(value)) return i;
+		}
+		return -1;
 	}
 
 	// Sets the variable today, the number of days in the date since 0AD
@@ -70,14 +84,17 @@ public class Utilities extends Controller {
 		today = total;
 	}
 
+	//Returns the month as a String with a preceding "0" if the month is less than 10 (October)
 	public static String getMonthString(int month) {
 		return month < 10 ? "0" + month : "" + month;
 	}
 
+	//Returns the day as a String with a preceding "0" if the day is less than 10
 	public static String getDayString(int day) {
 		return day < 10 ? "0" + day : "" + day;
 	}
 
+	//Calculates the total amount of days in the given day, month, and year
 	public static int calculateTotal(int day, int month, int year) {
 		String dateString = getDayString(day) + " " + getMonthString(month) + " " + year;
 		try {
@@ -237,15 +254,8 @@ public class Utilities extends Controller {
 	// Sort a list from the oldest date to the newest date
 	public static List<Assignment> sortList(List<Assignment> assignments) {
 		if (assignments.size() <= 1) return assignments;
-		/*
-		 * List<Assignment> beginningAssignments = assignments; List<Assignment> returnAssignments = new ArrayList<Assignment>(); long startTime1 = System.nanoTime(); returnAssignments.add(assignments.remove(0));
-		 * 
-		 * for (int i = assignments.size() - 1; i >= 0; i--) { for (int j = returnAssignments.size() - 1; j >= 0; j--) { if (assignments.get(i).total >= returnAssignments.get(j).total) { if (j + 1 >= returnAssignments.size()) { returnAssignments.add(assignments.remove(i)); break; } returnAssignments.add(j + 1, assignments.remove(i)); break; } if (j == 0) returnAssignments.add(0, assignments.remove(i)); } } long endTime1 = System.nanoTime(); System.out.println("TEST 1: " + (double) ((endTime1 - startTime1) / 1000000.0));
-		 */
-
-		// long startTime2 = System.nanoTime();
-
 		boolean noOperation;
+		
 		do {
 			noOperation = true;
 			for (int i = 0; i < assignments.size() - 1; i++) {
@@ -257,9 +267,6 @@ public class Utilities extends Controller {
 				}
 			}
 		} while (!noOperation);
-
-		// long endTime2 = System.nanoTime();
-		// System.out.println("TEST 2: " + (double) ((endTime2 - startTime2) / 1000000.0));
 
 		return assignments;
 	}

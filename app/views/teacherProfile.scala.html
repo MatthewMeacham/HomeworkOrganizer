@@ -63,7 +63,7 @@
 					<li><a id="schoolClassesAnchor" href="#Classes" onclick="toggle_visibility('schoolClasses')"><div id="schoolClassesToggle" style="display: inline-block;">Classes</div></a></li>
 					<li><a id="addAssignmentAnchor" href="#AddAssignment" onclick="toggle_visibility('addAssignment')"><div id="addAssignmentToggle" style="display: inline-block;">Add Assignment</div></a></li>
 					<li><a id="accountSettingsAnchor" href="#Account" onclick="toggle_visibility('accountSettings')"><div id="accountSettingsToggle" style="display: inline-block;">Account</div></a></li>
-					<li><a href="@routes.Application.logout()">Log Out</a></li>
+					<li><a href="@routes.Application.logout(teacher.id)">Log Out</a></li>
 					<div id="browser">
 						<li>|</li>
 					</div>

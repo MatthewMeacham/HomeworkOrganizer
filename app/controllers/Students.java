@@ -29,12 +29,17 @@ import views.html.unauthorizedError;
 
 public class Students extends Controller {
 
+	//The hasher instance that handles password Hashing
 	private static final Hasher HASHER = new Hasher();
 
+	//The minimum possible grade that a student can have
 	private final static int MIN_GRADE = 1;
+	//The maximum possible grade that a student can have
 	private final static int MAX_GRADE = 16;
 
+	//The form for changing account settings
 	private static Form<AccountSettings> accountSettingsForm = Form.form(AccountSettings.class);
+	//The form for logging into an acocunt
 	private static Form<Login> loginForm = Form.form(Login.class);
 
 	// Direct to the student profile page after authentication
